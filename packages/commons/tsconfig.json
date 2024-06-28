@@ -14,12 +14,5 @@
     "moduleResolution": "node"
   },
   "exclude": ["node_modules", "tests", "dist"],
-  "references": [
-    {
-      "path": "../backend"
-    },
-    {
-      "path": "../webapp"
-    }
-  ]
+  "references": []
 }
