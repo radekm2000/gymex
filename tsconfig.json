@@ -1,0 +1,16 @@
+{
+    "exclude": [
+      "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./packages/webapp"
+        },
+        {
+            "path": "./packages/backend"
+        },
+        {
+            "path": "./packages/commons/"
+        },
+    ]
+}

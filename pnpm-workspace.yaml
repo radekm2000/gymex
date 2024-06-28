@@ -2,4 +2,4 @@ packages:
   - "packages/*"
   - "packages/backend/*"
   - "packages/webapp/*"
-  - "packages/commons/*"
+  - "packages/commons/src/*"
