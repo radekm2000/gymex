@@ -10,7 +10,7 @@ export type DrizzleDb = NodePgDatabase<DrizzleSchema>;
 export class DrizzleService {
   private readonly logger = new Logger(DrizzleService.name);
 
-  private readonly db: DrizzleDb;
+  public readonly db: DrizzleDb;
 
   constructor(@Inject(ConfigService) private readonly config: ConfigService) {
     this.db = drizzle(
@@ -24,11 +24,11 @@ export class DrizzleService {
   }
 
   public runMigrations = async () => {
-    this.logger.log('running migrations');
+    this.logger.log('Running migrations');
 
     await migrate(this.db, {
       migrationsFolder: 'src/db/migrations',
     });
-    this.logger.log('migrations finished');
+    this.logger.log('Migrations finished');
   };
 }
