@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { index, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const UsersTable = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -10,13 +10,19 @@ export const UsersTable = pgTable('users', {
   googleId: text('google_id'),
 });
 
-export const UsersMetricsTable = pgTable('user_metrics', {
-  userId: text('user_id')
-    .primaryKey()
-    .references(() => UsersTable.id, {
-      onDelete: 'cascade',
-    }),
+export const UsersMetricsTable = pgTable(
+  'user_metrics',
+  {
+    userId: text('user_id')
+      .primaryKey()
+      .references(() => UsersTable.id, {
+        onDelete: 'cascade',
+      }),
 
-  weight: text('weight'),
-  height: text('height'),
-});
+    weight: text('weight'),
+    height: text('height'),
+  },
+  (table) => ({
+    userIdIndex: index('user_metrics_user_id_index').on(table.userId),
+  }),
+);
