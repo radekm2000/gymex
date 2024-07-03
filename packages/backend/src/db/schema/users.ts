@@ -1,19 +1,27 @@
-import { index, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  index,
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 
 export const UsersTable = pgTable('users', {
   id: serial('id').primaryKey(),
   username: text('username').notNull(),
   createdAt: timestamp('created_at', {
     mode: 'date',
-  }),
-  discordId: text('discord_id'),
-  googleId: text('google_id'),
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
 });
 
 export const UsersMetricsTable = pgTable(
   'user_metrics',
   {
-    userId: text('user_id')
+    userId: integer('user_id')
       .primaryKey()
       .references(() => UsersTable.id, {
         onDelete: 'cascade',
@@ -26,3 +34,15 @@ export const UsersMetricsTable = pgTable(
     userIdIndex: index('user_metrics_user_id_index').on(table.userId),
   }),
 );
+
+export const UserDiscordConnections = pgTable('user_discord_connections', {
+  userId: integer('user_id')
+    .primaryKey()
+    .references(() => UsersTable.id, {
+      onDelete: 'cascade',
+    }),
+  accessToken: text('discord_access_token'),
+  avatar: text('discord_avatar'),
+  discordId: text('discord_id'),
+  username: text('discord_username'),
+});
