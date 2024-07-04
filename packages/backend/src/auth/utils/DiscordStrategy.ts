@@ -7,13 +7,16 @@ import {
 import 'dotenv/config';
 import { AuthService } from '../auth.service';
 import { DiscordProfile, DiscordProfileSchema } from 'src/users/dto/users.dto';
+import { Injectable } from '@nestjs/common';
 
+const AUTHORIZATION_URL = 'https://discord.com/oauth2/authorize';
 const TOKEN_URL = 'https://discord.com/api/oauth2/token';
-const PROFILE_URL = 'https://discord.com/api/v10/users/@me';
+const PROFILE_URL = 'https://discord.com/api/users/@me';
 
 type UserProfileCallback = (err?: Error | null, profile?: any) => void;
 type VerifyCallback = (err?: Error | null, user?: Express.User) => void;
 
+@Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   constructor(private readonly authService: AuthService) {
     super({
@@ -21,11 +24,11 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
       tokenURL: TOKEN_URL,
       callbackURL:
-        process.env.IS_DEV === 'true'
+        process.env.IS_DEV == 'true'
           ? process.env.DEVELOPMENT_CALLBACK_URL
           : process.env.PROD_CALLBACK_URL,
-      authorizationURL: 'https://discord.com/oauth2/authorize',
-      scope: ['identify'],
+      authorizationURL: AUTHORIZATION_URL,
+      scope: ['identify', 'guilds'],
     } satisfies StrategyOptions);
   }
 
@@ -36,7 +39,8 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
     done: VerifyCallback,
   ) => {
     try {
-      console.log(profile);
+      const user = await this.authService.createOrGetUser(profile);
+      return done(null, user as unknown as Express.User);
     } catch (error) {
       return done(error);
     }
@@ -54,7 +58,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
       }
       try {
         const parsedBody = JSON.parse((body ?? '').toString());
-        return DiscordProfileSchema.parse(parsedBody);
+        return done(null, DiscordProfileSchema.parse(parsedBody));
       } catch (error) {
         return done(new Error('Failed when parsing discord profile'));
       }
