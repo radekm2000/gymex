@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { DiscordStrategy } from './utils/DiscordStrategy';
 import { jwtConstants } from './constants/constants';
-import { DrizzleModule } from 'src/drizzle/drizzle.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { DrizzleModule } from 'src/drizzle/drizzle.module';
       global: true,
       secret: jwtConstants.secret,
     }),
-    DrizzleModule,
+    UsersModule,
   ],
   providers: [AuthService, JwtService, DiscordStrategy],
   controllers: [AuthController],

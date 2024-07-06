@@ -1,22 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RefreshTokenPayload } from './tokens';
+import { AccessTokenPayload, RefreshTokenPayload } from './tokens';
 import { jwtConstants } from './constants/constants';
 import 'dotenv/config';
-import { DrizzleService } from 'src/drizzle/drizzle.service';
-import {
-  UserDiscordConnections,
-  UsersMetricsTable,
-  UsersTable,
-} from 'src/db/schema/users';
-import { eq } from 'drizzle-orm';
 import { DiscordProfile } from 'src/users/dto/users.dto';
+import { UsersService } from 'src/users/users.service';
+import { UserModel } from 'src/users/model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly drizzleService: DrizzleService,
+    private readonly usersService: UsersService,
   ) {}
 
   public generateRefreshTokenFor = async (userId: number): Promise<string> => {
@@ -29,47 +24,25 @@ export class AuthService {
     });
   };
 
-  public createOrGetUser = async (profile: DiscordProfile) => {
-    const result = await this.drizzleService.db
-      .select({
-        user: UsersTable,
-        discordConnection: UserDiscordConnections,
-      })
-      .from(UserDiscordConnections)
-      .innerJoin(UsersTable, eq(UserDiscordConnections.userId, UsersTable.id))
-      .where(eq(UserDiscordConnections.discordId, profile.id));
-
-    console.log(result);
-    if (result.length > 0) {
-      const user = result[0].user;
-      return user;
-    }
-
-    const newUser = await this.createUser(profile);
-    return newUser;
+  public generateAccessTokenFor = async (userId: number): Promise<string> => {
+    const payload: AccessTokenPayload = {
+      sub: userId,
+    };
+    return await this.jwtService.signAsync(payload, {
+      secret: jwtConstants.secret,
+      expiresIn: process.env.JWT_AT_LIFETIME,
+    });
   };
 
-  private createUser = async (profile: DiscordProfile) => {
-    const newUser = await this.drizzleService.db
-      .insert(UsersTable)
-      .values({
-        username: profile.username,
-      })
-      .returning();
+  public createOrGetUser = async (
+    profile: DiscordProfile,
+  ): Promise<UserModel> => {
+    const user = await this.usersService.findUserByDiscordId(profile.id);
 
-    await this.drizzleService.db.insert(UserDiscordConnections).values({
-      userId: newUser[0].id,
-      discordId: profile.id,
-      avatar: profile.avatar,
-      username: profile.username,
-    });
-
-    await this.drizzleService.db.insert(UsersMetricsTable).values({
-      userId: newUser[0].id,
-      height: '',
-      weight: '',
-    });
-
-    return newUser;
+    if (user) {
+      return user as UserModel;
+    } else {
+      return await this.usersService.createUser(profile);
+    }
   };
 }

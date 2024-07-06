@@ -46,3 +46,7 @@ export const UserDiscordConnections = pgTable('user_discord_connections', {
   discordId: text('discord_id'),
   username: text('discord_username'),
 });
+
+export type UserDiscordModel = typeof UserDiscordConnections.$inferSelect;
+
+export type UserMetricsModel = typeof UsersMetricsTable.$inferSelect;

@@ -40,7 +40,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   ) => {
     try {
       const user = await this.authService.createOrGetUser(profile);
-      return done(null, user as unknown as Express.User);
+      return done(null, user);
     } catch (error) {
       return done(error);
     }
