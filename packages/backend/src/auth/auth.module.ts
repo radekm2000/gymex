@@ -5,6 +5,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { DiscordStrategy } from './utils/DiscordStrategy';
 import { jwtConstants } from './constants/constants';
 import { UsersModule } from 'src/users/users.module';
+import { UserService } from 'src/spi/user/user';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
@@ -14,7 +16,17 @@ import { UsersModule } from 'src/users/users.module';
     }),
     UsersModule,
   ],
-  providers: [AuthService, JwtService, DiscordStrategy],
+  providers: [
+    DiscordStrategy,
+    {
+      provide: AuthService,
+      inject: [JwtService, UserService],
+      useFactory: (jwtService: JwtService, userService: UsersService) => {
+        return new AuthService(jwtService, userService);
+      },
+    },
+  ],
+  // providers: [AuthService, JwtService, DiscordStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

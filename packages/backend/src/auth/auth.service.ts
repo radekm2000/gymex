@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   AccessTokenPayload,
@@ -8,9 +8,9 @@ import {
 import { jwtConstants } from './constants/constants';
 import 'dotenv/config';
 import { DiscordProfile } from 'src/users/dto/users.dto';
-import { UsersService } from 'src/users/users.service';
 import { UserModel } from 'src/users/user.types';
 import { Request } from 'express';
+import { UserService } from 'src/spi/user/user';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService,
+    @Inject(UserService) private readonly usersService: UserService,
   ) {}
 
   public handleRefreshToken = async (request: Request) => {

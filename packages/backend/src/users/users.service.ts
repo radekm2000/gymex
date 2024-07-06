@@ -9,9 +9,10 @@ import {
 import { eq } from 'drizzle-orm';
 import { UserModel } from './user.types';
 import { User } from './user.model';
+import { UserService } from 'src/spi/user/user';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements UserService {
   constructor(private readonly drizzleService: DrizzleService) {}
 
   public createUser = async (profile: DiscordProfile): Promise<UserModel> => {
