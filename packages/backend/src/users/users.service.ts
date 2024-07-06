@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DiscordProfile } from './dto/users.dto';
+import { DiscordProfile, UpdateUserDto } from './dto/users.dto';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import {
   UserDiscordConnections,
@@ -88,5 +88,47 @@ export class UsersService implements UserService {
       .where(eq(UsersMetricsTable.userId, userId));
 
     return User.from(user, metrics, discordConnection).detailedUserModel;
+  };
+
+  public updateUserMetricsAndOptionalUsername = async (
+    userId: number,
+    dto: UpdateUserDto,
+  ): Promise<void> => {
+    const [user] = await this.drizzleService.db
+      .select()
+      .from(UsersTable)
+      .where(eq(UsersTable.id, userId));
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.drizzleService.db
+      .update(UsersMetricsTable)
+      .set({
+        height: dto.height,
+        weight: dto.weight,
+      })
+      .where(eq(UsersMetricsTable.userId, userId));
+
+    await this.drizzleService.db.transaction(async (tx) => {
+      await tx
+        .update(UsersMetricsTable)
+        .set({
+          height: dto.height,
+          weight: dto.weight,
+        })
+        .where(eq(UsersMetricsTable.userId, userId));
+
+      //set username if one is given, otherwise use discord username as primary username
+      if (dto.username) {
+        await tx
+          .update(UsersTable)
+          .set({
+            username: dto.username,
+          })
+          .where(eq(UsersTable.id, userId));
+      }
+    });
   };
 }

@@ -26,7 +26,6 @@ import { UsersService } from 'src/users/users.service';
       },
     },
   ],
-  // providers: [AuthService, JwtService, DiscordStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

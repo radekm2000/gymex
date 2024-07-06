@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-export const CreateUserDtoSchema = z.object({
-  username: z.string({
-    required_error: 'Username is required',
-  }),
+export const UpdateUserDtoSchema = z.object({
+  username: z.string().optional(),
   weight: z.string({
     required_error: 'Weight is required',
   }),
@@ -12,7 +10,7 @@ export const CreateUserDtoSchema = z.object({
   }),
 });
 
-export type CreateUserDto = z.infer<typeof CreateUserDtoSchema>;
+export type UpdateUserDto = z.infer<typeof UpdateUserDtoSchema>;
 
 export const DiscordProfileSchema = z.object({
   id: z.string(),
