@@ -34,4 +34,9 @@ export class AuthController {
       return;
     }
   }
+
+  @Get('refresh')
+  async refresh(@Req() req: Request) {
+    return await this.authService.handleRefreshToken(req);
+  }
 }

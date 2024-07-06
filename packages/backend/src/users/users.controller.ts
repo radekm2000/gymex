@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AccessTokenGuard } from 'src/auth/utils/AccessTokenGuard';
 import { UsersTable } from 'src/db/schema/users';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
-
-type UsersTableInsertRow = typeof UsersTable.$inferInsert;
-type UsersTableInsertSelect = typeof UsersTable.$inferSelect;
+import { CurrentUserId } from './decorators/user.decorator';
+import { UserModel } from './model';
+import { SomeUserService, UserService } from 'src/spi/user/user';
 
 @Controller('users')
 export class UsersController {
@@ -11,16 +21,14 @@ export class UsersController {
     @Inject(DrizzleService) private readonly drizzleService: DrizzleService,
   ) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
-  async getUsers(): Promise<UsersTableInsertSelect[]> {
+  async getUsers(@CurrentUserId() userId: number): Promise<UserModel[]> {
     return await this.drizzleService.db.select().from(UsersTable);
   }
 
-  @Post()
-  async createUser(@Body() data: UsersTableInsertRow) {
-    return await this.drizzleService.db
-      .insert(UsersTable)
-      .values(data)
-      .returning();
+  @Get('me')
+  async getCurrentUserInfo(@Param('id', ParseIntPipe) userId: number) {
+    return;
   }
 }
