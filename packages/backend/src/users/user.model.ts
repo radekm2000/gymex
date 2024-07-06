@@ -3,7 +3,7 @@ import {
   UserDiscordModel,
   UserMetricsModel,
   UserModel,
-} from './model';
+} from './user.types';
 
 export class User {
   constructor(

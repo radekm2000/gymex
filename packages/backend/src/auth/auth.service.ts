@@ -9,7 +9,7 @@ import { jwtConstants } from './constants/constants';
 import 'dotenv/config';
 import { DiscordProfile } from 'src/users/dto/users.dto';
 import { UsersService } from 'src/users/users.service';
-import { UserModel } from 'src/users/model';
+import { UserModel } from 'src/users/user.types';
 import { Request } from 'express';
 
 @Injectable()

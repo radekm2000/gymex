@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { DiscordAuthGuard } from './utils/DiscordGuard';
 import { Request, Response } from 'express';
-import { UserModel } from 'src/users/model';
+import { UserModel } from 'src/users/user.types';
 import { AuthService } from './auth.service';
 import 'dotenv/config';
 @Controller('auth')

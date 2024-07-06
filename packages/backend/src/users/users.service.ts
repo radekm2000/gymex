@@ -7,7 +7,7 @@ import {
   UsersTable,
 } from 'src/db/schema/users';
 import { eq } from 'drizzle-orm';
-import { UserModel } from './model';
+import { UserModel } from './user.types';
 import { User } from './user.model';
 
 @Injectable()

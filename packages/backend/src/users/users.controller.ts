@@ -1,19 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  ParseIntPipe,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/auth/utils/AccessTokenGuard';
 import { UsersTable } from 'src/db/schema/users';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { CurrentUserId } from './decorators/user.decorator';
-import { DetailedUserModel, UserModel } from './model';
-import { SomeUserService, UserService } from 'src/spi/user/user';
+import { DetailedUserModel, UserModel } from './user.types';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -23,9 +13,8 @@ export class UsersController {
     @Inject(UsersService) private readonly userService: UsersService,
   ) {}
 
-  @UseGuards(AccessTokenGuard)
   @Get()
-  async getUsers(@CurrentUserId() userId: number): Promise<UserModel[]> {
+  async getUsers(): Promise<UserModel[]> {
     return await this.drizzleService.db.select().from(UsersTable);
   }
 
