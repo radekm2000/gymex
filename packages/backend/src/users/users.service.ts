@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DiscordProfile } from './dto/users.dto';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import {
@@ -8,6 +8,7 @@ import {
 } from 'src/db/schema/users';
 import { eq } from 'drizzle-orm';
 import { UserModel } from './model';
+import { User } from './user.model';
 
 @Injectable()
 export class UsersService {
@@ -57,5 +58,34 @@ export class UsersService {
       return user as UserModel;
     }
     return undefined;
+  };
+
+  public findUserById = async (userId: number): Promise<UserModel> => {
+    const [user] = await this.drizzleService.db
+      .select()
+      .from(UsersTable)
+      .where(eq(UsersTable.id, userId));
+
+    return user;
+  };
+
+  public getDetailedUserInfo = async (userId: number) => {
+    const user = await this.findUserById(userId);
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const [discordConnection] = await this.drizzleService.db
+      .select()
+      .from(UserDiscordConnections)
+      .where(eq(UserDiscordConnections.userId, userId));
+
+    const [metrics] = await this.drizzleService.db
+      .select()
+      .from(UsersMetricsTable)
+      .where(eq(UsersMetricsTable.userId, userId));
+
+    return User.from(user, metrics, discordConnection).detailedUserModel;
   };
 }
