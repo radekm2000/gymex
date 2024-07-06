@@ -3,8 +3,6 @@ import {
   Controller,
   Get,
   Inject,
-  Param,
-  ParseIntPipe,
   Put,
   UseGuards,
   UsePipes,
@@ -46,8 +44,7 @@ export class UsersController {
     @CurrentUserId() userId: number,
     @Body() dto: UpdateUserDto,
   ): Promise<void> {
-    // user is logged in first time if rows in metrics table are not
-    // defined
+    // user is logged in first time if rows in metrics table are not defined
     return await this.userService.updateUserMetricsAndOptionalUsername(
       userId,
       dto,

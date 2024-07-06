@@ -6,11 +6,6 @@ import {
 
 export type UserModel = typeof UsersTable.$inferSelect;
 
-export type UserMetrics = {
-  weight: string;
-  height: string;
-};
-
 export type UserDiscordModel = typeof UserDiscordConnections.$inferSelect;
 
 export type UserMetricsModel = typeof UsersMetricsTable.$inferSelect;
@@ -21,7 +16,8 @@ export type DetailedUserModel = {
   discordConnection: Omit<UserDiscordModel, 'userId'>;
 };
 
-export const initUserMetrics: UserMetrics = {
+export const initUserMetrics: UserMetricsModel = {
+  userId: 0,
   weight: '',
   height: '',
 };
