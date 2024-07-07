@@ -1,6 +1,8 @@
 import {
+  boolean,
   index,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   serial,
@@ -23,10 +25,34 @@ export const WorkoutPlansTable = pgTable('workout_plans', {
     .defaultNow(),
 });
 
+export const muscleNameEnum = pgEnum('muscle_name', [
+  'chest',
+  'back',
+  'legs',
+  'shoulders',
+  'bicep',
+  'triceps',
+  'abs',
+  'calves',
+  'cardio',
+  'butt',
+  'forearm',
+]);
+
 export const ExercisesTable = pgTable('exercises', {
   id: serial('id').primaryKey(),
   exerciseName: text('exercise_name').notNull(),
   description: text('exercise_description'),
+  userId: integer('user_id'),
+  isDefault: boolean('is_default_exercise').notNull().default(false),
+  primaryMuscleTargeted: muscleNameEnum('primary_muscle_targeted')
+    .notNull()
+    .references(() => MusclesTable.id),
+});
+
+export const MusclesTable = pgTable('primary_muscles', {
+  id: serial('id').primaryKey(),
+  name: muscleNameEnum('muscle_name').notNull(),
 });
 
 export const WorkoutExercisesTable = pgTable(
@@ -43,6 +69,7 @@ export const WorkoutExercisesTable = pgTable(
       .references(() => ExercisesTable.id, {
         onDelete: 'cascade',
       }),
+    orderIndex: integer('order_index').notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.workoutPlanId, table.exerciseId] }),
@@ -67,6 +94,11 @@ export const WorkoutExerciseSetsTable = pgTable(
     workoutExerciseId: integer('workout_exercise_id')
       .notNull()
       .references(() => WorkoutExercisesTable.exerciseId, {
+        onDelete: 'cascade',
+      }),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => UsersTable.id, {
         onDelete: 'cascade',
       }),
     exerciseSetNumber: text('exercise_set_number').notNull().default('0'),
