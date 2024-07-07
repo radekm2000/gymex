@@ -1,5 +1,5 @@
-import { CreateWorkoutDto } from 'src/workout/dto/workout.dto';
-import { WorkoutModel } from 'src/workout/types/workout.types';
+import { CreateWorkoutDto } from 'src/workouts/dto/workout.dto';
+import { WorkoutModel } from 'src/workouts/types/workout.types';
 
 export const WorkoutService = Symbol('WorkoutService');
 

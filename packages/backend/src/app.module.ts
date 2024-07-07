@@ -5,7 +5,7 @@ import { DrizzleModule } from './drizzle/drizzle.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { WorkoutModule } from './workout/workout.module';
+import { WorkoutModule } from './workouts/workout.module';
 
 @Module({
   imports: [DrizzleModule, ConfigModule.forRoot(), UsersModule, AuthModule, WorkoutModule],
