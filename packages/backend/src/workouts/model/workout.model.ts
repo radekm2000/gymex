@@ -58,6 +58,7 @@ export class Workout {
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
       restTime: exerciseSet.restTime ?? '60',
+      userId: exerciseSet.userId ?? 0,
     }));
   };
 
@@ -66,6 +67,9 @@ export class Workout {
       id: exercise.id,
       exerciseName: exercise.exerciseName,
       description: exercise.description,
+      isDefault: exercise.userId ? false : true,
+      primaryMuscleTargeted: exercise.primaryMuscleTargeted,
+      userId: exercise.userId ?? 0,
     }));
   };
 }
