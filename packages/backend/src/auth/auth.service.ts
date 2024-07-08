@@ -11,6 +11,7 @@ import { DiscordProfile } from 'src/users/dto/users.dto';
 import { UserModel } from 'src/users/user.types';
 import { Request } from 'express';
 import { UserService } from 'src/spi/user/user';
+import { UserRoles } from './utils/RoleGuard';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(
       {
         sub: payload.sub,
+        role: payload.role,
       },
       {
         secret: jwtConstants.secret,
@@ -50,6 +52,7 @@ export class AuthService {
   public generateRefreshTokenFor = async (userId: number): Promise<string> => {
     const payload: RefreshTokenPayload = {
       sub: userId,
+      role: UserRoles.User,
     };
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,
@@ -60,6 +63,7 @@ export class AuthService {
   public generateAccessTokenFor = async (userId: number): Promise<string> => {
     const payload: AccessTokenPayload = {
       sub: userId,
+      role: UserRoles.User,
     };
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.secret,

@@ -1,11 +1,14 @@
 import {
   index,
   integer,
+  pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
+export const roleEnum = pgEnum('user_role', ['Admin', 'User']);
 
 export const UsersTable = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -16,6 +19,7 @@ export const UsersTable = pgTable('users', {
   })
     .notNull()
     .defaultNow(),
+  role: roleEnum('user_role').default('User').notNull(),
 });
 
 export const UsersMetricsTable = pgTable(

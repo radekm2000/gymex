@@ -23,6 +23,7 @@ export class UsersService implements UserService {
       .insert(UsersTable)
       .values({
         username: profile.username,
+        role: 'User',
       })
       .returning();
 

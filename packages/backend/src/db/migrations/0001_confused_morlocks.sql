@@ -1,1 +1,0 @@
-ALTER TABLE "exercises" ADD COLUMN "is_exercise_creator_developer" boolean;

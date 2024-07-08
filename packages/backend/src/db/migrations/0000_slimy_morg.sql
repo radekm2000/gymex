@@ -1,4 +1,10 @@
 DO $$ BEGIN
+ CREATE TYPE "public"."user_role" AS ENUM('Admin', 'User');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."muscle_name" AS ENUM('chest', 'back', 'legs', 'shoulders', 'bicep', 'triceps', 'abs', 'calves', 'cardio', 'butt', 'forearm', 'base');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -21,7 +27,8 @@ CREATE TABLE IF NOT EXISTS "user_metrics" (
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"username" text NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"user_role" "user_role" DEFAULT 'User' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "exercises" (
@@ -30,7 +37,8 @@ CREATE TABLE IF NOT EXISTS "exercises" (
 	"exercise_description" text,
 	"user_id" integer,
 	"is_default_exercise" boolean DEFAULT false NOT NULL,
-	"primary_muscle_targeted" "muscle_name" NOT NULL
+	"primary_muscle_targeted" "muscle_name" NOT NULL,
+	"is_exercise_creator_developer" boolean
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "primary_muscles" (

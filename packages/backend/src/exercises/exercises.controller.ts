@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Post,
   UseGuards,
@@ -14,6 +15,7 @@ import {
   CreateExerciseDto,
   CreateExerciseDtoSchema,
 } from './dto/exercises.dto';
+import { RoleGuard, UserRoles } from 'src/auth/utils/RoleGuard';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -22,6 +24,7 @@ export class ExercisesController {
   ) {}
 
   @UseGuards(AccessTokenGuard)
+  @UseGuards(RoleGuard([UserRoles.Admin, UserRoles.User]))
   @UsePipes(new ZodValidationPipe(CreateExerciseDtoSchema))
   @Post()
   async create(
@@ -29,5 +32,11 @@ export class ExercisesController {
     @CurrentUserId() userId: number,
   ) {
     return await this.exerciseService.create(dto, userId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get()
+  async getExercises() {
+    return 'test123';
   }
 }

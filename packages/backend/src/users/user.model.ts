@@ -36,6 +36,7 @@ export class User {
         id: this._model.id,
         createdAt: this._model.createdAt,
         username: this._model.username,
+        role: this._model.role ?? 'User',
       },
       discordConnection: this._discordConnection
         ? {

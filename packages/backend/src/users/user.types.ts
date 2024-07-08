@@ -34,6 +34,7 @@ export const initUserModel: UserModel = {
   id: 0,
   createdAt: new Date(),
   username: '',
+  role: 'User',
 };
 
 export const initDetailedUserModel: DetailedUserModel = {
@@ -41,6 +42,7 @@ export const initDetailedUserModel: DetailedUserModel = {
     id: 0,
     createdAt: new Date(),
     username: '',
+    role: 'User',
   },
   discordConnection: {
     accessToken: '',
