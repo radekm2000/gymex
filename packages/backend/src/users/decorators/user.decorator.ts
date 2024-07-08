@@ -9,3 +9,12 @@ export const CurrentUserId = createParamDecorator(
     return sub;
   },
 );
+
+export const CurrentUserRole = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const { role }: IssuedTokenPayload = request.user;
+
+    return role;
+  },
+);

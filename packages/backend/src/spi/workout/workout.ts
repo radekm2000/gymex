@@ -5,4 +5,5 @@ export const WorkoutService = Symbol('WorkoutService');
 
 export interface WorkoutService {
   createWorkout(dto: CreateWorkoutDto, userId: number): Promise<WorkoutModel>;
+  addExercisesToWorkout(workoutPlanId: number, userId: number): Promise<void>;
 }

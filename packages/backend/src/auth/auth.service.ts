@@ -15,7 +15,7 @@ import { UserRoles } from './utils/RoleGuard';
 
 @Injectable()
 export class AuthService {
-  JWT_AT_LIFETIME = '15m';
+  JWT_AT_LIFETIME = '1d';
 
   constructor(
     private readonly jwtService: JwtService,

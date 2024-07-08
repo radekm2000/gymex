@@ -9,7 +9,10 @@ import {
 } from '@nestjs/common';
 import { AccessTokenGuard } from 'src/auth/utils/AccessTokenGuard';
 import { ExerciseService } from 'src/spi/exercise/exercise';
-import { CurrentUserId } from 'src/users/decorators/user.decorator';
+import {
+  CurrentUserId,
+  CurrentUserRole,
+} from 'src/users/decorators/user.decorator';
 import { ZodValidationPipe } from 'src/utils/pipes/ZodValidationPipe';
 import {
   CreateExerciseDto,
@@ -30,13 +33,14 @@ export class ExercisesController {
   async create(
     @Body() dto: CreateExerciseDto,
     @CurrentUserId() userId: number,
+    @CurrentUserRole() role: UserRoles.Admin | UserRoles.User,
   ) {
-    return await this.exerciseService.create(dto, userId);
+    return await this.exerciseService.create(dto, userId, role);
   }
 
   @UseGuards(AccessTokenGuard)
   @Get()
   async getExercises() {
-    return 'test123';
+    return await this.exerciseService.getAll();
   }
 }

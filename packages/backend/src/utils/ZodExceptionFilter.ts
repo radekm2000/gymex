@@ -15,7 +15,9 @@ export class ZodExceptionFilter extends BaseExceptionFilter {
 
     response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
       type: 'validation',
-      message: exception.issues[0].message ?? 'Unknown error',
+      path: exception.issues.map((issue) => issue.path),
+      message:
+        exception.issues.map((issue) => issue.message) ?? 'Unknown error ',
     });
   }
 

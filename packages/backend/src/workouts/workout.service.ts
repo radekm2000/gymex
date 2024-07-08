@@ -23,4 +23,8 @@ export class WorkoutsService implements WorkoutService {
 
     return newWorkout;
   };
+
+  public addExercisesToWorkout = async () => {
+    return;
+  };
 }

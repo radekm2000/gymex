@@ -4,6 +4,7 @@ import { CreateExerciseDto } from './dto/exercises.dto';
 import { ExerciseService } from 'src/spi/exercise/exercise';
 import { ExerciseModel } from 'src/workouts/types/workout.types';
 import { ExercisesTable } from 'src/db/schema/workout';
+import { UserRoles } from 'src/auth/utils/RoleGuard';
 
 @Injectable()
 export class ExercisesService implements ExerciseService {
@@ -12,9 +13,9 @@ export class ExercisesService implements ExerciseService {
   public create = async (
     dto: CreateExerciseDto,
     userId: number,
+    role: UserRoles.Admin | UserRoles.User,
   ): Promise<ExerciseModel> => {
-    // if userId is inserted it means exercise is created by user otherwise it is created by developer
-    const isDefault = dto.isCreatorDeveloper ?? false;
+    const isDefault = role === UserRoles.Admin;
 
     const [exercise] = await this.drizzle.db
       .insert(ExercisesTable)
@@ -28,5 +29,9 @@ export class ExercisesService implements ExerciseService {
       .returning();
 
     return exercise;
+  };
+
+  public getAll = async (): Promise<ExerciseModel[]> => {
+    return await this.drizzle.db.select().from(ExercisesTable);
   };
 }
