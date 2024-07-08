@@ -4,6 +4,7 @@ import {
   WorkoutExercisesTable,
   WorkoutPlansTable,
 } from 'src/db/schema/workout';
+import { WorkoutExerciseSetsWithoutPlanAndExerciseIds } from '../model/workout.model';
 
 export type WorkoutModel = typeof WorkoutPlansTable.$inferSelect;
 
@@ -16,8 +17,10 @@ export type WorkoutExerciseSetsModel =
 
 export type DetailedWorkoutModel = {
   workout: WorkoutModel;
-  exercises: ExerciseModel[];
-  exerciseSets: WorkoutExerciseSetsModel[];
+  exercises: Array<
+    ExerciseModel & { sets: WorkoutExerciseSetsWithoutPlanAndExerciseIds[] }
+  >;
+  allExerciseSets: WorkoutExerciseSetsModel[];
 };
 
 export const initDetailedWorkoutModel: DetailedWorkoutModel = {
@@ -36,9 +39,21 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       isDefault: false,
       primaryMuscleTargeted: 'base',
       isCreatorDeveloper: false,
+      sets: [
+        {
+          exerciseSetNumber: '1',
+          id: -1,
+          reps: '10',
+          restTime: '60',
+          rir: null,
+          tempo: null,
+          userId: -1,
+          weight: '0',
+        },
+      ],
     },
   ],
-  exerciseSets: [
+  allExerciseSets: [
     {
       exerciseSetNumber: '',
       id: -1,

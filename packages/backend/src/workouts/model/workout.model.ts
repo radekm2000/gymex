@@ -5,6 +5,11 @@ import {
   WorkoutModel,
 } from '../types/workout.types';
 
+export type WorkoutExerciseSetsWithoutPlanAndExerciseIds = Omit<
+  WorkoutExerciseSetsModel,
+  'workoutPlanId' | 'workoutExerciseId'
+>;
+
 export class Workout {
   constructor(
     private readonly _model: WorkoutModel,
@@ -38,9 +43,8 @@ export class Workout {
         createdAt: this._model.createdAt,
         creatorId: this._model.creatorId,
       },
-      exercises:
-        this._exercises.length > 0 ? this.mapExercises(this._exercises) : [],
-      exerciseSets:
+      exercises: this._exercises.length > 0 ? this.mapExercisesWithSets() : [],
+      allExerciseSets:
         this._exerciseSets.length > 0
           ? this.mapExerciseSets(this._exerciseSets)
           : [],
@@ -52,8 +56,8 @@ export class Workout {
       id: exerciseSet.id,
       workoutPlanId: exerciseSet.workoutPlanId,
       workoutExerciseId: exerciseSet.workoutExerciseId,
-      exerciseSetNumber: exerciseSet.exerciseSetNumber ?? '0',
-      reps: exerciseSet.reps ?? '0',
+      exerciseSetNumber: exerciseSet.exerciseSetNumber ?? '1',
+      reps: exerciseSet.reps ?? '10',
       weight: exerciseSet.weight ?? '0',
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
@@ -62,15 +66,36 @@ export class Workout {
     }));
   };
 
-  private mapExercises = (exercises: ExerciseModel[]) => {
-    return exercises.map((exercise) => ({
-      id: exercise.id,
-      exerciseName: exercise.exerciseName,
-      notes: exercise.notes,
-      isDefault: exercise.userId ? false : true,
-      primaryMuscleTargeted: exercise.primaryMuscleTargeted,
-      userId: exercise.userId ?? 0,
-      isCreatorDeveloper: exercise.isCreatorDeveloper ?? false,
+  private mapExerciseSetsWithoutPlanAndExerciseIds = (
+    exerciseSets: WorkoutExerciseSetsModel[],
+  ) => {
+    return exerciseSets.map((exerciseSet) => ({
+      id: exerciseSet.id,
+      exerciseSetNumber: exerciseSet.exerciseSetNumber ?? '1',
+      reps: exerciseSet.reps ?? '10',
+      weight: exerciseSet.weight ?? '0',
+      rir: exerciseSet.rir ?? '',
+      tempo: exerciseSet.tempo ?? '',
+      restTime: exerciseSet.restTime ?? '60',
+      userId: exerciseSet.userId ?? 0,
     }));
+  };
+
+  private mapExercisesWithSets = () => {
+    return this._exercises.map((exercise) => {
+      const exerciseSets = this.exerciseSets.filter(
+        (set) => set.workoutExerciseId === exercise.id,
+      );
+      return {
+        id: exercise.id,
+        exerciseName: exercise.exerciseName,
+        notes: exercise.notes,
+        isDefault: exercise.userId ? false : true,
+        primaryMuscleTargeted: exercise.primaryMuscleTargeted,
+        userId: exercise.userId ?? 0,
+        isCreatorDeveloper: exercise.isCreatorDeveloper ?? false,
+        sets: this.mapExerciseSetsWithoutPlanAndExerciseIds(exerciseSets),
+      };
+    });
   };
 }

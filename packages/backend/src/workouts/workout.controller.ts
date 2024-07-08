@@ -10,10 +10,17 @@ import {
 } from '@nestjs/common';
 import { WorkoutService } from 'src/spi/workout/workout';
 import { ZodValidationPipe } from 'src/utils/pipes/ZodValidationPipe';
-import { CreateWorkoutDto, CreateWorkoutDtoSchema } from './dto/workout.dto';
+import {
+  CreateWorkoutWithExercisesDto,
+  CreateWorkoutWithExercisesDtoSchema,
+} from './dto/workout.dto';
 import { AccessTokenGuard } from 'src/auth/utils/AccessTokenGuard';
 import { CurrentUserId } from 'src/users/decorators/user.decorator';
-import { WorkoutModel } from './types/workout.types';
+import { DetailedWorkoutModel } from './types/workout.types';
+import {
+  AddExerciseToWorkoutDto,
+  AddExerciseToWorkoutDtoSchema,
+} from 'src/exercises/dto/exercises.dto';
 
 @Controller('workout')
 export class WorkoutController {
@@ -23,24 +30,26 @@ export class WorkoutController {
 
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UsePipes(new ZodValidationPipe(CreateWorkoutDtoSchema))
+  @UsePipes(new ZodValidationPipe(CreateWorkoutWithExercisesDtoSchema))
   async create(
-    @Body() dto: CreateWorkoutDto,
+    @Body() dto: CreateWorkoutWithExercisesDto,
     @CurrentUserId() userId: number,
-  ): Promise<void> {
-    const workoutPlan = await this.workoutService.createWorkout(dto, userId);
-    return await this.addExercisesToWorkout(userId, workoutPlan.id);
+  ): Promise<DetailedWorkoutModel> {
+    return await this.workoutService.createWorkoutWithExercises(dto, userId);
   }
 
   @UseGuards(AccessTokenGuard)
   @Post(':workoutId/exercises')
+  @UsePipes(new ZodValidationPipe(AddExerciseToWorkoutDtoSchema))
   async addExercisesToWorkout(
+    @Body() dto: AddExerciseToWorkoutDto,
     @CurrentUserId() userId: number,
-    @Param('workoutId', ParseIntPipe) workoutPlanId?: number,
+    @Param('workoutId', ParseIntPipe) workoutPlanId: number,
   ) {
     return await this.workoutService.addExercisesToWorkout(
       workoutPlanId,
       userId,
+      dto,
     );
   }
 }

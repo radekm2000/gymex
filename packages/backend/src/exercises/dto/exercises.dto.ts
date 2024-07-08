@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const CreateExerciseDtoSchema = z.object({
   exerciseName: z.string().max(32),
-  description: z.string().nullish().default(''),
+  notes: z.string().nullish().default(''),
   isDefault: z.boolean().default(false),
   userId: z.number().nullish().default(0),
   muscleTargeted: zodMuscleNameEnum,
@@ -11,3 +11,25 @@ export const CreateExerciseDtoSchema = z.object({
 });
 
 export type CreateExerciseDto = z.infer<typeof CreateExerciseDtoSchema>;
+
+const ExerciseSetSchema = z.object({
+  exerciseSetNumber: z.string().default('1'),
+  reps: z.string().default('10'),
+  weight: z.string().default('0'),
+  rir: z.string().optional(),
+  tempo: z.string().optional(),
+  restTime: z.string().default('60'),
+});
+
+export type ExerciseSetDto = z.infer<typeof ExerciseSetSchema>;
+
+export const AddExerciseToWorkoutDtoSchema = z.object({
+  id: z.number(),
+  notes: z.string().optional(),
+  sets: z.array(ExerciseSetSchema).min(1),
+  orderIndex: z.number().int().nonnegative(),
+});
+
+export type AddExerciseToWorkoutDto = z.infer<
+  typeof AddExerciseToWorkoutDtoSchema
+>;

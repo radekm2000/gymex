@@ -1,5 +1,6 @@
 import {
   boolean,
+  foreignKey,
   index,
   integer,
   pgEnum,
@@ -64,14 +65,12 @@ export const WorkoutExercisesTable = pgTable(
   {
     workoutPlanId: integer('workout_plan_id')
       .notNull()
-      .unique()
       .references(() => WorkoutPlansTable.id, {
         onDelete: 'cascade',
       }),
 
     exerciseId: integer('exercise_id')
       .notNull()
-      .unique()
       .references(() => ExercisesTable.id, {
         onDelete: 'cascade',
       }),
@@ -92,23 +91,17 @@ export const WorkoutExerciseSetsTable = pgTable(
   'workout_exercise_sets',
   {
     id: serial('id').primaryKey(),
-    workoutPlanId: integer('workout_exercise_workout_plan_id')
-      .notNull()
-      .references(() => WorkoutExercisesTable.workoutPlanId, {
-        onDelete: 'cascade',
-      }),
-    workoutExerciseId: integer('workout_exercise_id')
-      .notNull()
-      .references(() => WorkoutExercisesTable.exerciseId, {
-        onDelete: 'cascade',
-      }),
+    workoutPlanId: integer('workout_exercise_workout_plan_id').notNull(),
+
+    workoutExerciseId: integer('workout_exercise_id').notNull(),
+
     userId: integer('user_id')
       .notNull()
       .references(() => UsersTable.id, {
         onDelete: 'cascade',
       }),
-    exerciseSetNumber: text('exercise_set_number').notNull().default('0'),
-    reps: text('reps').notNull().default('0'),
+    exerciseSetNumber: text('exercise_set_number').notNull().default('1'),
+    reps: text('reps').notNull().default('10'),
     weight: text('weight').notNull().default('0'),
     rir: text('rir'),
     tempo: text('tempo'),
@@ -118,5 +111,12 @@ export const WorkoutExerciseSetsTable = pgTable(
     workoutExerciseIndex: index(
       'workout_exercise_sets_workout_exercise_index',
     ).on(table.workoutPlanId, table.workoutExerciseId),
+    workoutExerciseFK: foreignKey({
+      columns: [table.workoutPlanId, table.workoutExerciseId],
+      foreignColumns: [
+        WorkoutExercisesTable.workoutPlanId,
+        WorkoutExercisesTable.exerciseId,
+      ],
+    }).onDelete('cascade'),
   }),
 );

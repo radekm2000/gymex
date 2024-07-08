@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "exercises" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"exercise_name" text NOT NULL,
-	"exercise_description" text,
+	"exercise_notes" text,
 	"user_id" integer,
 	"is_default_exercise" boolean DEFAULT false NOT NULL,
 	"primary_muscle_targeted" "muscle_name" NOT NULL,
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS "workout_exercise_sets" (
 	"workout_exercise_workout_plan_id" integer NOT NULL,
 	"workout_exercise_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
-	"exercise_set_number" text DEFAULT '0' NOT NULL,
-	"reps" text DEFAULT '0' NOT NULL,
+	"exercise_set_number" text DEFAULT '1' NOT NULL,
+	"reps" text DEFAULT '10' NOT NULL,
 	"weight" text DEFAULT '0' NOT NULL,
 	"rir" text,
 	"tempo" text,
@@ -64,9 +64,7 @@ CREATE TABLE IF NOT EXISTS "workout_plan_exercises" (
 	"workout_plan_id" integer NOT NULL,
 	"exercise_id" integer NOT NULL,
 	"order_index" integer NOT NULL,
-	CONSTRAINT "workout_plan_exercises_workout_plan_id_exercise_id_pk" PRIMARY KEY("workout_plan_id","exercise_id"),
-	CONSTRAINT "workout_plan_exercises_workout_plan_id_unique" UNIQUE("workout_plan_id"),
-	CONSTRAINT "workout_plan_exercises_exercise_id_unique" UNIQUE("exercise_id")
+	CONSTRAINT "workout_plan_exercises_workout_plan_id_exercise_id_pk" PRIMARY KEY("workout_plan_id","exercise_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "workout_plans" (
@@ -95,19 +93,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "workout_exercise_sets" ADD CONSTRAINT "workout_exercise_sets_workout_exercise_workout_plan_id_workout_plan_exercises_workout_plan_id_fk" FOREIGN KEY ("workout_exercise_workout_plan_id") REFERENCES "public"."workout_plan_exercises"("workout_plan_id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "workout_exercise_sets" ADD CONSTRAINT "workout_exercise_sets_workout_exercise_id_workout_plan_exercises_exercise_id_fk" FOREIGN KEY ("workout_exercise_id") REFERENCES "public"."workout_plan_exercises"("exercise_id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "workout_exercise_sets" ADD CONSTRAINT "workout_exercise_sets_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "workout_exercise_sets" ADD CONSTRAINT "workout_exercise_sets_workout_exercise_workout_plan_id_workout_exercise_id_workout_plan_exercises_workout_plan_id_exercise_id_fk" FOREIGN KEY ("workout_exercise_workout_plan_id","workout_exercise_id") REFERENCES "public"."workout_plan_exercises"("workout_plan_id","exercise_id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

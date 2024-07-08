@@ -21,7 +21,7 @@ export class ExercisesService implements ExerciseService {
       .insert(ExercisesTable)
       .values({
         exerciseName: dto.exerciseName,
-        description: dto.description ?? '',
+        notes: dto.notes ?? '',
         primaryMuscleTargeted: dto.muscleTargeted,
         userId: userId,
         isDefault: isDefault,

@@ -1,7 +1,11 @@
+import { AddExerciseToWorkoutDtoSchema } from 'src/exercises/dto/exercises.dto';
 import { z } from 'zod';
 
-export const CreateWorkoutDtoSchema = z.object({
-  name: z.string().max(64),
+export const CreateWorkoutWithExercisesDtoSchema = z.object({
+  workoutName: z.string().max(64),
+  exercises: z.array(AddExerciseToWorkoutDtoSchema).min(1),
 });
 
-export type CreateWorkoutDto = z.infer<typeof CreateWorkoutDtoSchema>;
+export type CreateWorkoutWithExercisesDto = z.infer<
+  typeof CreateWorkoutWithExercisesDtoSchema
+>;
