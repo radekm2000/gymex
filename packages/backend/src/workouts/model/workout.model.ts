@@ -66,7 +66,7 @@ export class Workout {
     return exercises.map((exercise) => ({
       id: exercise.id,
       exerciseName: exercise.exerciseName,
-      description: exercise.description,
+      notes: exercise.notes,
       isDefault: exercise.userId ? false : true,
       primaryMuscleTargeted: exercise.primaryMuscleTargeted,
       userId: exercise.userId ?? 0,

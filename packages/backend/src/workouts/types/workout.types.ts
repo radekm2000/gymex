@@ -29,7 +29,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   },
   exercises: [
     {
-      description: '',
+      notes: '',
       exerciseName: '',
       id: -1,
       userId: null,

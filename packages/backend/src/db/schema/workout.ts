@@ -43,7 +43,7 @@ export const muscleNameEnum = pgEnum('muscle_name', [
 export const ExercisesTable = pgTable('exercises', {
   id: serial('id').primaryKey(),
   exerciseName: text('exercise_name').notNull(),
-  description: text('exercise_description'),
+  notes: text('exercise_notes'),
   userId: integer('user_id'),
   isDefault: boolean('is_default_exercise').notNull().default(false),
   primaryMuscleTargeted: muscleNameEnum('primary_muscle_targeted')

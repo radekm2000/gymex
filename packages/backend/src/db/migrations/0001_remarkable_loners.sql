@@ -1,0 +1,1 @@
+ALTER TABLE "exercises" RENAME COLUMN "exercise_description" TO "exercise_notes";
