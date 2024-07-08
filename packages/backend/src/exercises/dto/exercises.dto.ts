@@ -9,6 +9,7 @@ export const CreateExerciseDtoSchema = z.object({
   isDefault: z.boolean().default(false),
   userId: z.number().nullish(),
   muscleTargeted: zodMuscleNameEnum,
+  isCreatorDeveloper: z.boolean(),
 });
 
 export type CreateExerciseDto = z.infer<typeof CreateExerciseDtoSchema>;

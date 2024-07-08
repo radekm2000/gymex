@@ -70,6 +70,7 @@ export class Workout {
       isDefault: exercise.userId ? false : true,
       primaryMuscleTargeted: exercise.primaryMuscleTargeted,
       userId: exercise.userId ?? 0,
+      isCreatorDeveloper: exercise.isCreatorDeveloper ?? false,
     }));
   };
 }

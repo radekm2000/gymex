@@ -14,6 +14,7 @@ export class ExercisesService implements ExerciseService {
     userId: number,
   ): Promise<ExerciseModel> => {
     // if userId is inserted it means exercise is created by user otherwise it is created by developer
+    const isDefault = dto.isCreatorDeveloper ?? false;
 
     const [exercise] = await this.drizzle.db
       .insert(ExercisesTable)
@@ -21,7 +22,8 @@ export class ExercisesService implements ExerciseService {
         exerciseName: dto.exerciseName,
         description: dto.description ?? '',
         primaryMuscleTargeted: dto.muscleTargeted,
-        isDefault: userId ? false : true,
+        userId: userId,
+        isDefault: isDefault,
       })
       .returning();
 

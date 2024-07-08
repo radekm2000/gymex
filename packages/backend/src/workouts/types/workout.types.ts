@@ -32,6 +32,10 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       description: '',
       exerciseName: '',
       id: -1,
+      userId: null,
+      isDefault: false,
+      primaryMuscleTargeted: 'base',
+      isCreatorDeveloper: false,
     },
   ],
   exerciseSets: [
@@ -45,6 +49,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       weight: '',
       workoutExerciseId: -1,
       workoutPlanId: -1,
+      userId: -1,
     },
   ],
 };
