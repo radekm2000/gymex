@@ -1,6 +1,8 @@
 import { zodMuscleNameEnum } from 'src/muscles/dto/muscles.dto';
 import { z } from 'zod';
 
+//add duration time to exercise for i.e holds
+
 export const CreateExerciseDtoSchema = z.object({
   exerciseName: z.string().max(32),
   notes: z.string().nullish().default(''),

@@ -13,5 +13,5 @@ export interface WorkoutService {
     workoutPlanId: number,
     userId: number,
     dto: AddExerciseToWorkoutDto,
-  ): Promise<void>;
+  ): Promise<DetailedWorkoutModel>;
 }

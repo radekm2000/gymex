@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { WorkoutService } from 'src/spi/workout/workout';
 import { CreateWorkoutWithExercisesDto } from './dto/workout.dto';
 import {
@@ -16,6 +16,7 @@ import {
   WorkoutPlansTable,
 } from 'src/db/schema/workout';
 import { Workout } from './model/workout.model';
+import { AddExerciseToWorkoutDto } from 'src/exercises/dto/exercises.dto';
 
 @Injectable()
 export class WorkoutsService implements WorkoutService {
@@ -79,7 +80,51 @@ export class WorkoutsService implements WorkoutService {
     });
   };
 
-  public addExercisesToWorkout = async () => {
-    return;
+  public addExercisesToWorkout = async (
+    workoutPlanId: number,
+    userId: number,
+    dto: AddExerciseToWorkoutDto,
+  ) => {
+    const [workoutPlan] = await this.drizzleService.db
+      .select()
+      .from(WorkoutPlansTable)
+      .where(eq(WorkoutPlansTable.id, workoutPlanId));
+
+    if (!workoutPlan) {
+      throw new HttpException('Workout plan not found', HttpStatus.NOT_FOUND);
+    }
+
+    return await this.drizzleService.db.transaction(async (tx) => {
+      const [workoutExercise] = await tx
+        .insert(WorkoutExercisesTable)
+        .values({
+          exerciseId: dto.id,
+          orderIndex: dto.orderIndex,
+          workoutPlanId: workoutPlan.id,
+        })
+        .returning();
+      const exerciseSets = await tx
+        .insert(WorkoutExerciseSetsTable)
+        .values(
+          dto.sets.map((set) => ({
+            userId: userId,
+            workoutExerciseId: workoutExercise.exerciseId,
+            reps: set.reps,
+            restTime: set.restTime,
+            tempo: set.tempo,
+            rir: set.rir,
+            weight: set.weight,
+            exerciseSetNumber: set.exerciseSetNumber,
+            workoutPlanId: workoutPlan.id,
+          })),
+        )
+        .returning();
+
+      const [fullExercise] = await tx
+        .select()
+        .from(ExercisesTable)
+        .where(eq(ExercisesTable.id, workoutExercise.exerciseId));
+      return Workout.from(workoutPlan, [fullExercise], exerciseSets);
+    });
   };
 }
