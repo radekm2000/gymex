@@ -52,4 +52,23 @@ export class WorkoutController {
       dto,
     );
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Post(':workoutId/start-workout')
+  async startWorkout(
+    @CurrentUserId() userId: number,
+    @Param('workoutId', ParseIntPipe) workoutPlanId: number,
+  ) {
+    return await this.workoutService.startWorkout(userId, workoutPlanId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post(':workoutId/finish-workout')
+  async finishWorkout(
+    @Body() dto: CreateWorkoutWithExercisesDto,
+    @Param('workoutId', ParseIntPipe) workoutPlanId: number,
+    @CurrentUserId() userId: number,
+  ) {
+    return await this.workoutService.finishWorkout(workoutPlanId, userId, dto);
+  }
 }

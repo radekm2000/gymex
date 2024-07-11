@@ -62,6 +62,7 @@ export class Workout {
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
       userId: exerciseSet.userId ?? 0,
+      workoutSessionId: exerciseSet.workoutSessionId ?? 0,
     }));
   };
 
@@ -76,6 +77,7 @@ export class Workout {
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
       userId: exerciseSet.userId ?? 0,
+      workoutSessionId: exerciseSet.workoutSessionId ?? 0,
     }));
   };
 

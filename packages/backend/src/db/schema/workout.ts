@@ -11,6 +11,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 import { UsersTable } from './users';
+import { time } from 'console';
 
 export const WorkoutPlansTable = pgTable('workout_plans', {
   id: serial('id').primaryKey(),
@@ -55,6 +56,27 @@ export const ExercisesTable = pgTable('exercises', {
       onDelete: 'cascade',
     }),
   isCreatorDeveloper: boolean('is_exercise_creator_developer'),
+});
+
+export const WorkoutSessionsTable = pgTable('workout_sessions', {
+  id: serial('id').primaryKey(),
+  workoutPlanId: integer('workout_plan_id')
+    .references(() => WorkoutPlansTable.id, {
+      onDelete: 'cascade',
+    })
+    .notNull(),
+
+  startedAt: timestamp('started_at', {
+    mode: 'date',
+    withTimezone: true,
+  }),
+
+  finishedAt: timestamp('finished_at', {
+    mode: 'date',
+    withTimezone: true,
+  }),
+
+  userId: integer('user_id').notNull(),
 });
 
 export const MusclesTable = pgTable('primary_muscles', {
@@ -102,6 +124,9 @@ export const WorkoutExerciseSetsTable = pgTable(
       .references(() => UsersTable.id, {
         onDelete: 'cascade',
       }),
+    workoutSessionId: integer('workout_session_id').references(
+      () => WorkoutSessionsTable.id,
+    ),
     exerciseSetNumber: text('exercise_set_number').notNull().default('1'),
     reps: text('reps').notNull().default('10'),
     weight: text('weight').notNull().default('0'),

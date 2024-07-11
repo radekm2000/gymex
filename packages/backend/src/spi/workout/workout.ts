@@ -14,4 +14,18 @@ export interface WorkoutService {
     userId: number,
     dto: AddExerciseToWorkoutDto,
   ): Promise<DetailedWorkoutModel>;
+
+  startWorkout(
+    workoutPlanId: number,
+    userId: number,
+  ): Promise<DetailedWorkoutModel>;
+
+  finishWorkout(
+    workoutPlanId: number,
+    userId: number,
+    dto: CreateWorkoutWithExercisesDto,
+  ): Promise<{
+    detailedWorkoutModel: DetailedWorkoutModel;
+    workoutDuration: number;
+  }>;
 }
