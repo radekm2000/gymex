@@ -3,6 +3,8 @@ import { z } from 'zod';
 
 //add duration time to exercise for i.e holds
 
+//TODO change sets rest time to entire exercise
+
 export const CreateExerciseDtoSchema = z.object({
   exerciseName: z.string().max(32),
   notes: z.string().nullish().default(''),
@@ -10,6 +12,7 @@ export const CreateExerciseDtoSchema = z.object({
   userId: z.number().nullish().default(0),
   muscleTargeted: zodMuscleNameEnum,
   isCreatorDeveloper: z.boolean().default(false),
+  restTime: z.string().default('60'),
 });
 
 export type CreateExerciseDto = z.infer<typeof CreateExerciseDtoSchema>;
@@ -20,7 +23,6 @@ const ExerciseSetSchema = z.object({
   weight: z.string().default('0'),
   rir: z.string().optional(),
   tempo: z.string().optional(),
-  restTime: z.string().default('60'),
 });
 
 export type ExerciseSetDto = z.infer<typeof ExerciseSetSchema>;

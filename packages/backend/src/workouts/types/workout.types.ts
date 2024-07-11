@@ -39,12 +39,12 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       isDefault: false,
       primaryMuscleTargeted: 'base',
       isCreatorDeveloper: false,
+      restTime: '60',
       sets: [
         {
           exerciseSetNumber: '1',
           id: -1,
           reps: '10',
-          restTime: '60',
           rir: null,
           tempo: null,
           userId: -1,
@@ -58,7 +58,6 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       exerciseSetNumber: '',
       id: -1,
       reps: '',
-      restTime: '',
       rir: '',
       tempo: '',
       weight: '',

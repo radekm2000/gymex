@@ -25,6 +25,7 @@ export class ExercisesService implements ExerciseService {
         primaryMuscleTargeted: dto.muscleTargeted,
         userId: userId,
         isDefault: isDefault,
+        restTime: dto.restTime,
       })
       .returning();
 

@@ -67,7 +67,6 @@ export class WorkoutsService implements WorkoutService {
               weight: set.weight,
               rir: set.rir,
               tempo: set.tempo,
-              restTime: set.restTime,
             })),
           )
           .returning();
@@ -84,7 +83,7 @@ export class WorkoutsService implements WorkoutService {
     workoutPlanId: number,
     userId: number,
     dto: AddExerciseToWorkoutDto,
-  ) => {
+  ): Promise<DetailedWorkoutModel> => {
     const [workoutPlan] = await this.drizzleService.db
       .select()
       .from(WorkoutPlansTable)
@@ -110,7 +109,6 @@ export class WorkoutsService implements WorkoutService {
             userId: userId,
             workoutExerciseId: workoutExercise.exerciseId,
             reps: set.reps,
-            restTime: set.restTime,
             tempo: set.tempo,
             rir: set.rir,
             weight: set.weight,
@@ -124,7 +122,8 @@ export class WorkoutsService implements WorkoutService {
         .select()
         .from(ExercisesTable)
         .where(eq(ExercisesTable.id, workoutExercise.exerciseId));
-      return Workout.from(workoutPlan, [fullExercise], exerciseSets);
+      return Workout.from(workoutPlan, [fullExercise], exerciseSets)
+        .detailedWorkoutModel;
     });
   };
 }

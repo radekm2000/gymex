@@ -45,7 +45,7 @@ export class WorkoutController {
     @Body() dto: AddExerciseToWorkoutDto,
     @CurrentUserId() userId: number,
     @Param('workoutId', ParseIntPipe) workoutPlanId: number,
-  ) {
+  ): Promise<DetailedWorkoutModel> {
     return await this.workoutService.addExercisesToWorkout(
       workoutPlanId,
       userId,

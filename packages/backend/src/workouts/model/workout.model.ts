@@ -61,7 +61,6 @@ export class Workout {
       weight: exerciseSet.weight ?? '0',
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
-      restTime: exerciseSet.restTime ?? '60',
       userId: exerciseSet.userId ?? 0,
     }));
   };
@@ -76,7 +75,6 @@ export class Workout {
       weight: exerciseSet.weight ?? '0',
       rir: exerciseSet.rir ?? '',
       tempo: exerciseSet.tempo ?? '',
-      restTime: exerciseSet.restTime ?? '60',
       userId: exerciseSet.userId ?? 0,
     }));
   };
@@ -95,6 +93,7 @@ export class Workout {
         userId: exercise.userId ?? 0,
         isCreatorDeveloper: exercise.isCreatorDeveloper ?? false,
         sets: this.mapExerciseSetsWithoutPlanAndExerciseIds(exerciseSets),
+        restTime: exercise.restTime ?? '60',
       };
     });
   };

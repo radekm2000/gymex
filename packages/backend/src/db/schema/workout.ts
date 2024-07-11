@@ -44,6 +44,8 @@ export const muscleNameEnum = pgEnum('muscle_name', [
 export const ExercisesTable = pgTable('exercises', {
   id: serial('id').primaryKey(),
   exerciseName: text('exercise_name').notNull(),
+  restTime: text('rest_time').notNull().default('60'),
+
   notes: text('exercise_notes'),
   userId: integer('user_id'),
   isDefault: boolean('is_default_exercise').notNull().default(false),
@@ -105,7 +107,6 @@ export const WorkoutExerciseSetsTable = pgTable(
     weight: text('weight').notNull().default('0'),
     rir: text('rir'),
     tempo: text('tempo'),
-    restTime: text('rest_time').notNull().default('60'),
   },
   (table) => ({
     workoutExerciseIndex: index(
