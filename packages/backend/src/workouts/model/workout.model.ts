@@ -1,14 +1,24 @@
+import { muscleNameEnum } from 'src/db/schema/workout';
 import {
   DetailedWorkoutModel,
   ExerciseModel,
   WorkoutExerciseSetsModel,
   WorkoutModel,
 } from '../types/workout.types';
+import { MuscleStats } from 'src/muscles/dto/muscles.dto';
 
 export type WorkoutExerciseSetsWithoutPlanAndExerciseIds = Omit<
   WorkoutExerciseSetsModel,
   'workoutPlanId' | 'workoutExerciseId'
 >;
+
+export type WorkoutSummary = {
+  totalSets: number;
+  totalWeight: number;
+  maxWeight: number;
+  totalExercises: number;
+  muscleStats: MuscleStats;
+};
 
 export class Workout {
   constructor(
@@ -33,6 +43,42 @@ export class Workout {
 
   public get exerciseSets(): WorkoutExerciseSetsModel[] {
     return this._exerciseSets;
+  }
+
+  public get workoutSummary(): WorkoutSummary {
+    const totalSets = this._exerciseSets.length;
+    const totalWeight = this._exerciseSets.reduce(
+      (sum, set) => sum + Number(set.weight),
+      0,
+    );
+    const maxWeight = Math.max(
+      ...this._exerciseSets.map((set) => Number(set.weight)),
+    );
+    const totalExercises = this._exercises.length;
+    const muscleStats: MuscleStats = {};
+    this.mapMuscleStats(this.exercises, muscleStats);
+
+    return {
+      totalWeight,
+      totalSets,
+      maxWeight,
+      totalExercises,
+      muscleStats,
+    } satisfies WorkoutSummary;
+  }
+
+  private mapMuscleStats(exercises: ExerciseModel[], muscleStats: MuscleStats) {
+    for (const exercise of exercises) {
+      const primaryMuscle = exercise.primaryMuscleTargeted;
+      const exerciseWeight = this.exerciseSets
+        .filter((set) => set.workoutExerciseId === exercise.id)
+        .reduce((sum, set) => sum + Number(set.weight), 0);
+      if (muscleStats[primaryMuscle]) {
+        muscleStats[primaryMuscle] += exerciseWeight;
+      } else {
+        muscleStats[primaryMuscle] = exerciseWeight;
+      }
+    }
   }
 
   public get detailedWorkoutModel(): DetailedWorkoutModel {

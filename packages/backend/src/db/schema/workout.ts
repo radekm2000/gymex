@@ -11,7 +11,6 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 import { UsersTable } from './users';
-import { time } from 'console';
 
 export const WorkoutPlansTable = pgTable('workout_plans', {
   id: serial('id').primaryKey(),

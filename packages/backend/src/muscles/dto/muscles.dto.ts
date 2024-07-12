@@ -8,3 +8,9 @@ export const CreateMuscleDtoSchema = z.object({
 });
 
 export type CreateMuscleDto = z.infer<typeof CreateMuscleDtoSchema>;
+
+export type MuscleName = typeof zodMuscleNameEnum._type;
+
+export type MuscleStats = {
+  [key in MuscleName]?: number;
+};

@@ -274,5 +274,6 @@ export class WorkoutsService implements WorkoutService {
           .detailedWorkoutModel;
       },
     );
+    return { detailedWorkoutModel, workoutDuration };
   };
 }
