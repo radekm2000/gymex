@@ -1,9 +1,9 @@
-import { muscleNameEnum } from 'src/db/schema/workout';
 import {
   DetailedWorkoutModel,
   ExerciseModel,
   WorkoutExerciseSetsModel,
   WorkoutModel,
+  WorkoutSessionModel,
 } from '../types/workout.types';
 import { MuscleStats } from 'src/muscles/dto/muscles.dto';
 
@@ -25,13 +25,15 @@ export class Workout {
     private readonly _model: WorkoutModel,
     private readonly _exercises?: ExerciseModel[],
     private readonly _exerciseSets?: WorkoutExerciseSetsModel[],
+    private readonly _workoutSession?: WorkoutSessionModel,
   ) {}
 
   public static from = (
     model: WorkoutModel,
     exercises?: ExerciseModel[],
     exerciseSets?: WorkoutExerciseSetsModel[],
-  ) => new Workout(model, exercises, exerciseSets);
+    workoutSession?: WorkoutSessionModel,
+  ) => new Workout(model, exercises, exerciseSets, workoutSession);
 
   public get model(): WorkoutModel {
     return this._model;
@@ -43,6 +45,27 @@ export class Workout {
 
   public get exerciseSets(): WorkoutExerciseSetsModel[] {
     return this._exerciseSets;
+  }
+
+  public get workoutSession(): WorkoutSessionModel {
+    return this._workoutSession;
+  }
+
+  public get workoutDuration(): string {
+    if (this.workoutSession) {
+      const startedAt = this._workoutSession.startedAt;
+      const finishedAt = this._workoutSession.finishedAt;
+      const durationInMilliseconds = finishedAt.getTime() - startedAt.getTime();
+      const durationInSeconds = Math.floor(durationInMilliseconds / 1000);
+      const durationInMinutes = Math.floor(durationInSeconds / 60);
+      const durationInHours = Math.floor(durationInMinutes / 60);
+
+      const hours = durationInHours;
+      const minutes = durationInMinutes % 60;
+      const seconds = durationInSeconds % 60;
+
+      return `${hours}h ${minutes}m ${seconds}s`;
+    }
   }
 
   public get workoutSummary(): WorkoutSummary {

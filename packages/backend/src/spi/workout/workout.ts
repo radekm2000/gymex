@@ -24,8 +24,7 @@ export interface WorkoutService {
     workoutPlanId: number,
     userId: number,
     dto: CreateWorkoutWithExercisesDto,
-  ): Promise<{
-    detailedWorkoutModel: DetailedWorkoutModel;
-    workoutDuration: number;
-  }>;
+  ): Promise<DetailedWorkoutModel>;
+
+  getAll();
 }

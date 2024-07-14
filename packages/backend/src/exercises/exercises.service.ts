@@ -17,19 +17,23 @@ export class ExercisesService implements ExerciseService {
   ): Promise<ExerciseModel> => {
     const isDefault = role === UserRoles.Admin;
 
-    const [exercise] = await this.drizzle.db
-      .insert(ExercisesTable)
-      .values({
-        exerciseName: dto.exerciseName,
-        notes: dto.notes ?? '',
-        primaryMuscleTargeted: dto.muscleTargeted,
-        userId: userId,
-        isDefault: isDefault,
-        restTime: dto.restTime,
-      })
-      .returning();
+    try {
+      const [exercise] = await this.drizzle.db
+        .insert(ExercisesTable)
+        .values({
+          exerciseName: dto.exerciseName,
+          notes: dto.notes ?? '',
+          primaryMuscleTargeted: dto.muscleTargeted,
+          userId: userId,
+          isDefault: isDefault,
+          restTime: dto.restTime,
+        })
+        .returning();
 
-    return exercise;
+      return exercise;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   public getAll = async (): Promise<ExerciseModel[]> => {

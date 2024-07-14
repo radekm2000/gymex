@@ -3,12 +3,15 @@ import {
   WorkoutExerciseSetsTable,
   WorkoutExercisesTable,
   WorkoutPlansTable,
+  WorkoutSessionsTable,
 } from 'src/db/schema/workout';
 import { WorkoutExerciseSetsWithoutPlanAndExerciseIds } from '../model/workout.model';
 
 export type WorkoutModel = typeof WorkoutPlansTable.$inferSelect;
 
 export type ExerciseModel = typeof ExercisesTable.$inferSelect;
+
+export type WorkoutSessionModel = typeof WorkoutSessionsTable.$inferSelect;
 
 export type WorkoutExerciseModel = typeof WorkoutExercisesTable.$inferSelect;
 
@@ -49,6 +52,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
           tempo: null,
           userId: -1,
           weight: '0',
+          workoutSessionId: 0,
         },
       ],
     },
@@ -64,6 +68,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       workoutExerciseId: -1,
       workoutPlanId: -1,
       userId: -1,
+      workoutSessionId: 0,
     },
   ],
 };

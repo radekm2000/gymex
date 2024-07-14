@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Param,
   ParseIntPipe,
@@ -22,11 +23,16 @@ import {
   AddExerciseToWorkoutDtoSchema,
 } from 'src/exercises/dto/exercises.dto';
 
-@Controller('workout')
+@Controller('workouts')
 export class WorkoutController {
   constructor(
     @Inject(WorkoutService) private readonly workoutService: WorkoutService,
   ) {}
+
+  @Get()
+  async getAllWorkouts() {
+    return this.workoutService.getAll();
+  }
 
   @UseGuards(AccessTokenGuard)
   @Post()

@@ -17,4 +17,26 @@ export class MusclesService {
       })
       .returning();
   };
+
+  public insertMuscleByMuscleName = async (muscleName: string) => {
+    //base muscle names
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const muscleNames = [
+      'chest',
+      'back',
+      'legs',
+      'shoulders',
+      'bicep',
+      'triceps',
+      'abs',
+      'calves',
+      'cardio',
+      'butt',
+      'forearm',
+      'base',
+    ];
+    return await this.drizzle.db.insert(MusclesTable).values({
+      name: muscleName as any,
+    });
+  };
 }
