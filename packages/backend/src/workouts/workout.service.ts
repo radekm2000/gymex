@@ -7,7 +7,7 @@ import {
   WorkoutExerciseSetsModel,
   WorkoutSessionModel,
 } from './types/workout.types';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, isNull } from 'drizzle-orm';
 
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import {
@@ -104,7 +104,7 @@ export class WorkoutsService implements WorkoutService {
           workoutPlanId: workoutPlan.id,
         })
         .returning();
-      const setsAdded = await tx
+      await tx
         .insert(WorkoutExerciseSetsTable)
         .values(
           dto.sets.map((set) => ({
@@ -143,6 +143,9 @@ export class WorkoutsService implements WorkoutService {
           and(
             eq(WorkoutExerciseSetsTable.workoutExerciseId, exercise.id),
             eq(WorkoutExerciseSetsTable.workoutPlanId, workoutPlan.id),
+            workoutSessionId
+              ? eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId)
+              : isNull(WorkoutExerciseSetsTable.workoutSessionId),
           ),
         );
       return exerciseSets;
@@ -156,12 +159,14 @@ export class WorkoutsService implements WorkoutService {
   };
 
   public startWorkout = async (workoutPlanId: number, userId: number) => {
-    await this.drizzleService.db.insert(WorkoutSessionsTable).values({
-      userId: userId,
-      workoutPlanId: workoutPlanId,
-      startedAt: new Date(),
-    });
-
+    // await this.drizzleService.db
+    //   .insert(WorkoutSessionsTable)
+    //   .values({
+    //     userId: userId,
+    //     workoutPlanId: workoutPlanId,
+    //     startedAt: new Date(),
+    //   })
+    //   .returning();
     const [previousWorkoutSession] = await this.drizzleService.db
       .select()
       .from(WorkoutSessionsTable)
@@ -218,10 +223,22 @@ export class WorkoutsService implements WorkoutService {
           );
         return exerciseSets;
       });
+      const defaultReps = '10';
+      const defaultWeight = '0';
+      const defaultTempo = '';
+      const defaultRir = '';
 
       const fullExerciseSets = await Promise.all(exerciseSetsPromise);
       const flattenExerciseSets = fullExerciseSets.flat(1);
-      return Workout.from(workout, fullExercises, flattenExerciseSets)
+
+      const defaultFlattenExerciseSets = flattenExerciseSets.map((set) => ({
+        ...set,
+        reps: defaultReps,
+        tempo: defaultTempo,
+        weight: defaultWeight,
+        rir: defaultRir,
+      }));
+      return Workout.from(workout, fullExercises, defaultFlattenExerciseSets)
         .detailedWorkoutModel;
     });
   };
@@ -236,39 +253,71 @@ export class WorkoutsService implements WorkoutService {
         .from(WorkoutPlansTable)
         .where(eq(WorkoutPlansTable.id, workoutPlanId));
 
-      const workoutExercises = await tx
-        .select()
+      //these queries will return all exercises in workout plan including ones that were not included in previous workout session so we dont want them for now
+
+      // const workoutExercises = await tx
+      //   .select()
+      //   .from(WorkoutExercisesTable)
+      //   .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id));
+
+      // const fullExercisesPromise = workoutExercises.map(async (exercise) => {
+      //   const [fullExercise] = await tx
+      //     .select()
+      //     .from(ExercisesTable)
+      //     .where(eq(ExercisesTable.id, exercise.exerciseId));
+      //   return fullExercise;
+      // });
+      // const fullExercises = await Promise.all(fullExercisesPromise);
+
+      const exercisesWithSetsFromPreviousSession = await tx
+        .select({
+          exercise: ExercisesTable,
+        })
         .from(WorkoutExercisesTable)
-        .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id));
-
-      const fullExercisesPromise = workoutExercises.map(async (exercise) => {
-        const [fullExercise] = await tx
-          .select()
-          .from(ExercisesTable)
-          .where(eq(ExercisesTable.id, exercise.exerciseId));
-        return fullExercise;
-      });
-      const fullExercises = await Promise.all(fullExercisesPromise);
-
-      const exerciseSetsPromise = fullExercises.map(async (exercise) => {
-        const exerciseSets = await tx
-          .select()
-          .from(WorkoutExerciseSetsTable)
-          .where(
-            and(
-              eq(WorkoutExerciseSetsTable.workoutExerciseId, exercise.id),
-              eq(WorkoutExerciseSetsTable.workoutPlanId, workout.id),
-              eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+        .innerJoin(
+          WorkoutExerciseSetsTable,
+          and(
+            eq(
+              WorkoutExercisesTable.exerciseId,
+              WorkoutExerciseSetsTable.workoutExerciseId,
             ),
-          );
-        return exerciseSets;
-      });
+            eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+          ),
+        )
+        .innerJoin(
+          ExercisesTable,
+          eq(WorkoutExercisesTable.exerciseId, ExercisesTable.id),
+        )
+        .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id))
+        .groupBy(ExercisesTable.id);
+
+      const exerciseSetsPromise = exercisesWithSetsFromPreviousSession.map(
+        async (exercise) => {
+          const exerciseSets = await tx
+            .select()
+            .from(WorkoutExerciseSetsTable)
+            .where(
+              and(
+                eq(
+                  WorkoutExerciseSetsTable.workoutExerciseId,
+                  exercise.exercise.id,
+                ),
+                eq(WorkoutExerciseSetsTable.workoutPlanId, workout.id),
+                eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+              ),
+            );
+          return exerciseSets;
+        },
+      );
 
       const fullExerciseSets = await Promise.all(exerciseSetsPromise);
       const flattenExerciseSets = fullExerciseSets.flat(1);
 
-      return Workout.from(workout, fullExercises, flattenExerciseSets)
-        .detailedWorkoutModel;
+      return Workout.from(
+        workout,
+        exercisesWithSetsFromPreviousSession.map((e) => e.exercise),
+        flattenExerciseSets,
+      ).detailedWorkoutModel;
     });
   };
 
@@ -288,17 +337,13 @@ export class WorkoutsService implements WorkoutService {
       )
       .limit(1)
       .orderBy(desc(WorkoutSessionsTable.startedAt));
-
-    const updatedSession = await this.drizzleService.db
+    const [updatedSession] = await this.drizzleService.db
       .update(WorkoutSessionsTable)
       .set({
         finishedAt: new Date(),
       })
       .where(eq(WorkoutSessionsTable.id, sessionToFinish.id))
       .returning();
-
-    const workoutSession: WorkoutSessionModel = updatedSession[0];
-
     return await this.drizzleService.db.transaction(async (tx) => {
       const [workoutPlan] = await tx
         .select()
@@ -308,14 +353,35 @@ export class WorkoutsService implements WorkoutService {
       const allExerciseSets: WorkoutExerciseSetsModel[] = [];
 
       for (const exercise of dto.exercises) {
-        const [workoutExercise] = await tx
-          .insert(WorkoutExercisesTable)
-          .values({
-            workoutPlanId: workoutPlanId,
-            exerciseId: exercise.id,
-            orderIndex: exercise.orderIndex,
-          })
-          .returning();
+        let workoutExercise: {
+          workoutPlanId: number;
+          exerciseId: number;
+          orderIndex: number;
+        };
+
+        const [existingWorkoutExercise] = await tx
+          .select()
+          .from(WorkoutExercisesTable)
+          .where(
+            and(
+              eq(WorkoutExercisesTable.workoutPlanId, workoutPlanId),
+              eq(WorkoutExercisesTable.exerciseId, exercise.id),
+            ),
+          );
+
+        if (existingWorkoutExercise) {
+          workoutExercise = existingWorkoutExercise;
+        } else {
+          const workoutExerciseInDb = await tx
+            .insert(WorkoutExercisesTable)
+            .values({
+              workoutPlanId: workoutPlanId,
+              exerciseId: exercise.id,
+              orderIndex: exercise.orderIndex,
+            })
+            .returning();
+          workoutExercise = workoutExerciseInDb[0];
+        }
 
         const [fullExercise] = await tx
           .select()
@@ -323,7 +389,7 @@ export class WorkoutsService implements WorkoutService {
           .where(eq(ExercisesTable.id, exercise.id));
 
         exercises.push(fullExercise);
-
+        console.log(workoutExercise);
         const exerciseSets = await tx
           .insert(WorkoutExerciseSetsTable)
           .values(
@@ -343,12 +409,19 @@ export class WorkoutsService implements WorkoutService {
 
         allExerciseSets.push(...exerciseSets);
       }
-
+      const summary = Workout.from(
+        workoutPlan,
+        exercises,
+        allExerciseSets,
+        updatedSession,
+      ).workoutSummary;
+      console.log(summary);
+      console.log('podsumowanie wyzej');
       return Workout.from(
         workoutPlan,
         exercises,
         allExerciseSets,
-        workoutSession,
+        updatedSession,
       ).detailedWorkoutModel;
     });
   };

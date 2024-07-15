@@ -65,7 +65,7 @@ export class WorkoutController {
     @CurrentUserId() userId: number,
     @Param('workoutId', ParseIntPipe) workoutPlanId: number,
   ) {
-    return await this.workoutService.startWorkout(userId, workoutPlanId);
+    return await this.workoutService.startWorkout(workoutPlanId, userId);
   }
 
   @UseGuards(AccessTokenGuard)

@@ -91,7 +91,6 @@ export const WorkoutExercisesTable = pgTable(
       .references(() => WorkoutPlansTable.id, {
         onDelete: 'cascade',
       }),
-
     exerciseId: integer('exercise_id')
       .notNull()
       .references(() => ExercisesTable.id, {
