@@ -5,7 +5,6 @@ import {
   DetailedWorkoutModel,
   ExerciseModel,
   WorkoutExerciseSetsModel,
-  WorkoutSessionModel,
 } from './types/workout.types';
 import { and, desc, eq, isNull } from 'drizzle-orm';
 
@@ -159,14 +158,14 @@ export class WorkoutsService implements WorkoutService {
   };
 
   public startWorkout = async (workoutPlanId: number, userId: number) => {
-    // await this.drizzleService.db
-    //   .insert(WorkoutSessionsTable)
-    //   .values({
-    //     userId: userId,
-    //     workoutPlanId: workoutPlanId,
-    //     startedAt: new Date(),
-    //   })
-    //   .returning();
+    await this.drizzleService.db
+      .insert(WorkoutSessionsTable)
+      .values({
+        userId: userId,
+        workoutPlanId: workoutPlanId,
+        startedAt: new Date(),
+      })
+      .returning();
     const [previousWorkoutSession] = await this.drizzleService.db
       .select()
       .from(WorkoutSessionsTable)
@@ -252,7 +251,6 @@ export class WorkoutsService implements WorkoutService {
         .select()
         .from(WorkoutPlansTable)
         .where(eq(WorkoutPlansTable.id, workoutPlanId));
-
       //these queries will return all exercises in workout plan including ones that were not included in previous workout session so we dont want them for now
 
       // const workoutExercises = await tx
@@ -268,7 +266,6 @@ export class WorkoutsService implements WorkoutService {
       //   return fullExercise;
       // });
       // const fullExercises = await Promise.all(fullExercisesPromise);
-
       const exercisesWithSetsFromPreviousSession = await tx
         .select({
           exercise: ExercisesTable,
@@ -389,7 +386,6 @@ export class WorkoutsService implements WorkoutService {
           .where(eq(ExercisesTable.id, exercise.id));
 
         exercises.push(fullExercise);
-        console.log(workoutExercise);
         const exerciseSets = await tx
           .insert(WorkoutExerciseSetsTable)
           .values(
@@ -409,14 +405,7 @@ export class WorkoutsService implements WorkoutService {
 
         allExerciseSets.push(...exerciseSets);
       }
-      const summary = Workout.from(
-        workoutPlan,
-        exercises,
-        allExerciseSets,
-        updatedSession,
-      ).workoutSummary;
-      console.log(summary);
-      console.log('podsumowanie wyzej');
+
       return Workout.from(
         workoutPlan,
         exercises,
