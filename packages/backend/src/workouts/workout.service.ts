@@ -18,10 +18,14 @@ import {
 } from 'src/db/schema/workout';
 import { Workout } from './model/workout.model';
 import { AddExerciseToWorkoutDto } from 'src/exercises/dto/exercises.dto';
+import { WorkoutSessionsService } from 'src/workout-sessions/workout-sessions.service';
 
 @Injectable()
 export class WorkoutsService implements WorkoutService {
-  constructor(private readonly drizzleService: DrizzleService) {}
+  constructor(
+    private readonly drizzleService: DrizzleService,
+    private readonly workoutSessionsService: WorkoutSessionsService,
+  ) {}
 
   public createWorkoutWithExercises = async (
     dto: CreateWorkoutWithExercisesDto,
@@ -428,5 +432,36 @@ export class WorkoutsService implements WorkoutService {
     }
 
     return detailedWorkoutModels;
+  };
+
+  private getBaseWorkoutPlanById = async (workoutPlanId: number) => {
+    const [workoutPlan] = await this.drizzleService.db
+      .select()
+      .from(WorkoutPlansTable)
+      .where(eq(WorkoutPlansTable.id, workoutPlanId));
+
+    if (!workoutPlan) {
+      throw new HttpException('Workout plan not found', HttpStatus.NOT_FOUND);
+    }
+
+    return workoutPlan;
+  };
+
+  public getSessionsByWorkoutPlan = async (workoutPlanId: number) => {
+    const workoutPlan = await this.getBaseWorkoutPlanById(workoutPlanId);
+    const workoutBaseSesssions =
+      await this.workoutSessionsService.getBaseWorkoutSessionsByPlanId(
+        workoutPlan.id,
+      );
+    const detailedSessions = await Promise.all(
+      workoutBaseSesssions.map(
+        async (session) =>
+          await this.workoutSessionsService.getDetailedSessionOfWorkoutPlan1(
+            session,
+            workoutPlan,
+          ),
+      ),
+    );
+    return detailedSessions;
   };
 }

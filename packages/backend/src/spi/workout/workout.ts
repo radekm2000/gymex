@@ -26,5 +26,7 @@ export interface WorkoutService {
     dto: CreateWorkoutWithExercisesDto,
   ): Promise<DetailedWorkoutModel>;
 
+  getSessionsByWorkoutPlan(workoutPlanId: number);
+
   getAll();
 }

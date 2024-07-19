@@ -77,4 +77,12 @@ export class WorkoutController {
   ) {
     return await this.workoutService.finishWorkout(workoutPlanId, userId, dto);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get(':workoutPlanId/sessions')
+  async getWorkoutSessionsOfCertainWorkoutPlan(
+    @Param('workoutPlanId', ParseIntPipe) workoutPlanId: number,
+  ) {
+    return this.workoutService.getSessionsByWorkoutPlan(workoutPlanId);
+  }
 }

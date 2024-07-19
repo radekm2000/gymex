@@ -4,6 +4,7 @@ import { WorkoutService } from 'src/spi/workout/workout';
 import { WorkoutsService } from './workout.service';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { DrizzleModule } from 'src/drizzle/drizzle.module';
+import { WorkoutSessionsService } from 'src/workout-sessions/workout-sessions.service';
 
 @Module({
   controllers: [WorkoutController],
@@ -11,11 +12,15 @@ import { DrizzleModule } from 'src/drizzle/drizzle.module';
   providers: [
     {
       provide: WorkoutService,
-      inject: [DrizzleService],
-      useFactory: (drizzle: DrizzleService): WorkoutService => {
-        return new WorkoutsService(drizzle);
+      inject: [DrizzleService, WorkoutSessionsService],
+      useFactory: (
+        drizzle: DrizzleService,
+        workoutSessionsService: WorkoutSessionsService,
+      ): WorkoutService => {
+        return new WorkoutsService(drizzle, workoutSessionsService);
       },
     },
+    WorkoutSessionsService,
   ],
   exports: [WorkoutService],
 })
