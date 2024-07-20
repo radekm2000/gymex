@@ -456,7 +456,7 @@ export class WorkoutsService implements WorkoutService {
     const detailedSessions = await Promise.all(
       workoutBaseSesssions.map(
         async (session) =>
-          await this.workoutSessionsService.getDetailedSessionOfWorkoutPlan1(
+          await this.workoutSessionsService.getDetailedSessionOfWorkoutPlan(
             session,
             workoutPlan,
           ),

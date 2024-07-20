@@ -40,81 +40,81 @@ export class WorkoutSessionsService {
       const detailedSessions = [];
       for (const session of workoutSessions) {
         const detailedWorkout = await this.getDetailedSessionOfWorkoutPlan(
-          workoutPlan.id,
-          session.id,
+          session,
+          workoutPlan,
         );
         detailedSessions.push(detailedWorkout);
       }
       return detailedSessions;
     });
   };
-  private getDetailedSessionOfWorkoutPlan = async (
-    workoutPlanId: number,
-    workoutSessionId: number,
-  ) => {
-    return await this.drizzle.db.transaction(async (tx) => {
-      const [workout] = await tx
-        .select()
-        .from(WorkoutPlansTable)
-        .where(eq(WorkoutPlansTable.id, workoutPlanId));
+  // private getDetailedSessionOfWorkoutPlan = async (
+  //   workoutPlanId: number,
+  //   workoutSessionId: number,
+  // ) => {
+  //   return await this.drizzle.db.transaction(async (tx) => {
+  //     const [workout] = await tx
+  //       .select()
+  //       .from(WorkoutPlansTable)
+  //       .where(eq(WorkoutPlansTable.id, workoutPlanId));
 
-      const [workoutSession] = await tx
-        .select()
-        .from(WorkoutSessionsTable)
-        .where(eq(WorkoutSessionsTable.id, workoutSessionId));
+  //     const [workoutSession] = await tx
+  //       .select()
+  //       .from(WorkoutSessionsTable)
+  //       .where(eq(WorkoutSessionsTable.id, workoutSessionId));
 
-      const exercisesWithSetsFromPreviousSession = await tx
-        .select({
-          exercise: ExercisesTable,
-        })
-        .from(WorkoutExercisesTable)
-        .innerJoin(
-          WorkoutExerciseSetsTable,
-          and(
-            eq(
-              WorkoutExercisesTable.exerciseId,
-              WorkoutExerciseSetsTable.workoutExerciseId,
-            ),
-            eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
-          ),
-        )
-        .innerJoin(
-          ExercisesTable,
-          eq(WorkoutExercisesTable.exerciseId, ExercisesTable.id),
-        )
-        .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id))
-        .groupBy(ExercisesTable.id);
+  //     const exercisesWithSetsFromPreviousSession = await tx
+  //       .select({
+  //         exercise: ExercisesTable,
+  //       })
+  //       .from(WorkoutExercisesTable)
+  //       .innerJoin(
+  //         WorkoutExerciseSetsTable,
+  //         and(
+  //           eq(
+  //             WorkoutExercisesTable.exerciseId,
+  //             WorkoutExerciseSetsTable.workoutExerciseId,
+  //           ),
+  //           eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+  //         ),
+  //       )
+  //       .innerJoin(
+  //         ExercisesTable,
+  //         eq(WorkoutExercisesTable.exerciseId, ExercisesTable.id),
+  //       )
+  //       .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id))
+  //       .groupBy(ExercisesTable.id);
 
-      const exerciseSetsPromise = exercisesWithSetsFromPreviousSession.map(
-        async (exercise) => {
-          const exerciseSets = await tx
-            .select()
-            .from(WorkoutExerciseSetsTable)
-            .where(
-              and(
-                eq(
-                  WorkoutExerciseSetsTable.workoutExerciseId,
-                  exercise.exercise.id,
-                ),
-                eq(WorkoutExerciseSetsTable.workoutPlanId, workout.id),
-                eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
-              ),
-            );
-          return exerciseSets;
-        },
-      );
+  //     const exerciseSetsPromise = exercisesWithSetsFromPreviousSession.map(
+  //       async (exercise) => {
+  //         const exerciseSets = await tx
+  //           .select()
+  //           .from(WorkoutExerciseSetsTable)
+  //           .where(
+  //             and(
+  //               eq(
+  //                 WorkoutExerciseSetsTable.workoutExerciseId,
+  //                 exercise.exercise.id,
+  //               ),
+  //               eq(WorkoutExerciseSetsTable.workoutPlanId, workout.id),
+  //               eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+  //             ),
+  //           );
+  //         return exerciseSets;
+  //       },
+  //     );
 
-      const fullExerciseSets = await Promise.all(exerciseSetsPromise);
-      const flattenExerciseSets = fullExerciseSets.flat(1);
+  //     const fullExerciseSets = await Promise.all(exerciseSetsPromise);
+  //     const flattenExerciseSets = fullExerciseSets.flat(1);
 
-      return Workout.from(
-        workout,
-        exercisesWithSetsFromPreviousSession.map((e) => e.exercise),
-        flattenExerciseSets,
-        workoutSession,
-      ).detailedWorkoutModel;
-    });
-  };
+  //     return Workout.from(
+  //       workout,
+  //       exercisesWithSetsFromPreviousSession.map((e) => e.exercise),
+  //       flattenExerciseSets,
+  //       workoutSession,
+  //     ).detailedWorkoutModel;
+  //   });
+  // };
 
   public getBaseWorkoutSessionsByPlanId = (workoutPlanId: number) => {
     return this.drizzle.db.transaction(async (tx) => {
@@ -125,7 +125,7 @@ export class WorkoutSessionsService {
     });
   };
 
-  public getDetailedSessionOfWorkoutPlan1 = async (
+  public getDetailedSessionOfWorkoutPlan = async (
     session: WorkoutSessionModel,
     workoutPlan: WorkoutModel,
   ) => {

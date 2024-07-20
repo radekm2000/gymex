@@ -43,6 +43,10 @@ export class Workout {
     return this._exercises;
   }
 
+  public get session(): WorkoutSessionModel {
+    return this._workoutSession;
+  }
+
   public get exerciseSets(): WorkoutExerciseSetsModel[] {
     return this._exerciseSets;
   }
@@ -117,6 +121,9 @@ export class Workout {
         this._exerciseSets.length > 0
           ? this.mapExerciseSets(this._exerciseSets)
           : [],
+      session: {
+        id: this._workoutSession.id ?? null,
+      },
     };
   }
 

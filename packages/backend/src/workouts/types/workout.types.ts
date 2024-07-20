@@ -24,6 +24,9 @@ export type DetailedWorkoutModel = {
     ExerciseModel & { sets: WorkoutExerciseSetsWithoutPlanAndExerciseIds[] }
   >;
   allExerciseSets: WorkoutExerciseSetsModel[];
+  session: {
+    id: number;
+  };
 };
 
 export const initDetailedWorkoutModel: DetailedWorkoutModel = {
@@ -71,4 +74,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       workoutSessionId: 0,
     },
   ],
+  session: {
+    id: 0,
+  },
 };

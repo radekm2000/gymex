@@ -1,12 +1,19 @@
 import {
+  boolean,
+  doublePrecision,
   index,
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
+export type UserDiscordModel = typeof UserDiscordConnections.$inferSelect;
+
+export type UserMetricsModel = typeof UsersMetricsTable.$inferSelect;
 
 export const roleEnum = pgEnum('user_role', ['Admin', 'User']);
 
@@ -51,6 +58,32 @@ export const UserDiscordConnections = pgTable('user_discord_connections', {
   username: text('discord_username'),
 });
 
-export type UserDiscordModel = typeof UserDiscordConnections.$inferSelect;
+export const UserAchievementsTable = pgTable(
+  'user_achievements',
+  {
+    achievementId: serial('achievement_id').notNull(),
+    userId: serial('user_id')
+      .references(() => UsersTable.id, {
+        onDelete: 'cascade',
+      })
+      .notNull(),
+    isUnlocked: boolean('is_unlocked').notNull().default(false),
+    progress: doublePrecision('progress'),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.achievementId, table.userId] }),
+    userIdIndex: index('user_achievements_user_id_index').on(table.userId),
+  }),
+);
 
-export type UserMetricsModel = typeof UsersMetricsTable.$inferSelect;
+export const UserStatsWeightLiftTable = pgTable('user_stats_weight_lift', {
+  userId: integer('user_id').primaryKey(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  totalWeight: integer('total_weight').notNull().default(0),
+});
+
+export const UserStatsSessionsTable = pgTable('user_stats_sessions', {
+  userId: integer('user_id').primaryKey(),
+  totalSessions: integer('total_sessions').notNull().default(0),
+  totalTrainingTime: integer('total_training_time').notNull().default(0),
+});

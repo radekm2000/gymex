@@ -9,9 +9,20 @@ import { WorkoutModule } from './workouts/workout.module';
 import { ExercisesModule } from './exercises/exercises.module';
 import { MusclesModule } from './muscles/muscles.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
+import { AchievementsModule } from './achievements/achievements.module';
 
 @Module({
-  imports: [DrizzleModule, ConfigModule.forRoot(), UsersModule, AuthModule, WorkoutModule, ExercisesModule, MusclesModule, WorkoutSessionsModule],
+  imports: [
+    DrizzleModule,
+    ConfigModule.forRoot(),
+    UsersModule,
+    AuthModule,
+    WorkoutModule,
+    ExercisesModule,
+    MusclesModule,
+    WorkoutSessionsModule,
+    AchievementsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
