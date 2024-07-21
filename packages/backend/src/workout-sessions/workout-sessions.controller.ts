@@ -15,4 +15,9 @@ export class WorkoutSessionsController {
       workoutPlanId,
     );
   }
+
+  @Get('unfinished')
+  async getUnfinishedSession() {
+    return this.workoutSessionsService.findUnfinishedSession();
+  }
 }

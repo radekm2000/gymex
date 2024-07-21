@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import {
   ExercisesTable,
   WorkoutExerciseSetsTable,
@@ -135,6 +135,14 @@ export class WorkoutSessionsService {
     );
 
     return Workout.from(workoutPlan, exercises, sets, session);
+  };
+
+  public findUnfinishedSession = async () => {
+    const [unfinishedWorkoutSession] = await this.drizzle.db
+      .select()
+      .from(WorkoutSessionsTable)
+      .where(isNull(WorkoutSessionsTable.finishedAt))
+      .limit(1);
   };
 
   private getExerciseSetsOfWorkoutSession = async (
