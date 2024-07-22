@@ -3,12 +3,6 @@ export type UserAchievementStatus = {
   progress?: number;
 };
 
-export type UserAchievement = {
-  name: string;
-  description: string;
-  requiredProgress?: number;
-};
-
 export const UserAchievementType = {
   TOTAL_WEIGHT_LIFT_10T: "TOTAL_WEIGHT_LIFT_10T",
   TOTAL_WEIGHT_LIFT_25T: "TOTAL_WEIGHT_LIFT_25T",
@@ -20,6 +14,8 @@ export const UserAchievementType = {
   TOTAL_SESSIONS_100: "TOTAL_SESSIONS_100",
   TOTAL_TRAINING_TIME_1D: "TOTAL_TRAINING_TIME_1D",
   TOTAL_SETS_10: "TOTAL_SETS_10",
+  MAX_WEIGHT_50KG: "MAX_WEIGHT_50KG",
+  MAX_WEIGHT_100KG: "MAX_WEIGHT_100KG",
 } as const;
 
 export type UserAchievementType =

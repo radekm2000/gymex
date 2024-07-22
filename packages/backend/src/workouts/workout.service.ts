@@ -19,12 +19,18 @@ import {
 import { Workout } from './model/workout.model';
 import { AddExerciseToWorkoutDto } from 'src/exercises/dto/exercises.dto';
 import { WorkoutSessionsService } from 'src/workout-sessions/workout-sessions.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import {
+  WorkoutEvents,
+  WorkoutFinishedPayload,
+} from 'src/events/constants/events';
 
 @Injectable()
 export class WorkoutsService implements WorkoutService {
   constructor(
     private readonly drizzleService: DrizzleService,
     private readonly workoutSessionsService: WorkoutSessionsService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public createWorkoutWithExercises = async (
@@ -410,12 +416,25 @@ export class WorkoutsService implements WorkoutService {
         allExerciseSets.push(...exerciseSets);
       }
 
-      return Workout.from(
+      const workout = Workout.from(
         workoutPlan,
         exercises,
         allExerciseSets,
         updatedSession,
-      ).detailedWorkoutModel;
+      );
+
+      const payload: WorkoutFinishedPayload = {
+        userId: userId,
+        totalWeight: workout.workoutSummary.totalWeight,
+        totalTrainingTimeInSecs:
+          workout.workoutSummary.totalTrainingTimeInSeconds,
+        sessionAmount: 1,
+        maxWeight: workout.workoutSummary.maxWeight,
+      };
+
+      this.eventEmitter.emit(WorkoutEvents.WorkoutFinished, payload);
+
+      return workout.detailedWorkoutModel;
     });
   };
 

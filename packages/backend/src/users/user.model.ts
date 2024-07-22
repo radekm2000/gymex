@@ -3,6 +3,7 @@ import {
   UserDiscordModel,
   UserMetricsModel,
   UserModel,
+  UserStatsModel,
 } from './user.types';
 
 export class User {
@@ -10,13 +11,15 @@ export class User {
     private readonly _model: UserModel,
     private readonly _metrics?: UserMetricsModel,
     private readonly _discordConnection?: UserDiscordModel,
+    private readonly _stats?: UserStatsModel,
   ) {}
 
   public static from = (
     model: UserModel,
     metrics?: UserMetricsModel,
     discordConnection?: UserDiscordModel,
-  ) => new User(model, metrics, discordConnection);
+    stats?: UserStatsModel,
+  ) => new User(model, metrics, discordConnection, stats);
 
   public get model(): UserModel {
     return this._model;
@@ -30,6 +33,9 @@ export class User {
     return this._discordConnection;
   }
 
+  public get stats(): UserStatsModel {
+    return this._stats;
+  }
   public get detailedUserModel(): DetailedUserModel {
     return {
       user: {
@@ -52,6 +58,7 @@ export class User {
             weight: this._metrics.weight,
           }
         : null,
+      stats: this._stats ? this._stats : null,
     };
   }
 }

@@ -18,6 +18,7 @@ export type WorkoutSummary = {
   maxWeight: number;
   totalExercises: number;
   muscleStats: MuscleStats;
+  totalTrainingTimeInSeconds: number;
 };
 
 export class Workout {
@@ -74,6 +75,11 @@ export class Workout {
 
   public get workoutSummary(): WorkoutSummary {
     const totalSets = this._exerciseSets.length;
+    const startedAt = this._workoutSession.startedAt;
+    const finishedAt = this._workoutSession.finishedAt;
+    const totalTrainingTimeInSeconds = Math.floor(
+      (finishedAt.getTime() - startedAt.getTime()) / 1000,
+    );
     const totalWeight = this._exerciseSets.reduce(
       (sum, set) => sum + Number(set.weight),
       0,
@@ -91,6 +97,7 @@ export class Workout {
       maxWeight,
       totalExercises,
       muscleStats,
+      totalTrainingTimeInSeconds,
     } satisfies WorkoutSummary;
   }
 

@@ -10,11 +10,13 @@ import { ExercisesModule } from './exercises/exercises.module';
 import { MusclesModule } from './muscles/muscles.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     DrizzleModule,
     ConfigModule.forRoot(),
+    EventEmitterModule.forRoot(),
     UsersModule,
     AuthModule,
     WorkoutModule,

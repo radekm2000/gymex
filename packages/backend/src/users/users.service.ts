@@ -5,11 +5,15 @@ import {
   UserDiscordConnections,
   UsersMetricsTable,
   UsersTable,
+  UserStatsSessionsTable,
+  UserStatsWeightLiftTable,
 } from 'src/db/schema/users';
 import { eq } from 'drizzle-orm';
-import { UserModel } from './user.types';
-import { User } from './user.model';
+import { DetailedUserModel, UserModel } from './user.types';
+import { User, UserStatsModel } from './user.model';
 import { UserService } from 'src/spi/user/user';
+import { UserAchievementType } from '@gymex/commons/src/achievements/types';
+import { getAchievementStatusForProgress } from '@gymex/commons/src/achievements/utils';
 
 @Injectable()
 export class UsersService implements UserService {
@@ -131,5 +135,115 @@ export class UsersService implements UserService {
           .where(eq(UsersTable.id, userId));
       }
     });
+  };
+  public getUserStatsFor = async (userId: number) => {
+    const userModelBase = await this.findUserById(userId);
+    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
+    const sessionsStats = await this.getUserStatsSessionsFor(userId);
+    // const achievements = await this.drizzleService.db
+    //   .select()
+    //   .from(UserAchievementsTable)
+    //   .where(eq(UserAchievementsTable.userId, userId));
+    const stats: UserStatsModel = {
+      userId: userId,
+      maxWeight: weightLiftStats.maxWeight,
+      totalSessions: sessionsStats.totalSessions,
+      totalTrainingTime: sessionsStats.totalTrainingTime,
+      totalWeight: weightLiftStats.totalWeight,
+    };
+
+    return stats;
+  };
+
+  public getUserMetrics = async (userId: number) => {
+    const [metrics] = await this.drizzleService.db
+      .select()
+      .from(UsersMetricsTable)
+      .where(eq(UsersMetricsTable.userId, userId));
+    return metrics;
+  };
+
+  private getUserDiscordConnection = async (userId: number) => {
+    const [model] = await this.drizzleService.db
+      .select()
+      .from(UserDiscordConnections)
+      .where(eq(UserDiscordConnections.userId, userId));
+    return model;
+  };
+
+  public getDetailedUserModelFor = async (
+    userId: number,
+  ): Promise<DetailedUserModel> => {
+    const userModelBase = await this.findUserById(userId);
+    const userMetrics = await this.getUserMetrics(userId);
+    const stats = await this.getUserStats(userId);
+    const discordConnection = await this.getUserDiscordConnection(userId);
+    return User.from(userModelBase, userMetrics, discordConnection, stats)
+      .detailedUserModel;
+  };
+
+  private isAchievementUnlockable = (
+    model: DetailedUserModel,
+    type: string,
+  ): type is UserAchievementType => {
+    if (UserAchievementType[type as UserAchievementType] === undefined) {
+      return false;
+    }
+    return (
+      model.stats.achievements[type] === undefined ||
+      !model.stats.achievements[type].unlocked
+    );
+  };
+
+  public updateUserModelAchievements = (
+    model: DetailedUserModel,
+    achievements: Record<string, number>,
+  ) => {
+    const newModel = JSON.parse(JSON.stringify(model)) as DetailedUserModel;
+
+    for (const [type, progress] of Object.entries(achievements)) {
+      if (this.isAchievementUnlockable(model, type)) {
+        const status = getAchievementStatusForProgress(type, progress);
+        newModel.stats.achievements[type] = status;
+      }
+    }
+
+    return newModel;
+  };
+
+  public getUserStats = async (userId: number) => {
+    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
+    const sessionsStats = await this.getUserStatsSessionsFor(userId);
+
+    const stats: UserStatsModel = {
+      userId: userId,
+      maxWeight: weightLiftStats.maxWeight,
+      totalSessions: sessionsStats.totalSessions,
+      totalTrainingTime: sessionsStats.totalTrainingTime,
+      totalWeight: weightLiftStats.totalWeight,
+    };
+    return stats;
+  };
+
+  private getUserStatsWeightLiftFor = async (userId: number) => {
+    const [stats] = await this.drizzleService.db
+      .select({
+        totalWeight: UserStatsWeightLiftTable.totalWeight,
+        maxWeight: UserStatsWeightLiftTable.maxWeight,
+      })
+      .from(UserStatsWeightLiftTable)
+      .where(eq(UserStatsWeightLiftTable.userId, userId));
+
+    return stats;
+  };
+  private getUserStatsSessionsFor = async (userId: number) => {
+    const [stats] = await this.drizzleService.db
+      .select({
+        totalSessions: UserStatsSessionsTable.totalSessions,
+        totalTrainingTime: UserStatsSessionsTable.totalTrainingTime,
+      })
+      .from(UserStatsSessionsTable)
+      .where(eq(UserStatsSessionsTable.userId, userId));
+    return stats;
   };
 }

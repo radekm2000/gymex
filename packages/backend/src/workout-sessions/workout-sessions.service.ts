@@ -143,6 +143,20 @@ export class WorkoutSessionsService {
       .from(WorkoutSessionsTable)
       .where(isNull(WorkoutSessionsTable.finishedAt))
       .limit(1);
+
+    if (!unfinishedWorkoutSession) {
+      return;
+    }
+
+    const [workoutPlan] = await this.drizzle.db
+      .select()
+      .from(WorkoutPlansTable)
+      .where(eq(WorkoutPlansTable.id, unfinishedWorkoutSession.workoutPlanId));
+
+    return await this.getDetailedSessionOfWorkoutPlan(
+      unfinishedWorkoutSession,
+      workoutPlan,
+    );
   };
 
   private getExerciseSetsOfWorkoutSession = async (

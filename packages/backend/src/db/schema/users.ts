@@ -80,10 +80,12 @@ export const UserStatsWeightLiftTable = pgTable('user_stats_weight_lift', {
   userId: integer('user_id').primaryKey(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   totalWeight: integer('total_weight').notNull().default(0),
+  maxWeight: integer('max_weight').notNull().default(0),
 });
 
 export const UserStatsSessionsTable = pgTable('user_stats_sessions', {
   userId: integer('user_id').primaryKey(),
   totalSessions: integer('total_sessions').notNull().default(0),
   totalTrainingTime: integer('total_training_time').notNull().default(0),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
