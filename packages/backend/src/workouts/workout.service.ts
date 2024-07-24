@@ -247,8 +247,12 @@ export class WorkoutsService implements WorkoutService {
         weight: defaultWeight,
         rir: defaultRir,
       }));
-      return Workout.from(workout, fullExercises, defaultFlattenExerciseSets)
-        .detailedWorkoutModel;
+      return Workout.from(
+        workout,
+        fullExercises,
+        defaultFlattenExerciseSets,
+        null,
+      ).detailedWorkoutModel;
     });
   };
 
@@ -422,7 +426,6 @@ export class WorkoutsService implements WorkoutService {
         allExerciseSets,
         updatedSession,
       );
-
       const payload: WorkoutFinishedPayload = {
         userId: userId,
         totalWeight: workout.workoutSummary.totalWeight,
@@ -442,7 +445,6 @@ export class WorkoutsService implements WorkoutService {
     const workoutPlans = await this.drizzleService.db
       .select()
       .from(WorkoutPlansTable);
-
     const detailedWorkoutModels: DetailedWorkoutModel[] = [];
     for (const workoutPlan of workoutPlans) {
       const detailedWorkoutModel =

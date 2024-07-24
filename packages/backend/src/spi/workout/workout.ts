@@ -29,5 +29,5 @@ export interface WorkoutService {
 
   getSessionsByWorkoutPlan(workoutPlanId: number): Promise<Workout[]>;
 
-  getAll();
+  getAll(): Promise<DetailedWorkoutModel[]>;
 }

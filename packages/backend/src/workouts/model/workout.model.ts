@@ -128,9 +128,7 @@ export class Workout {
         this._exerciseSets.length > 0
           ? this.mapExerciseSets(this._exerciseSets)
           : [],
-      session: {
-        id: this._workoutSession.id ?? null,
-      },
+      session: this._workoutSession ? { id: this._workoutSession.id } : null,
     };
   }
 

@@ -135,22 +135,6 @@ export class UsersService implements UserService {
     });
     return achievementMap;
   };
-  private getUserStatsFor = async (userId: number) => {
-    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
-    const sessionsStats = await this.getUserStatsSessionsFor(userId);
-    const achievements = await this.getUserAchievements(userId);
-
-    const stats: UserStatsModel = {
-      userId: userId,
-      maxWeight: weightLiftStats.maxWeight,
-      totalSessions: sessionsStats.totalSessions,
-      totalTrainingTime: sessionsStats.totalTrainingTime,
-      totalWeight: weightLiftStats.totalWeight,
-      achievements: achievements,
-    };
-
-    return stats;
-  };
 
   private getUserMetrics = async (userId: number) => {
     const [metrics] = await this.drizzleService.db
@@ -207,6 +191,23 @@ export class UsersService implements UserService {
 
     return newModel;
   };
+  private getUserStatsFor = async (userId: number) => {
+    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
+    const sessionsStats = await this.getUserStatsSessionsFor(userId);
+    const achievements = await this.getUserAchievements(userId);
+
+    const stats: UserStatsModel = {
+      userId: userId,
+      maxWeight: weightLiftStats.maxWeight,
+      totalSessions: sessionsStats.totalSessions,
+
+      totalTrainingTime: sessionsStats.totalTrainingTime,
+      totalWeight: weightLiftStats.totalWeight,
+      achievements: achievements,
+    };
+
+    return stats;
+  };
 
   private getUserStatsWeightLiftFor = async (userId: number) => {
     const [stats] = await this.drizzleService.db
@@ -216,8 +217,7 @@ export class UsersService implements UserService {
       })
       .from(UserStatsWeightLiftTable)
       .where(eq(UserStatsWeightLiftTable.userId, userId));
-
-    return stats;
+    return stats ?? { totalWeight: 0, maxWeight: 0 };
   };
   private getUserStatsSessionsFor = async (userId: number) => {
     const [stats] = await this.drizzleService.db
@@ -227,6 +227,11 @@ export class UsersService implements UserService {
       })
       .from(UserStatsSessionsTable)
       .where(eq(UserStatsSessionsTable.userId, userId));
-    return stats;
+    return (
+      stats ?? {
+        totalSessions: 0,
+        totalTrainingTime: 0,
+      }
+    );
   };
 }

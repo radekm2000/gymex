@@ -62,9 +62,9 @@ export class WorkoutFinishedEventUpdateStatsHandler extends WorkoutFinishedEvent
     const {
       userId,
       totalWeight,
-      maxWeight,
-      sessionAmount,
       totalTrainingTimeInSecs,
+      sessionAmount,
+      maxWeight,
     } = payload;
     await this.handleSafely(async () => {
       await this.updateStatsWeightFor(userId, totalWeight, maxWeight);
@@ -97,13 +97,11 @@ export class WorkoutFinishedEventUpdateStatsHandler extends WorkoutFinishedEvent
       })
       .from(UserStatsWeightLiftTable)
       .where(eq(UserStatsWeightLiftTable.userId, userId));
-
-    const currentMaxWeight = result.maxWeight ?? 0;
-    const currentTotalWeight = result.totalWeight ?? 0;
+    const currentMaxWeight = result?.maxWeight ?? 0;
+    const currentTotalWeight = result?.totalWeight ?? 0;
 
     const updatedTotalWeight = currentTotalWeight + totalWeight;
     const updatedMaxWeight = Math.max(currentMaxWeight, maxWeight);
-
     if (result) {
       await this.drizzle.db
         .update(UserStatsWeightLiftTable)
