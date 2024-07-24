@@ -11,6 +11,7 @@ import { MusclesModule } from './muscles/muscles.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { WorkoutEventsModule } from './workout-events/workout-events.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     MusclesModule,
     WorkoutSessionsModule,
     AchievementsModule,
+    WorkoutEventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

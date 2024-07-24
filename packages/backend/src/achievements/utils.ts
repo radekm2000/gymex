@@ -1,9 +1,9 @@
-import { ACHIEVEMENTS } from "./metadata";
-import { UserAchievementStatus, UserAchievementType } from "./types";
+import { ACHIEVEMENTS } from './metadata';
+import { UserAchievementStatus, UserAchievementType } from './types';
 
 export const getAchievementStatusForProgress = (
   type: UserAchievementType,
-  progress: number
+  progress: number,
 ): UserAchievementStatus => {
   const { requiredProgress } = ACHIEVEMENTS[type];
   if (requiredProgress) {

@@ -11,10 +11,10 @@ import {
   WorkoutFinishedPayload,
 } from 'src/events/constants/events';
 import { WorkoutFinishedEventEventHandlerBase } from './base';
-import { UserAchievementType } from '@gymex/commons/src/achievements/types';
-import { UsersService } from 'src/users/users.service';
 import { AchievementsService } from 'src/achievements/achievements.service';
 import { UserStatsModel } from 'src/users/user.types';
+import { UserService } from 'src/spi/user/user';
+import { UserAchievementType } from 'src/achievements/types';
 
 const ACHIEVEMENTS: {
   type: UserAchievementType;
@@ -51,7 +51,7 @@ export class WorkoutFinishedEventUpdateStatsHandler extends WorkoutFinishedEvent
 
   constructor(
     private readonly drizzle: DrizzleService,
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
     private readonly achievementsService: AchievementsService,
   ) {
     super();
@@ -73,13 +73,13 @@ export class WorkoutFinishedEventUpdateStatsHandler extends WorkoutFinishedEvent
         sessionAmount,
         totalTrainingTimeInSecs,
       );
-      const userStatsModel = await this.usersService.getUserStatsFor(userId);
+      const model = await this.usersService.getDetailedUserModelFor(userId);
 
       const achievementProgress = Object.fromEntries(
-        ACHIEVEMENTS.map(({ type, fn }) => [type, fn(userStatsModel)]),
+        ACHIEVEMENTS.map(({ type, fn }) => [type, fn(model.stats)]),
       );
       await this.achievementsService.updateAchievementsFor(
-        userId,
+        model,
         achievementProgress,
       );
     });

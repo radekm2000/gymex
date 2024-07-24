@@ -1,4 +1,4 @@
-import { UserAchievementStatus } from '@gymex/commons/src/achievements/types';
+import { UserAchievementStatus } from 'src/achievements/types';
 import {
   UserDiscordConnections,
   UsersMetricsTable,
@@ -24,7 +24,7 @@ export type DetailedUserModel = {
   user: UserModel;
   metrics: Omit<UserMetricsModel, 'userId'>;
   discordConnection: Omit<UserDiscordModel, 'userId'>;
-  stats: Omit<UserStatsModel, 'userId'>;
+  stats: UserStatsModel;
 };
 
 export const initUserMetrics: UserMetricsModel = {
@@ -66,6 +66,7 @@ export const initDetailedUserModel: DetailedUserModel = {
     height: '',
   },
   stats: {
+    userId: 0,
     maxWeight: 0,
     totalSessions: 0,
     totalTrainingTime: 0,

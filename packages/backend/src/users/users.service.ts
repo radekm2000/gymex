@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DiscordProfile, UpdateUserDto } from './dto/users.dto';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import {
+  UserAchievementsTable,
   UserDiscordConnections,
   UsersMetricsTable,
   UsersTable,
@@ -9,12 +10,14 @@ import {
   UserStatsWeightLiftTable,
 } from 'src/db/schema/users';
 import { eq } from 'drizzle-orm';
-import { DetailedUserModel, UserModel } from './user.types';
-import { User, UserStatsModel } from './user.model';
+import { DetailedUserModel, UserModel, UserStatsModel } from './user.types';
 import { UserService } from 'src/spi/user/user';
-import { UserAchievementType } from '@gymex/commons/src/achievements/types';
-import { getAchievementStatusForProgress } from '@gymex/commons/src/achievements/utils';
-
+import {
+  UserAchievementStatus,
+  UserAchievementType,
+} from 'src/achievements/types';
+import { User } from './user.model';
+import { getAchievementStatusForProgress } from 'src/achievements/utils';
 @Injectable()
 export class UsersService implements UserService {
   constructor(private readonly drizzleService: DrizzleService) {}
@@ -22,7 +25,6 @@ export class UsersService implements UserService {
   public createUser = async (profile: DiscordProfile): Promise<UserModel> => {
     // it returns array so we put our new user in array to pass it later like newUser.id
     // instead of newUser[0].id
-
     const [newUser] = await this.drizzleService.db
       .insert(UsersTable)
       .values({
@@ -30,7 +32,6 @@ export class UsersService implements UserService {
         role: 'User',
       })
       .returning();
-
     await this.drizzleService.db.insert(UserDiscordConnections).values({
       userId: newUser.id,
       discordId: profile.id,
@@ -66,33 +67,15 @@ export class UsersService implements UserService {
     return undefined;
   };
 
-  public findUserById = async (userId: number): Promise<UserModel> => {
+  private findUserModelBaseById = async (
+    userId: number,
+  ): Promise<UserModel> => {
     const [user] = await this.drizzleService.db
       .select()
       .from(UsersTable)
       .where(eq(UsersTable.id, userId));
 
     return user;
-  };
-
-  public getDetailedUserInfo = async (userId: number) => {
-    const user = await this.findUserById(userId);
-
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
-
-    const [discordConnection] = await this.drizzleService.db
-      .select()
-      .from(UserDiscordConnections)
-      .where(eq(UserDiscordConnections.userId, userId));
-
-    const [metrics] = await this.drizzleService.db
-      .select()
-      .from(UsersMetricsTable)
-      .where(eq(UsersMetricsTable.userId, userId));
-
-    return User.from(user, metrics, discordConnection).detailedUserModel;
   };
 
   public updateUserMetricsAndOptionalUsername = async (
@@ -136,26 +119,40 @@ export class UsersService implements UserService {
       }
     });
   };
-  public getUserStatsFor = async (userId: number) => {
-    const userModelBase = await this.findUserById(userId);
+
+  private getUserAchievements = async (userId: number) => {
+    const achievements = await this.drizzleService.db
+      .select()
+      .from(UserAchievementsTable)
+      .where(eq(UserAchievementsTable.userId, userId));
+    const achievementMap: Record<string, UserAchievementStatus> = {};
+
+    achievements.forEach((a) => {
+      achievementMap[a.achievementId] = {
+        unlocked: a.isUnlocked,
+        progress: a.progress,
+      };
+    });
+    return achievementMap;
+  };
+  private getUserStatsFor = async (userId: number) => {
     const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
     const sessionsStats = await this.getUserStatsSessionsFor(userId);
-    // const achievements = await this.drizzleService.db
-    //   .select()
-    //   .from(UserAchievementsTable)
-    //   .where(eq(UserAchievementsTable.userId, userId));
+    const achievements = await this.getUserAchievements(userId);
+
     const stats: UserStatsModel = {
       userId: userId,
       maxWeight: weightLiftStats.maxWeight,
       totalSessions: sessionsStats.totalSessions,
       totalTrainingTime: sessionsStats.totalTrainingTime,
       totalWeight: weightLiftStats.totalWeight,
+      achievements: achievements,
     };
 
     return stats;
   };
 
-  public getUserMetrics = async (userId: number) => {
+  private getUserMetrics = async (userId: number) => {
     const [metrics] = await this.drizzleService.db
       .select()
       .from(UsersMetricsTable)
@@ -174,9 +171,9 @@ export class UsersService implements UserService {
   public getDetailedUserModelFor = async (
     userId: number,
   ): Promise<DetailedUserModel> => {
-    const userModelBase = await this.findUserById(userId);
+    const userModelBase = await this.findUserModelBaseById(userId);
     const userMetrics = await this.getUserMetrics(userId);
-    const stats = await this.getUserStats(userId);
+    const stats = await this.getUserStatsFor(userId);
     const discordConnection = await this.getUserDiscordConnection(userId);
     return User.from(userModelBase, userMetrics, discordConnection, stats)
       .detailedUserModel;
@@ -209,20 +206,6 @@ export class UsersService implements UserService {
     }
 
     return newModel;
-  };
-
-  public getUserStats = async (userId: number) => {
-    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
-    const sessionsStats = await this.getUserStatsSessionsFor(userId);
-
-    const stats: UserStatsModel = {
-      userId: userId,
-      maxWeight: weightLiftStats.maxWeight,
-      totalSessions: sessionsStats.totalSessions,
-      totalTrainingTime: sessionsStats.totalTrainingTime,
-      totalWeight: weightLiftStats.totalWeight,
-    };
-    return stats;
   };
 
   private getUserStatsWeightLiftFor = async (userId: number) => {

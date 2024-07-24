@@ -61,7 +61,7 @@ export const UserDiscordConnections = pgTable('user_discord_connections', {
 export const UserAchievementsTable = pgTable(
   'user_achievements',
   {
-    achievementId: serial('achievement_id').notNull(),
+    achievementId: text('achievement_id').notNull(),
     userId: serial('user_id')
       .references(() => UsersTable.id, {
         onDelete: 'cascade',

@@ -1,8 +1,9 @@
-import { UserAchievementType } from '@gymex/commons/src/achievements/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { UserAchievementsTable } from 'src/db/schema/users';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
-import { UsersService } from 'src/users/users.service';
+import { DetailedUserModel } from 'src/users/user.types';
+import { UserAchievementType } from './types';
+import { UserService } from 'src/spi/user/user';
 
 type AchievementsInsert = typeof UserAchievementsTable.$inferInsert;
 
@@ -12,7 +13,7 @@ export class AchievementsService {
 
   constructor(
     private readonly drizzle: DrizzleService,
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
   ) {
     this.logger = new Logger(AchievementsService.name);
   }
@@ -32,12 +33,9 @@ export class AchievementsService {
   };
 
   public updateAchievementsFor = async (
-    userId: number,
+    detailedUserModel: DetailedUserModel,
     progress: Partial<Record<UserAchievementType, number>>,
   ) => {
-    const detailedUserModel =
-      await this.usersService.getDetailedUserModelFor(userId);
-
     const updated = this.usersService.updateUserModelAchievements(
       detailedUserModel,
       progress,
@@ -45,8 +43,8 @@ export class AchievementsService {
 
     for (const achievementId of Object.keys(progress)) {
       await this.upsert({
-        achievementId: Number(achievementId),
-        userId: userId,
+        achievementId: achievementId,
+        userId: detailedUserModel.user.id,
         isUnlocked: updated.stats.achievements[achievementId].unlocked,
         progress: updated.stats.achievements[achievementId].progress,
       });

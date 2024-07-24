@@ -33,7 +33,7 @@ export class UsersController {
   async getCurrentUserInfo(
     @CurrentUserId() userId: number,
   ): Promise<DetailedUserModel> {
-    return await this.userService.getDetailedUserInfo(userId);
+    return await this.userService.getDetailedUserModelFor(userId);
   }
 
   @UsePipes(new ZodValidationPipe(UpdateUserDtoSchema))

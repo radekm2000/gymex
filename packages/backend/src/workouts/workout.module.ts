@@ -9,6 +9,7 @@ import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { WorkoutFinishedEventUpdateStatsHandler } from 'src/events/handlers/workout-finished/update-stats';
 import { AchievementsModule } from 'src/achievements/achievements.module';
 import { UsersModule } from 'src/users/users.module';
+import { UserService } from 'src/spi/user/user';
 
 @Module({
   controllers: [WorkoutController],
@@ -16,7 +17,12 @@ import { UsersModule } from 'src/users/users.module';
   providers: [
     {
       provide: WorkoutService,
-      inject: [DrizzleService, WorkoutSessionsService, EventEmitter2],
+      inject: [
+        DrizzleService,
+        WorkoutSessionsService,
+        EventEmitter2,
+        UserService,
+      ],
       useFactory: (
         drizzle: DrizzleService,
         workoutSessionsService: WorkoutSessionsService,
@@ -30,7 +36,6 @@ import { UsersModule } from 'src/users/users.module';
       },
     },
     WorkoutSessionsService,
-    WorkoutFinishedEventUpdateStatsHandler,
   ],
   exports: [WorkoutService],
 })
