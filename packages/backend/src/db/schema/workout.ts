@@ -130,6 +130,8 @@ export const WorkoutExerciseSetsTable = pgTable(
     weight: text('weight').notNull().default('0'),
     rir: text('rir'),
     tempo: text('tempo'),
+    isStaticSet: boolean('is_static_set'),
+    holdSecs: text('hold_secs'),
   },
   (table) => ({
     workoutExerciseIndex: index(

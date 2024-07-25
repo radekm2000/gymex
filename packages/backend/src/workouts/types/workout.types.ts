@@ -56,6 +56,8 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
           userId: -1,
           weight: '0',
           workoutSessionId: 0,
+          holdSecs: '0',
+          isStaticSet: false,
         },
       ],
     },
@@ -72,6 +74,8 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       workoutPlanId: -1,
       userId: -1,
       workoutSessionId: 0,
+      holdSecs: '0',
+      isStaticSet: false,
     },
   ],
   session: {

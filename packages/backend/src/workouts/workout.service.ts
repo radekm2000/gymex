@@ -187,7 +187,6 @@ export class WorkoutsService implements WorkoutService {
       )
       .limit(1)
       .orderBy(desc(WorkoutSessionsTable.finishedAt));
-
     if (!previousWorkoutSession) {
       return this.getDetailedWorkoutModelWithoutSession(workoutPlanId);
     }
@@ -265,6 +264,11 @@ export class WorkoutsService implements WorkoutService {
         .select()
         .from(WorkoutPlansTable)
         .where(eq(WorkoutPlansTable.id, workoutPlanId));
+
+      const [workoutSession] = await tx
+        .select()
+        .from(WorkoutSessionsTable)
+        .where(eq(WorkoutSessionsTable.id, workoutSessionId));
       //these queries will return all exercises in workout plan including ones that were not included in previous workout session so we dont want them for now
 
       // const workoutExercises = await tx
@@ -328,6 +332,7 @@ export class WorkoutsService implements WorkoutService {
         workout,
         exercisesWithSetsFromPreviousSession.map((e) => e.exercise),
         flattenExerciseSets,
+        workoutSession,
       ).detailedWorkoutModel;
     });
   };

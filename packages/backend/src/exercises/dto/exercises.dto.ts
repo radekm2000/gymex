@@ -23,6 +23,8 @@ const ExerciseSetSchema = z.object({
   weight: z.string().default('0'),
   rir: z.string().optional(),
   tempo: z.string().optional(),
+  isStaticSet: z.boolean().optional(),
+  holdSecs: z.string().optional(),
 });
 
 export type ExerciseSetDto = z.infer<typeof ExerciseSetSchema>;
