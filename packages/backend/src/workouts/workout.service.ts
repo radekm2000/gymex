@@ -24,6 +24,10 @@ import {
   WorkoutEvents,
   WorkoutFinishedPayload,
 } from 'src/events/constants/events';
+import { ExerciseService } from 'src/spi/exercise/exercise';
+import { Chart } from 'src/exercises/chart/chart.model';
+
+// TODO assign userId  to creatorId when retrieveing workouts
 
 @Injectable()
 export class WorkoutsService implements WorkoutService {
@@ -31,6 +35,7 @@ export class WorkoutsService implements WorkoutService {
     private readonly drizzleService: DrizzleService,
     private readonly workoutSessionsService: WorkoutSessionsService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly exerciseService: ExerciseService,
   ) {}
 
   public createWorkoutWithExercises = async (
@@ -489,5 +494,12 @@ export class WorkoutsService implements WorkoutService {
       ),
     );
     return detailedSessions;
+  };
+
+  public getChartModel = async (exerciseId: number, workoutPlanId: number) => {
+    const exercise = await this.exerciseService.findExerciseById(exerciseId);
+    const workoutModels = await this.getSessionsByWorkoutPlan(workoutPlanId);
+
+    return Chart.from(exercise, workoutModels).chartData;
   };
 }

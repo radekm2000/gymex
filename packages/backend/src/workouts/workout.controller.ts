@@ -85,4 +85,13 @@ export class WorkoutController {
   ) {
     return this.workoutService.getSessionsByWorkoutPlan(workoutPlanId);
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get(':workoutPlanId/exercises/:exerciseId/generate-chart')
+  async generateChartDataFor(
+    @Param('exerciseId', ParseIntPipe) exerciseId: number,
+    @Param('workoutPlanId', ParseIntPipe) workoutPlanId: number,
+  ) {
+    return this.workoutService.getChartModel(exerciseId, workoutPlanId);
+  }
 }

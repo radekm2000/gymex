@@ -12,4 +12,6 @@ export interface ExerciseService {
   ): Promise<ExerciseModel>;
 
   getAll(): Promise<ExerciseModel[]>;
+
+  findExerciseById(exerciseId: number): Promise<ExerciseModel>;
 }
