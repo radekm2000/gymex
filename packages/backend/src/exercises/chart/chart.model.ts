@@ -7,7 +7,7 @@ import {
 export type ChartData = {
   finishedAt: Date;
   maxWeight: number;
-} | null;
+};
 
 export class Chart {
   constructor(

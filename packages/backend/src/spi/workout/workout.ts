@@ -34,6 +34,6 @@ export interface WorkoutService {
 
   getChartModel(
     exerciseId: number,
-    workoutPlanId: number,
+    workoutPlanId?: number,
   ): Promise<ChartData[]>;
 }

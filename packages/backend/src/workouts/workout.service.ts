@@ -496,10 +496,25 @@ export class WorkoutsService implements WorkoutService {
     return detailedSessions;
   };
 
-  public getChartModel = async (exerciseId: number, workoutPlanId: number) => {
+  public getChartModel = async (exerciseId: number, workoutPlanId?: number) => {
     const exercise = await this.exerciseService.findExerciseById(exerciseId);
-    const workoutModels = await this.getSessionsByWorkoutPlan(workoutPlanId);
 
+    const workoutModels: Workout[] = [];
+
+    if (workoutPlanId) {
+      const models = await this.getSessionsByWorkoutPlan(workoutPlanId);
+      workoutModels.push(...models);
+    } else {
+      const allWorkouts = await this.getAll();
+      const baseWorkouts = allWorkouts.map((w) => w.workout);
+      const models = await Promise.all(
+        baseWorkouts.map(
+          async (w) => await this.getSessionsByWorkoutPlan(w.id),
+        ),
+      );
+      const flattenModels = models.flat();
+      workoutModels.push(...flattenModels);
+    }
     return Chart.from(exercise, workoutModels).chartData;
   };
 }

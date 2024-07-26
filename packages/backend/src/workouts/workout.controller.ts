@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -42,6 +43,22 @@ export class WorkoutController {
     @CurrentUserId() userId: number,
   ): Promise<DetailedWorkoutModel> {
     return await this.workoutService.createWorkoutWithExercises(dto, userId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('exercises/:exerciseId/generate-chart')
+  async generateChartDataFor(
+    @Param('exerciseId', ParseIntPipe) exerciseId: number,
+    @Query('workoutPlanId') workoutPlanId?: string, // we cant parse pipe workoutPlanId if it is optional otherwise when we dont pass it into url we get error
+    //     "message": "Validation failed (numeric string is expected)",
+  ) {
+    if (workoutPlanId) {
+      return this.workoutService.getChartModel(
+        exerciseId,
+        Number(workoutPlanId),
+      );
+    }
+    return this.workoutService.getChartModel(exerciseId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -84,14 +101,5 @@ export class WorkoutController {
     @Param('workoutPlanId', ParseIntPipe) workoutPlanId: number,
   ) {
     return this.workoutService.getSessionsByWorkoutPlan(workoutPlanId);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Get(':workoutPlanId/exercises/:exerciseId/generate-chart')
-  async generateChartDataFor(
-    @Param('exerciseId', ParseIntPipe) exerciseId: number,
-    @Param('workoutPlanId', ParseIntPipe) workoutPlanId: number,
-  ) {
-    return this.workoutService.getChartModel(exerciseId, workoutPlanId);
   }
 }
