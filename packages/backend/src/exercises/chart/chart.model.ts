@@ -7,6 +7,7 @@ import {
 export type ChartData = {
   finishedAt: Date;
   maxWeight: number;
+  averageWeight: number;
 };
 
 export class Chart {
@@ -36,6 +37,17 @@ export class Chart {
     return Math.max(...exerciseSets.map((set) => Number(set.weight)));
   }
 
+  private calculateAverageWeightAtSession(
+    exerciseSets: WorkoutExerciseSetsModel[],
+  ) {
+    const totalWeight = exerciseSets.reduce(
+      (acc, set) => acc + Number(set.weight),
+      0,
+    );
+
+    return totalWeight / exerciseSets.length;
+  }
+
   private filterOutExerciseAndExerciseSets() {
     return this._workoutModels
       .map((m) => {
@@ -49,10 +61,13 @@ export class Chart {
         }
         const finishedAt = m.session.finishedAt;
         const maxWeight = this.calculateTheBiggestWeightAtSession(exerciseSets);
+        const averageWeight =
+          this.calculateAverageWeightAtSession(exerciseSets);
 
         return {
           finishedAt,
           maxWeight,
+          averageWeight,
         };
       })
       .filter((result) => result !== null);

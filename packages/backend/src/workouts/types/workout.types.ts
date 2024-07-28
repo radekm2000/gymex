@@ -29,6 +29,12 @@ export type DetailedWorkoutModel = {
   };
 };
 
+export const defaultWorkoutModel: WorkoutModel = {
+  createdAt: new Date('2024-01-01T00:00:00Z'),
+  creatorId: 0,
+  id: 0,
+  name: 'workout',
+};
 export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   workout: {
     name: '',

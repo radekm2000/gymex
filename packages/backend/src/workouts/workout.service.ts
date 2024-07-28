@@ -6,9 +6,8 @@ import {
   ExerciseModel,
   WorkoutExerciseSetsModel,
 } from './types/workout.types';
-import { and, desc, eq, isNull } from 'drizzle-orm';
+import { and, desc, eq, ExtractTablesWithRelations, isNull } from 'drizzle-orm';
 
-import { DrizzleService } from 'src/drizzle/drizzle.service';
 import {
   ExercisesTable,
   WorkoutExerciseSetsTable,
@@ -26,6 +25,9 @@ import {
 } from 'src/events/constants/events';
 import { ExerciseService } from 'src/spi/exercise/exercise';
 import { Chart } from 'src/exercises/chart/chart.model';
+import { PgTransaction } from 'drizzle-orm/pg-core';
+import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
+import { DrizzleSchema, DrizzleService } from 'src/drizzle/drizzle.service';
 
 // TODO assign userId  to creatorId when retrieveing workouts
 
@@ -38,54 +40,78 @@ export class WorkoutsService implements WorkoutService {
     private readonly exerciseService: ExerciseService,
   ) {}
 
+  private createWorkoutPlanBase = async (
+    workoutName: string,
+    userId: number,
+    tx?: PgTransaction<
+      NodePgQueryResultHKT,
+      DrizzleSchema,
+      ExtractTablesWithRelations<DrizzleSchema>
+    >,
+  ) => {
+    const db = tx ? tx : this.drizzleService.db;
+    return await db
+      .insert(WorkoutPlansTable)
+      .values({
+        name: workoutName,
+        creatorId: userId,
+        createdAt: new Date(),
+      })
+      .returning();
+  };
+
+  private createWorkoutExercises = async (
+    workoutPlanId: number,
+    exerciseId: number,
+    orderIndex: number,
+    tx?: PgTransaction<
+      NodePgQueryResultHKT,
+      DrizzleSchema,
+      ExtractTablesWithRelations<DrizzleSchema>
+    >,
+  ) => {
+    const db = tx ? tx : this.drizzleService.db;
+    return await db
+      .insert(WorkoutExercisesTable)
+      .values({
+        workoutPlanId,
+        exerciseId,
+        orderIndex,
+      })
+      .returning();
+  };
+
   public createWorkoutWithExercises = async (
     dto: CreateWorkoutWithExercisesDto,
     userId: number,
   ): Promise<DetailedWorkoutModel> => {
     return await this.drizzleService.db.transaction(async (tx) => {
-      const [workoutPlan] = await tx
-        .insert(WorkoutPlansTable)
-        .values({
-          name: dto.workoutName,
-          creatorId: userId,
-        })
-        .returning();
+      const [workoutPlan] = await this.createWorkoutPlanBase(
+        dto.workoutName,
+        userId,
+      );
 
       const exercises: ExerciseModel[] = [];
       const allExerciseSets: WorkoutExerciseSetsModel[] = [];
-
       for (const exercise of dto.exercises) {
-        const [workoutExercise] = await tx
-          .insert(WorkoutExercisesTable)
-          .values({
-            workoutPlanId: workoutPlan.id,
-            exerciseId: exercise.id,
-            orderIndex: exercise.orderIndex,
-          })
-          .returning();
+        await this.createWorkoutExercises(
+          workoutPlan.id,
+          exercise.id,
+          exercise.orderIndex,
+        );
 
-        const [fullExercise] = await tx
-          .select()
-          .from(ExercisesTable)
-          .where(eq(ExercisesTable.id, exercise.id));
+        const fullExercise = await this.exerciseService.findExerciseById(
+          exercise.id,
+        );
 
         exercises.push(fullExercise);
 
-        const exerciseSets = await tx
-          .insert(WorkoutExerciseSetsTable)
-          .values(
-            exercise.sets.map((set) => ({
-              workoutPlanId: workoutPlan.id,
-              workoutExerciseId: workoutExercise.exerciseId,
-              exerciseSetNumber: set.exerciseSetNumber,
-              userId: userId,
-              reps: set.reps,
-              weight: set.weight,
-              rir: set.rir,
-              tempo: set.tempo,
-            })),
-          )
-          .returning();
+        const exerciseSets = await this.exerciseService.createExerciseSets(
+          userId,
+          workoutPlan.id,
+          exercise,
+          tx,
+        );
 
         allExerciseSets.push(...exerciseSets);
       }
@@ -101,14 +127,8 @@ export class WorkoutsService implements WorkoutService {
     dto: AddExerciseToWorkoutDto,
     workoutSessionId?: number,
   ): Promise<DetailedWorkoutModel> => {
-    const [workoutPlan] = await this.drizzleService.db
-      .select()
-      .from(WorkoutPlansTable)
-      .where(eq(WorkoutPlansTable.id, workoutPlanId));
+    const workoutPlan = await this.getBaseWorkoutPlanById(workoutPlanId);
 
-    if (!workoutPlan) {
-      throw new HttpException('Workout plan not found', HttpStatus.NOT_FOUND);
-    }
     await this.drizzleService.db.transaction(async (tx) => {
       const [workoutExercise] = await tx
         .insert(WorkoutExercisesTable)

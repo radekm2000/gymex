@@ -1,11 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DrizzleService } from 'src/drizzle/drizzle.service';
-import { CreateExerciseDto } from './dto/exercises.dto';
+import { DrizzleSchema, DrizzleService } from 'src/drizzle/drizzle.service';
+import {
+  AddExerciseToWorkoutDto,
+  CreateExerciseDto,
+} from './dto/exercises.dto';
 import { ExerciseService } from 'src/spi/exercise/exercise';
-import { ExerciseModel } from 'src/workouts/types/workout.types';
-import { ExercisesTable } from 'src/db/schema/workout';
+import {
+  ExerciseModel,
+  WorkoutExerciseSetsModel,
+} from 'src/workouts/types/workout.types';
+import {
+  ExercisesTable,
+  WorkoutExerciseSetsTable,
+} from 'src/db/schema/workout';
 import { UserRoles } from 'src/auth/utils/RoleGuard';
-import { eq } from 'drizzle-orm';
+import { eq, ExtractTablesWithRelations } from 'drizzle-orm';
+import { PgTransaction } from 'drizzle-orm/pg-core';
+import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 
 @Injectable()
 export class ExercisesService implements ExerciseService {
@@ -35,6 +46,34 @@ export class ExercisesService implements ExerciseService {
 
   public getAll = async (): Promise<ExerciseModel[]> => {
     return await this.drizzle.db.select().from(ExercisesTable);
+  };
+
+  public createExerciseSets = async (
+    userId: number,
+    workoutPlanId: number,
+    exercise: AddExerciseToWorkoutDto,
+    tx?: PgTransaction<
+      NodePgQueryResultHKT,
+      DrizzleSchema,
+      ExtractTablesWithRelations<DrizzleSchema>
+    >,
+  ): Promise<WorkoutExerciseSetsModel[]> => {
+    const db = tx ? tx : this.drizzle.db;
+    return await db
+      .insert(WorkoutExerciseSetsTable)
+      .values(
+        exercise.sets.map((set) => ({
+          workoutPlanId: workoutPlanId,
+          workoutExerciseId: exercise.id,
+          exerciseSetNumber: set.exerciseSetNumber,
+          userId: userId,
+          reps: set.reps,
+          weight: set.weight,
+          rir: set.rir,
+          tempo: set.tempo,
+        })),
+      )
+      .returning();
   };
 
   public findExerciseById = async (
