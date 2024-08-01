@@ -6,6 +6,6 @@ export type AccessTokenRefreshResponse = {
 
 export const refreshAccessToken = async () => {
   const url = "/auth/refresh";
-  const response = await apiClient.post<AccessTokenRefreshResponse>(url);
+  const response = await apiClient.get<AccessTokenRefreshResponse>(url);
   return response.data.accessToken;
 };

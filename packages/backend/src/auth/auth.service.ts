@@ -46,7 +46,7 @@ export class AuthService {
       },
     );
 
-    return accessToken;
+    return { accessToken };
   };
 
   public generateRefreshTokenFor = async (userId: number): Promise<string> => {

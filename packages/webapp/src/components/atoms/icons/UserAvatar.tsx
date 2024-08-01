@@ -14,7 +14,7 @@ export const UserAvatar = ({
 
   return (
     <Avatar>
-      <AvatarImage src={url}></AvatarImage>
+      <AvatarImage className="h-20 rounded-full" src={url}></AvatarImage>
       <AvatarFallback>
         <LoadingProgress />
       </AvatarFallback>

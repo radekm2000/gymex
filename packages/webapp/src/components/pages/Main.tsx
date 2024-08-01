@@ -1,5 +1,4 @@
 import { useAuth } from "../../hooks/use-auth";
-import { DiscordIcon } from "../atoms/icons/DiscordIcon";
 import { UserAvatar } from "../atoms/icons/UserAvatar";
 import { DiscordSignInButton } from "../molecules/discord/DiscordSignInButton";
 

@@ -13,10 +13,12 @@ export type ExerciseModel = typeof ExercisesTable.$inferSelect;
 
 export type WorkoutSessionModel = typeof WorkoutSessionsTable.$inferSelect;
 
-export type WorkoutExerciseModel = typeof WorkoutExercisesTable.$inferSelect;
+export type WokoutExerciseModel = typeof WorkoutExercisesTable.$inferSelect;
 
 export type WorkoutExerciseSetsModel =
   typeof WorkoutExerciseSetsTable.$inferSelect;
+
+  
 
 export type DetailedWorkoutModel = {
   workout: WorkoutModel;

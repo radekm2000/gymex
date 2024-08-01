@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
     "composite": true,
-    "lib": ["ES2022"],
-    "module": "ESNext",
-    "target": "ES2022",
-    "outDir": "./dist",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "target": "ESNext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "module": "commonJS",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
-  "exclude": ["node_modules", "tests", "dist"],
-  "references": []
+  "include": ["src/*"],
+  "exclude": ["node_modules", "dist"]
 }
