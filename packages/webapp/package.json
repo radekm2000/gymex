@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@gymex/commons": "workspace:*",
     "@gymex/backend": "workspace:*",
+    "@gymex/commons": "workspace:*",
     "@mui/joy": "5.0.0-beta.48",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.48.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",

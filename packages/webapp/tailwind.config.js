@@ -38,6 +38,9 @@ export const theme = {
         DEFAULT: "#202020",
         dark: "#151515",
       },
+      secondary: {
+        customGray: "#898E87",
+      },
     },
     fontFamily: {
       display: "'Readex Pro', sans-serif",
