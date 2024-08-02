@@ -11,10 +11,12 @@ export const UserAvatar = ({
   discordAvatarId,
 }: UserAvatarProps) => {
   const url = `https://cdn.discordapp.com/avatars/${discordUserId}/${discordAvatarId}.png`;
-
+  if (!discordAvatarId || !discordUserId) {
+    return;
+  }
   return (
     <Avatar>
-      <AvatarImage className="h-20 rounded-full" src={url}></AvatarImage>
+      <AvatarImage className="h-11 rounded-full" src={url}></AvatarImage>
       <AvatarFallback>
         <LoadingProgress />
       </AvatarFallback>

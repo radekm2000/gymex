@@ -1,3 +1,4 @@
 export enum RoutePath {
-  Main = "/main",
+  MainPage = "/main",
+  Test = "/test",
 }
