@@ -22,7 +22,6 @@ export const useResponseOauthInterceptor = (axios: AxiosInstance) => {
           const accessToken = await refreshAccessToken();
           console.log(accessToken);
           if (accessToken) localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-          console.log(requestsToRetry);
           retryFailedRequests();
           return axios.request(config);
         } catch (accessTokenError) {
@@ -32,8 +31,6 @@ export const useResponseOauthInterceptor = (axios: AxiosInstance) => {
       }
     } else {
       return new Promise((resolve) => {
-        console.log(requestsToRetry);
-
         requestsToRetry.push(() => resolve(axios(config)));
       });
     }

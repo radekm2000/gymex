@@ -1,44 +1,18 @@
-import { Link, useLocation } from "wouter";
-import { RoutePath } from "../../constants/navigation";
-import {
-  Tooltip,
-  TooltipArrow,
-  TooltipContent,
-  TooltipPortal,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip";
-import { FadingTooltip } from "../atoms/tooltip/FadingTooltip";
+import { DesktopSidebar } from "../molecules/DesktopSidebar";
+import { useMediaQuery } from "usehooks-ts";
+import { MobileSidebar } from "../molecules/MobileSidebar";
 
-export const Sidebar = () => {
-  const [, navigate] = useLocation(); // Get the navigate function
+type Props = {
+  open: boolean;
+  onOpenChange: () => void;
+};
 
-  const handleNavigation = (url: string) => {
-    navigate(url); // Navigate to the URL
-  };
-  return (
-    <div className="h-full text-white border-r border-primary-light">
-      <div className="block p-4">
-        <FadingTooltip>
-          <span
-            onClick={() => handleNavigation(RoutePath.MainPage)}
-            className="block mb-2 hover:cursor-pointer"
-          >
-            main Page1233
-          </span>
-        </FadingTooltip>
-        <FadingTooltip tooltipText="test page">
-          <span
-            onClick={() => handleNavigation(RoutePath.Test)}
-            className="block mb-2 hover:cursor-pointer"
-          >
-            test Page
-          </span>
-        </FadingTooltip>
-        <Link href="/aaaaaaaa">
-          <span className="block mb-2">default Page</span>
-        </Link>
-      </div>
-    </div>
-  );
+export const Sidebar = ({ open, onOpenChange }: Props) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  if (isDesktop) {
+    return <DesktopSidebar />;
+  } else {
+    return <MobileSidebar open={open} onOpenChange={onOpenChange} />;
+  }
 };

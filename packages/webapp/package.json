@@ -14,6 +14,7 @@
     "@gymex/commons": "workspace:*",
     "@mui/joy": "5.0.0-beta.48",
     "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.48.0",
@@ -25,6 +26,7 @@
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.0",
     "wouter": "^3.3.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"

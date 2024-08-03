@@ -45,11 +45,6 @@ export const theme = {
     fontFamily: {
       display: "'Readex Pro', sans-serif",
     },
-    fontWeight: {
-      light: "300",
-      medium: "500",
-      hard: "700",
-    },
   },
 };
 // eslint-disable-next-line no-undef
