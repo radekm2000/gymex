@@ -17,7 +17,7 @@ export const MobileSidebar = ({ open, onOpenChange }: Props) => {
       <SheetTrigger asChild>
         <SheetContent
           hideClose={true}
-          className="h-full text-white border-r border-none bg-primary min-w-[200px] w-[200px] "
+          className="h-full p-0 text-white border-r border-none w-min bg-primary-dark"
           side={"left"}
         >
           <SheetDescription>
