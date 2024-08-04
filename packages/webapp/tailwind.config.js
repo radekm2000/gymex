@@ -39,6 +39,9 @@ export const theme = {
         dark: "#151515",
       },
       secondary: {
+        light: "#1684b3",
+        DEFAULT: "#146d96",
+        dark: "#164a64",
         customGray: "#898E87",
       },
     },
