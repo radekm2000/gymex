@@ -24,7 +24,7 @@ export const TopBar = ({ currentUrlLocation, toggleSheet }: Props) => {
       <div className="md:hidden">
         <HamburgerMenu toggleSheet={toggleSheet} />
       </div>
-      <div className="mr-2">
+      <div className="mr-4">
         {avatar && discordId ? (
           <UserAvatar discordAvatarId={avatar} discordUserId={discordId} />
         ) : (

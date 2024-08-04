@@ -4,7 +4,7 @@ import { DiscordSignInButton } from "../molecules/discord/DiscordSignInButton";
 
 export const Main = () => {
   return (
-    <div className="flex items-center gap-10 py-10 mx-10 bg-primary">
+    <div className="flex items-center justify-center gap-4 py-10 border rounded shadow-sm bg-primary border-primary-light">
       <h1 className="text-white">test123</h1>
       <DiscordSignInButton />
       <PrimaryButton
