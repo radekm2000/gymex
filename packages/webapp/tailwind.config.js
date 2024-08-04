@@ -44,6 +44,9 @@ export const theme = {
         dark: "#164a64",
         customGray: "#898E87",
       },
+      primaryButton: {
+        light: "#5d5d5d",
+      },
     },
     fontFamily: {
       display: "'Readex Pro', sans-serif",

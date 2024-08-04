@@ -10,7 +10,7 @@ export const SidebarLinks = () => {
   };
   return (
     <div className="flex flex-col p-4">
-      <FadingTooltip>
+      <FadingTooltip tooltipText="test123">
         <span
           onClick={() => handleNavigation(RoutePath.MainPage)}
           className="block mb-2 hover:cursor-pointer hover:bg-red-500"
