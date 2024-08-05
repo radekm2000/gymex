@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { RoutePath } from "../../../constants/navigation";
 import { useLocation } from "wouter";
 import { FadingTooltip } from "../tooltip/FadingTooltip";
@@ -26,7 +26,8 @@ export const SidebarLinkButton = ({
   })();
   if (isLogo) {
     return (
-      <Button size={'logo'}
+      <Button
+        size={"logo"}
         className={`opacity-100`}
         variant={isActive ? "active" : "none"}
         disabled={disabled}

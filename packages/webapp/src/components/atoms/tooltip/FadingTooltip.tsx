@@ -20,7 +20,7 @@ export const FadingTooltip = ({
   tooltipPlacement = "right",
 }: Props) => {
   return (
-    <TooltipProvider>
+    <TooltipProvider disableHoverableContent={true}>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipPortal>
