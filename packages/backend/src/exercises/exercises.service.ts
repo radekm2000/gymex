@@ -14,7 +14,7 @@ import {
   WorkoutExerciseSetsTable,
 } from 'src/db/schema/workout';
 import { UserRoles } from 'src/auth/utils/RoleGuard';
-import { eq, ExtractTablesWithRelations } from 'drizzle-orm';
+import { and, eq, ExtractTablesWithRelations } from 'drizzle-orm';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 
@@ -46,6 +46,13 @@ export class ExercisesService implements ExerciseService {
 
   public getAll = async (): Promise<ExerciseModel[]> => {
     return await this.drizzle.db.select().from(ExercisesTable);
+  };
+
+  public getMyExercises = async (userId: number): Promise<ExerciseModel[]> => {
+    return await this.drizzle.db
+      .select()
+      .from(ExercisesTable)
+      .where(eq(ExercisesTable.userId, userId));
   };
 
   public createExerciseSets = async (
@@ -87,6 +94,19 @@ export class ExercisesService implements ExerciseService {
     if (!exercise) {
       throw new HttpException('Exercise not found', HttpStatus.NOT_FOUND);
     }
+    return exercise;
+  };
+
+  public deleteExerciseById = async (exerciseId: number, userId: number) => {
+    const [exercise] = await this.drizzle.db
+      .delete(ExercisesTable)
+      .where(
+        and(
+          eq(ExercisesTable.userId, userId),
+          eq(ExercisesTable.id, exerciseId),
+        ),
+      )
+      .returning();
     return exercise;
   };
 }

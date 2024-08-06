@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
+  Param,
+  ParseIntPipe,
   Post,
   UseGuards,
   UsePipes,
@@ -42,5 +45,20 @@ export class ExercisesController {
   @Get()
   async getExercises() {
     return await this.exerciseService.getAll();
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('/me')
+  async getMyExercises(@CurrentUserId() userId: number) {
+    return await this.exerciseService.getMyExercises(userId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete(':id')
+  async delete(
+    @CurrentUserId() userId: number,
+    @Param('id', ParseIntPipe) exerciseId: number,
+  ) {
+    return await this.exerciseService.deleteExerciseById(exerciseId, userId);
   }
 }

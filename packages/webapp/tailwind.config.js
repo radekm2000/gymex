@@ -39,7 +39,7 @@ export const theme = {
         dark: "#151515",
       },
       secondary: {
-        veryLight: '#4bbbe5',
+        veryLight: "#4bbbe5",
         light: "#1684b3",
         DEFAULT: "#146d96",
         dark: "#164a64",
@@ -47,6 +47,15 @@ export const theme = {
       },
       primaryButton: {
         light: "#5d5d5d",
+        delete: "#ab3737",
+      },
+      tertiary: {
+        light: "#f58b1a",
+        default: "#ee7411",
+      },
+      border: {
+        default: "rgb(40,40,40)",
+        dark: "rgb(32,32,32)",
       },
     },
     fontFamily: {

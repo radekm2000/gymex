@@ -23,6 +23,8 @@ export interface ExerciseService {
 
   getAll(): Promise<ExerciseModel[]>;
 
+  getMyExercises(userId: number): Promise<ExerciseModel[]>;
+
   findExerciseById(exerciseId: number): Promise<ExerciseModel>;
 
   createExerciseSets(
@@ -35,4 +37,9 @@ export interface ExerciseService {
       ExtractTablesWithRelations<DrizzleSchema>
     >,
   ): Promise<WorkoutExerciseSetsModel[]>;
+
+  deleteExerciseById(
+    exerciseId: number,
+    userId: number,
+  ): Promise<ExerciseModel>;
 }

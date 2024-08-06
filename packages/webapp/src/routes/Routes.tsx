@@ -17,6 +17,18 @@ const TestRoute = lazy(() =>
   }))
 );
 
+const ExercisesRoute = lazy(() =>
+  import("../components/pages/Exercises").then((module) => ({
+    default: module.Exercises,
+  }))
+);
+
+const MyExercisesRoute = lazy(() =>
+  import("../components/pages/MyExercises").then((module) => ({
+    default: module.MyExercises,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -28,6 +40,16 @@ export const Routes = () => {
       <Route path={RoutePath.Test}>
         <Suspense fallback={<LoadingProgress />}>
           <TestRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.Exercises}>
+        <Suspense fallback={<LoadingProgress />}>
+          <ExercisesRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.MyExercises}>
+        <Suspense fallback={<LoadingProgress />}>
+          <MyExercisesRoute />
         </Suspense>
       </Route>
       <Route>
