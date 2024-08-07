@@ -47,6 +47,7 @@ export const theme = {
       },
       primaryButton: {
         light: "#5d5d5d",
+        deleteLight: '#c04242',
         delete: "#ab3737",
       },
       tertiary: {

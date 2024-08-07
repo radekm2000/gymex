@@ -5,11 +5,14 @@ import {
 } from "../../api/requests/exercises";
 import { useAuth } from "../../hooks/use-auth";
 import { ExerciseLinks } from "../molecules/exercises/ExerciseLinks";
-import { useEffect, useState } from "react";
 import { LoadingProgress } from "../molecules/utils/LoadingProgress";
+import { Button } from "../ui/button";
+import { useLocation } from "wouter";
+import { RoutePath } from "../../constants/navigation";
 
 export const MyExercises = () => {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
 
   const { data: exercises, isLoading } = useQuery({
     queryKey: ExercisesQueryKeys.details(),
@@ -25,9 +28,12 @@ export const MyExercises = () => {
       <div className="w-full bg-white">
         {exercises && <ExerciseLinks exercises={exercises} />}
       </div>
-      <button className="w-full text-white rounded bg-secondary font-display">
+      <Button
+        onClick={() => setLocation(`${RoutePath.AddExercise}`)}
+        className="w-full text-sm"
+      >
         ADD EXERCISE
-      </button>
+      </Button>
     </div>
   );
 };

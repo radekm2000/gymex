@@ -22,7 +22,7 @@ export const SidebarLinkButton = ({
   const [location, setLocation] = useLocation();
 
   const isActive = (() => {
-    return path === location;
+    return path === location || (path && location.includes(path));
   })();
   if (isLogo) {
     return (

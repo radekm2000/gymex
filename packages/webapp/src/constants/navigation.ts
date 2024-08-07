@@ -3,4 +3,5 @@ export enum RoutePath {
   Test = "/test",
   Exercises = "/exercises",
   MyExercises = "/exercises/own",
+  AddExercise = "/exercises/own/add",
 }
