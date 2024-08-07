@@ -17,6 +17,9 @@ export const theme = {
     },
   },
   extend: {
+    padding: {
+      'custom': '8px 14px'
+    },
     keyframes: {
       "accordion-down": {
         from: { height: "0" },
@@ -47,12 +50,16 @@ export const theme = {
       },
       primaryButton: {
         light: "#5d5d5d",
-        deleteLight: '#c04242',
+        deleteLight: "#c04242",
         delete: "#ab3737",
       },
       tertiary: {
         light: "#f58b1a",
         default: "#ee7411",
+      },
+      textInput: {
+        light: '#d1d1d1',
+        default: "#888888",
       },
       border: {
         default: "rgb(40,40,40)",
