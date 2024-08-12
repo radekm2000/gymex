@@ -5,6 +5,20 @@ export type WorkoutModel = {
   creatorId: number;
 };
 
+export type PrimaryMuscleTargeted =
+  | "chest"
+  | "back"
+  | "legs"
+  | "shoulders"
+  | "bicep"
+  | "triceps"
+  | "abs"
+  | "calves"
+  | "cardio"
+  | "butt"
+  | "forearm"
+  | "base";
+
 export type ExerciseModel = {
   id: number;
   notes: string;
@@ -12,19 +26,7 @@ export type ExerciseModel = {
   restTime: string;
   userId: number;
   isDefault: boolean;
-  primaryMuscleTargeted:
-    | "chest"
-    | "back"
-    | "legs"
-    | "shoulders"
-    | "bicep"
-    | "triceps"
-    | "abs"
-    | "calves"
-    | "cardio"
-    | "butt"
-    | "forearm"
-    | "base";
+  primaryMuscleTargeted: PrimaryMuscleTargeted;
   isCreatorDeveloper: boolean;
 };
 

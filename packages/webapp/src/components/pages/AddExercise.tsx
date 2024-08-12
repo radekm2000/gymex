@@ -3,9 +3,12 @@ import { Card, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { PrimaryMuscleTargeted } from "@gymex/commons/src";
+import { PrimaryMuscleSelect } from "../atoms/exercises/PrimaryMuscleSelect";
 export const AddExercise = () => {
   const [exerciseName, setExerciseName] = useState("");
-  console.log(exerciseName);
+  const [primaryMuscleTargeted, setPrimaryMuscleTargeted] =
+    useState<PrimaryMuscleTargeted>("base");
   return (
     <Card>
       <CardTitle className="flex gap-4">
@@ -23,6 +26,9 @@ export const AddExercise = () => {
             id="exercise-name"
           />
         </div>
+        <PrimaryMuscleSelect primaryMuscleTargeted={primaryMuscleTargeted}
+          setPrimaryMuscleTargeted={setPrimaryMuscleTargeted}
+        />
       </div>
     </Card>
   );
