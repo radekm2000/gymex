@@ -74,3 +74,18 @@ export type DetailedWorkoutModel = {
     id: number;
   };
 };
+
+
+export const restTimeOptions = [
+  "30",
+  "45",
+  "60",
+  "90",
+  "120",
+  "150",
+  "180",
+  "240",
+  "300",
+] as const;
+
+export type RestTimeOptions = (typeof restTimeOptions)[number];

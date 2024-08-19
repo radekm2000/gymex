@@ -18,6 +18,7 @@ type Props = {
 };
 
 const primaryMuscleOptions: PrimaryMuscleTargeted[] = [
+  "base",
   "chest",
   "back",
   "legs",
@@ -29,7 +30,6 @@ const primaryMuscleOptions: PrimaryMuscleTargeted[] = [
   "cardio",
   "butt",
   "forearm",
-  "base",
 ];
 
 export const PrimaryMuscleSelect = ({
@@ -48,7 +48,7 @@ export const PrimaryMuscleSelect = ({
         <SelectTrigger>
           <SelectValue placeholder="Select primary muscle" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent >
           <SelectGroup>
             {primaryMuscleOptions.map((option, index) => (
               <SelectItem key={index} value={option}>

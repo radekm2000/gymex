@@ -17,6 +17,7 @@ import { UserRoles } from 'src/auth/utils/RoleGuard';
 import { and, eq, ExtractTablesWithRelations } from 'drizzle-orm';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
+import { User } from 'src/users/user.model';
 
 @Injectable()
 export class ExercisesService implements ExerciseService {
@@ -27,8 +28,6 @@ export class ExercisesService implements ExerciseService {
     userId: number,
     role: UserRoles.Admin | UserRoles.User,
   ): Promise<ExerciseModel> => {
-    const isDefault = role === UserRoles.Admin;
-
     const [exercise] = await this.drizzle.db
       .insert(ExercisesTable)
       .values({
@@ -36,7 +35,8 @@ export class ExercisesService implements ExerciseService {
         notes: dto.notes ?? '',
         primaryMuscleTargeted: dto.muscleTargeted,
         userId: userId,
-        isDefault: isDefault,
+        isCreatorDeveloper: role == UserRoles.Admin,
+        isDefault: dto.isDefault,
         restTime: dto.restTime,
       })
       .returning();

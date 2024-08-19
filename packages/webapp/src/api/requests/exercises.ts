@@ -1,5 +1,6 @@
 import { ExerciseModel } from "@gymex/commons/src";
 import { apiClient } from "../http-client";
+import { ExerciseCreateMutationParams } from "../mutations/exercises";
 
 export const ExercisesQueryKeys = {
   all: ["exercises"] as const,
@@ -18,5 +19,12 @@ export const deleteExercise = async (
   const response = await apiClient.delete<ExerciseModel>(
     `exercises/${exerciseId}`
   );
+  return response.data;
+};
+
+export const createExercise = async (
+  dto: ExerciseCreateMutationParams
+) => {
+  const response = await apiClient.post<ExerciseModel>("exercises/", dto);
   return response.data;
 };

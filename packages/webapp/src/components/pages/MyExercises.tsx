@@ -24,7 +24,7 @@ export const MyExercises = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="flex flex-col items-center justify-center gap-8 pb-8">
       <div className="w-full bg-white">
         {exercises && <ExerciseLinks exercises={exercises} />}
       </div>

@@ -14,7 +14,7 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
 
   return (
     <div className="flex flex-col items-start ">
-      <Button variant={'default'} className="w-32 h-32 border-1 border-primary-light" onClick={() => path && setLocation(path)}>
+      <Button variant={'default'} className="w-32 h-32 border-1 border-primary-light " onClick={() => path && setLocation(path)}>
         {icon}
       </Button>
       <span className="text-xl text-center text-white text font-display">
