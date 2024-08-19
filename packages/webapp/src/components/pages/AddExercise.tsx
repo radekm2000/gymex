@@ -6,11 +6,12 @@ import { useState } from "react";
 import { PrimaryMuscleTargeted, RestTimeOptions } from "@gymex/commons/src";
 import { PrimaryMuscleSelect } from "../atoms/exercises/PrimaryMuscleSelect";
 import { RestTimeSelect } from "../atoms/exercises/RestTimeSelect";
-import { Button } from "../ui/button";
 import { useIsAdmin } from "../../hooks/utils/isAdmin";
 import { useAuth } from "../../hooks/use-auth";
 import { IsDefaultExerciseSelect } from "../atoms/exercises/IsDefaultExerciseSelect";
 import { useExerciseCreateMutation } from "../../api/mutations/exercises";
+import { PrimaryButton } from "../atoms/inputs/PrimaryButton";
+
 export const AddExercise = () => {
   const [exerciseName, setExerciseName] = useState("");
   const [notes, setNotes] = useState("");
@@ -20,7 +21,6 @@ export const AddExercise = () => {
   const [isDefault, setIsDefault] = useState(false);
   const { user } = useAuth();
   const isAdmin = useIsAdmin(user.model);
-
   const createMutation = useExerciseCreateMutation();
 
   const onCreate = () => {
@@ -78,8 +78,13 @@ export const AddExercise = () => {
             setIsDefault={setIsDefault}
           />
         )}
-
-        <Button onClick={onCreate}>CREATE</Button>
+        <PrimaryButton
+          onClick={onCreate}
+          className="w-full"
+          buttonMessage="CREATE"
+          tooltipMessage="You have to fill exercise name first"
+          disabled={Boolean(!exerciseName)}
+        />
       </div>
     </Card>
   );

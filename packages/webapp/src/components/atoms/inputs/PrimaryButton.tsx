@@ -1,6 +1,6 @@
 import { useAuth } from "../../../hooks/use-auth";
 import { FadingTooltip } from "../tooltip/FadingTooltip";
-import { Button, ButtonProps } from "../../ui/button";
+import { Button } from "../../ui/button";
 import { ReactNode } from "react";
 
 type Props = {
@@ -9,6 +9,7 @@ type Props = {
   tooltipPlacement?: "right" | "top" | "bottom" | "left";
   buttonMessage?: string;
   buttonIcon?: ReactNode;
+  disabled?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const PrimaryButton = ({
@@ -17,6 +18,7 @@ export const PrimaryButton = ({
   tooltipPlacement = "top",
   buttonMessage = "testmesg",
   buttonIcon,
+  disabled,
   ...props
 }: Props) => {
   const { user } = useAuth();
@@ -31,29 +33,42 @@ export const PrimaryButton = ({
   const tooltipMsg = getTooltipMessage();
 
   if (tooltipMsg) {
-    return (
-      <FadingTooltip
-        tooltipText={tooltipMsg}
-        tooltipPlacement={tooltipPlacement}
-      >
-        <div className="block">
-          <Button
-            className="gap-3 p-4"
-            type="button"
-            disabled={disableOnNotAuthed && !user.model.user.id}
-            {...props}
-          >
-            {buttonIcon} {buttonMessage}
-          </Button>
-        </div>
-      </FadingTooltip>
-    );
+    if (disabled) {
+      return (
+        <FadingTooltip
+          tooltipText={tooltipMsg}
+          tooltipPlacement={tooltipPlacement}
+        >
+          <div className="block">
+            <Button
+              className="gap-3 p-4"
+              type="button"
+              disabled={(disableOnNotAuthed && !user.model.user.id) || disabled}
+              {...props}
+            >
+              {buttonIcon} {buttonMessage}
+            </Button>
+          </div>
+        </FadingTooltip>
+      );
+    } else {
+      return (
+        <Button
+          className="gap-3 p-4"
+          type="button"
+          disabled={(disableOnNotAuthed && !user.model.user.id) || disabled}
+          {...props}
+        >
+          {buttonIcon} {buttonMessage}
+        </Button>
+      );
+    }
   } else {
     return (
       <Button
         className="gap-3 p-4"
         type="button"
-        disabled={disableOnNotAuthed && !user.model.user.id}
+        disabled={(disableOnNotAuthed && !user.model.user.id) || disabled}
         {...props}
       >
         {buttonIcon} {buttonMessage}
