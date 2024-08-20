@@ -20,7 +20,7 @@ export const MobileSidebar = ({ open, onOpenChange }: Props) => {
           className="h-full p-0 text-white border-r border-none w-min bg-primary-dark"
           side={"left"}
         >
-          <SheetDescription>
+          <SheetDescription className="h-full">
             <SidebarLinks />
           </SheetDescription>
         </SheetContent>
