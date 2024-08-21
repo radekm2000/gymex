@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { RoutePath } from "../../../constants/navigation";
 import { useLocation } from "wouter";
 import { FadingTooltip } from "../tooltip/FadingTooltip";
@@ -10,7 +10,7 @@ type Props = {
   path?: RoutePath;
   disabled?: boolean;
   isLogo?: boolean;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SidebarLinkButton = ({
   name,
@@ -18,6 +18,7 @@ export const SidebarLinkButton = ({
   path,
   disabled,
   isLogo,
+  ...props
 }: Props) => {
   const [location, setLocation] = useLocation();
 
@@ -31,9 +32,14 @@ export const SidebarLinkButton = ({
         className={`opacity-100`}
         variant={isActive ? "active" : "none"}
         disabled={disabled}
+        {...props}
         onClick={() => {
           if (!disabled) {
-            path && setLocation(path);
+            if (path?.startsWith("http")) {
+              window.location.href = path;
+            } else {
+              path && setLocation(path);
+            }
           }
         }}
       >
@@ -48,6 +54,7 @@ export const SidebarLinkButton = ({
         className={` hover:bg-primary-light text-secondary-veryLight ${isActive ? "opacity-100" : "opacity-60"}`}
         variant={isActive ? "active" : "none"}
         disabled={disabled}
+        {...props}
         onClick={() => {
           if (!disabled) {
             path && setLocation(path);

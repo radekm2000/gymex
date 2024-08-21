@@ -32,16 +32,12 @@ export const SidebarLinks = () => {
       />
 
       <div className="pb-1 mt-auto">
-        <span className="">
-          <a href={RoutePath.Github} target="_blank" rel="noopener noreferrer">
-            <SidebarLinkButton
-              isLogo={true}
-              path={RoutePath.Github}
-              name="Github"
-              icon={<GithubIcon width={40} height={40} />}
-            />
-          </a>
-        </span>
+        <SidebarLinkButton
+          path={RoutePath.Github}
+          isLogo={true}
+          name="Github"
+          icon={<GithubIcon width={40} height={40} />}
+        />
       </div>
     </div>
   );
