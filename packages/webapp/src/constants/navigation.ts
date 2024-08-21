@@ -5,5 +5,6 @@ export enum RoutePath {
   MyExercises = "/exercises/own",
   AddExercise = "/exercises/own/add",
   TrainingPlans = "/training-plans",
-  Github = "https://github.com/radekm2000/gymex"
+  AddTrainingPlan = "/training-plans/add",
+  Github = "https://github.com/radekm2000/gymex",
 }

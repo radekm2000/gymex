@@ -27,3 +27,7 @@ export const finishWorkoutById = async (
   return response.data;
 };
 
+export const getWorkoutPlans = async () => {
+  const response = await apiClient.get<DetailedWorkoutModel[]>("/workouts");
+  return response.data;
+};

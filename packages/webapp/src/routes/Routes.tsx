@@ -35,6 +35,18 @@ const AddExerciseRoute = lazy(() =>
   }))
 );
 
+const TrainingPlansRoute = lazy(() =>
+  import("../components/pages/TrainingPlans").then((module) => ({
+    default: module.TrainingPlans,
+  }))
+);
+
+const AddTrainingPlanRoute = lazy(() =>
+  import("../components/pages/AddTrainingPlan").then((module) => ({
+    default: module.AddTrainingPlan,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -61,6 +73,16 @@ export const Routes = () => {
       <Route path={RoutePath.AddExercise}>
         <Suspense fallback={<LoadingProgress />}>
           <AddExerciseRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.TrainingPlans}>
+        <Suspense fallback={<LoadingProgress />}>
+          <TrainingPlansRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.AddTrainingPlan}>
+        <Suspense fallback={<LoadingProgress />}>
+          <AddTrainingPlanRoute />
         </Suspense>
       </Route>
       <Route>

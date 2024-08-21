@@ -11,6 +11,7 @@ import { useAuth } from "../../hooks/use-auth";
 import { IsDefaultExerciseSelect } from "../atoms/exercises/IsDefaultExerciseSelect";
 import { useExerciseCreateMutation } from "../../api/mutations/exercises";
 import { PrimaryButton } from "../atoms/inputs/PrimaryButton";
+import { LabeledInput } from "../atoms/inputs/LabeledInput";
 
 export const AddExercise = () => {
   const [exerciseName, setExerciseName] = useState("");
@@ -42,18 +43,11 @@ export const AddExercise = () => {
         Add exercise
       </CardTitle>
       <div className="flex flex-col gap-4 pt-3">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="exercise-name">Exercise name</Label>
-          <Input
-            value={exerciseName}
-            spellCheck={false}
-            autoComplete="off"
-            onChange={(e) => setExerciseName(e.target.value)}
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-            type="exercise-name"
-            id="exercise-name"
-          />
-        </div>
+        <LabeledInput
+          inputValue={exerciseName}
+          onInputValueChange={setExerciseName}
+          label="Exercise name"
+        />
 
         <PrimaryMuscleSelect
           primaryMuscleTargeted={primaryMuscleTargeted}
@@ -61,16 +55,11 @@ export const AddExercise = () => {
         />
         <RestTimeSelect restTime={restTime} setRestTime={setRestTime} />
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="exercise-name">Notes</Label>
-          <Input
-            value={notes}
-            spellCheck={false}
-            autoComplete="off"
-            onChange={(e) => setNotes(e.target.value)}
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-        </div>
+        <LabeledInput
+          label="Notes"
+          inputValue={notes}
+          onInputValueChange={setNotes}
+        />
 
         {isAdmin && (
           <IsDefaultExerciseSelect

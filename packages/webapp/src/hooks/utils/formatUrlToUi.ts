@@ -3,7 +3,13 @@ export const formatUrlToUi = (url: string) => {
 
   if (url.startsWith("/exercises/")) {
     const slashIndex = url.indexOf("/", 2);
-    return trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1, slashIndex - 1);
+    return (
+      trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1, slashIndex - 1)
+    );
+  } else if (url.startsWith("/training")) {
+    const firstPart = trimmedUrl.split("/")[0].replace("-", " ");
+    return firstPart.charAt(0).toUpperCase() + firstPart.slice(1).toLowerCase();
+  } else {
+    return trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1);
   }
-  return trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1);
 };
