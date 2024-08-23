@@ -14,7 +14,7 @@ const Layout = () => {
 
   return (
     <div className="flex h-dvh bg-primary-dark">
-      <div className="hidden md:block">
+      <div className="hidden md:block ">
         <Sidebar open={isSidebarOpen} onOpenChange={toggleSidebar} />
       </div>
       <div className={`flex flex-col flex-grow `}>

@@ -5,7 +5,7 @@ import { getWorkoutPlans, WorkoutQueryKeys } from "../../api/requests/workout";
 import { useAuth } from "../../hooks/use-auth";
 import { LoadingProgress } from "../molecules/utils/LoadingProgress";
 import { NotAuthed } from "./NotAuthed";
-import { PlansLinks } from "../molecules/training-plans/PlansLinks";
+import { TrainingPlansList } from "../molecules/training-plans/TrainingPlansList";
 import { Separator } from "../ui/separator";
 import { useLocation } from "wouter";
 import { RoutePath } from "../../constants/navigation";
@@ -17,7 +17,7 @@ export const TrainingPlans = () => {
   const { data: trainingPlans, isLoading } = useQuery({
     queryKey: WorkoutQueryKeys.all,
     queryFn: getWorkoutPlans,
-    enabled: false,
+    enabled: true,
   });
 
   const filteredTrainingPlans = trainingPlans?.filter(
@@ -47,16 +47,17 @@ export const TrainingPlans = () => {
           />
         </div>
       </CardTitle>
-      {filteredTrainingPlans && (
-        <PlansLinks trainingPlans={filteredTrainingPlans} />
-      )}
       <Separator />
-      <div className="flex items-center justify-center min-h-56">
-        <span className="text-center text-white font-display">
-          You don't have any training plans yet. Create one by clicking on the
-          green circle
-        </span>
-      </div>
+      {filteredTrainingPlans && filteredTrainingPlans.length > 0 ? (
+        <TrainingPlansList trainingPlans={filteredTrainingPlans} />
+      ) : (
+        <div className="flex items-center justify-center min-h-56">
+          <span className="text-center text-white font-display">
+            You don't have any training plans yet. Create one by clicking on the
+            green circle
+          </span>
+        </div>
+      )}
     </Card>
   );
 };

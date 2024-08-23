@@ -4,7 +4,7 @@ import { Label } from "../../ui/label";
 type Props = {
   label: string;
   inputValue: string;
-  onInputValueChange: React.Dispatch<React.SetStateAction<string>>;
+  onInputValueChange: (value: string) => void;
 };
 
 export const LabeledInput = ({

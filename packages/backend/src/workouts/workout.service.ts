@@ -481,7 +481,6 @@ export class WorkoutsService implements WorkoutService {
         await this.getDetailedWorkoutModelWithoutSession(workoutPlan.id);
       detailedWorkoutModels.push(detailedWorkoutModel);
     }
-
     return detailedWorkoutModels;
   };
 

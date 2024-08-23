@@ -1,7 +1,5 @@
 import { Info } from "lucide-react";
 import { Card, CardTitle } from "../ui/card";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import { useState } from "react";
 import { PrimaryMuscleTargeted, RestTimeOptions } from "@gymex/commons/src";
 import { PrimaryMuscleSelect } from "../atoms/exercises/PrimaryMuscleSelect";
