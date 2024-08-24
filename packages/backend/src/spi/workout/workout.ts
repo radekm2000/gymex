@@ -2,7 +2,10 @@ import { ChartData } from 'src/exercises/chart/chart.model';
 import { AddExerciseToWorkoutDto } from 'src/exercises/dto/exercises.dto';
 import { CreateWorkoutWithExercisesDto } from 'src/workouts/dto/workout.dto';
 import { Workout } from 'src/workouts/model/workout.model';
-import { DetailedWorkoutModel } from 'src/workouts/types/workout.types';
+import {
+  DetailedWorkoutModel,
+  WorkoutModel,
+} from 'src/workouts/types/workout.types';
 
 export const WorkoutService = Symbol('WorkoutService');
 
@@ -36,4 +39,6 @@ export interface WorkoutService {
     exerciseId: number,
     workoutPlanId?: number,
   ): Promise<ChartData[]>;
+
+  delete(workoutId: number, userId: number): Promise<WorkoutModel>;
 }

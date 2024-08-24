@@ -15,9 +15,9 @@ export const TrainingPlans = () => {
   const [, setLocation] = useLocation();
 
   const { data: trainingPlans, isLoading } = useQuery({
-    queryKey: WorkoutQueryKeys.all,
+    queryKey: WorkoutQueryKeys.details(),
     queryFn: getWorkoutPlans,
-    enabled: true,
+    enabled: !!user.model.user.id,
   });
 
   const filteredTrainingPlans = trainingPlans?.filter(

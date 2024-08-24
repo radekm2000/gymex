@@ -3,11 +3,13 @@ import { CreateWorkoutWithExercisesDto } from "@gymex/commons/";
 import {
   DetailedWorkoutModel,
   WorkoutCreateDtoSchemaWithoutExerciseName,
+  WorkoutModel,
 } from "@gymex/commons/src";
+
 export const WorkoutQueryKeys = {
   all: ["workouts"] as const,
   details: () => [...WorkoutQueryKeys.all, "detail"] as const,
-  detail: (id: string) => [WorkoutQueryKeys.details(), id] as const,
+  detail: (id: number) => [...WorkoutQueryKeys.details(), id] as const,
 };
 
 export const startWorkoutById = async (
@@ -39,5 +41,12 @@ export const createWorkoutPlan = async (
   dto: WorkoutCreateDtoSchemaWithoutExerciseName
 ): Promise<DetailedWorkoutModel> => {
   const response = await apiClient.post("workouts", dto);
+  return response.data;
+};
+
+export const deleteWorkoutPlan = async (workoutPlanId: number) => {
+  const response = await apiClient.delete<WorkoutModel>(
+    `workouts/${workoutPlanId}`
+  );
   return response.data;
 };

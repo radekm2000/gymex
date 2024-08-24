@@ -5,6 +5,7 @@ import {
   DetailedWorkoutModel,
   ExerciseModel,
   WorkoutExerciseSetsModel,
+  WorkoutModel,
 } from './types/workout.types';
 import { and, desc, eq, ExtractTablesWithRelations, isNull } from 'drizzle-orm';
 
@@ -469,6 +470,28 @@ export class WorkoutsService implements WorkoutService {
 
       return workout.detailedWorkoutModel;
     });
+  };
+
+  public delete = async (
+    workoutPlanId: number,
+    userId: number,
+  ): Promise<WorkoutModel> => {
+    const result = await this.drizzleService.db
+      .delete(WorkoutPlansTable)
+      .where(
+        and(
+          eq(WorkoutPlansTable.id, workoutPlanId),
+          eq(WorkoutPlansTable.creatorId, userId),
+        ),
+      )
+      .returning();
+    if (result.length === 0) {
+      throw new HttpException(
+        'Workout plan does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return result[0];
   };
 
   public getAll = async () => {

@@ -4,7 +4,6 @@ import { Info, SaveIcon } from "lucide-react";
 import { LabeledInput } from "../atoms/inputs/LabeledInput";
 import { PrimaryButton } from "../atoms/inputs/PrimaryButton";
 import {
-  ExerciseWithoutExerciseName,
   initialWorkout,
   WorkoutCreateDtoSchemaWithoutExerciseName,
   WorkoutCreateSchema,
@@ -14,6 +13,7 @@ import { useLocation } from "wouter";
 import { RoutePath } from "../../constants/navigation";
 import { useHistoryState } from "wouter/use-browser-location";
 import { useWorkoutPlanCreateMutation } from "../../api/mutations/workouts";
+import { TrainingExerciseList } from "../molecules/training-plans/TrainingExerciseList";
 
 export const AddTrainingPlan = () => {
   const [, setLocation] = useLocation();
@@ -79,13 +79,18 @@ export const AddTrainingPlan = () => {
           onInputValueChange={handleWorkoutNameChange}
         />
       </div>
-      <CardContent className="flex items-center justify-center pt-15">
+      <CardContent className="flex flex-col items-center justify-center pt-15">
         {workoutExercises.length < 0 && (
           <span className="text-white font-display">
             Add exercises to your training plan
           </span>
         )}
+
+        {workoutExercises && workoutExercises.length > 0 && (
+          <TrainingExerciseList exercises={workout.exercises} />
+        )}
         <Button
+          className="mt-10 ml-auto"
           onClick={() =>
             setLocation(RoutePath.MyExercises, {
               state: {
@@ -95,7 +100,7 @@ export const AddTrainingPlan = () => {
             })
           }
         >
-          click me
+          Add exercise
         </Button>
       </CardContent>
     </Card>

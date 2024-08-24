@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -32,7 +33,7 @@ export class WorkoutController {
 
   @Get()
   async getAllWorkouts() {
-    return this.workoutService.getAll();
+    return await this.workoutService.getAll();
   }
 
   @UseGuards(AccessTokenGuard)
@@ -53,12 +54,12 @@ export class WorkoutController {
     //     "message": "Validation failed (numeric string is expected)",
   ) {
     if (workoutPlanId) {
-      return this.workoutService.getChartModel(
+      return await this.workoutService.getChartModel(
         exerciseId,
         Number(workoutPlanId),
       );
     }
-    return this.workoutService.getChartModel(exerciseId);
+    return await this.workoutService.getChartModel(exerciseId);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -100,6 +101,15 @@ export class WorkoutController {
   async getWorkoutSessionsOfCertainWorkoutPlan(
     @Param('workoutPlanId', ParseIntPipe) workoutPlanId: number,
   ) {
-    return this.workoutService.getSessionsByWorkoutPlan(workoutPlanId);
+    return await this.workoutService.getSessionsByWorkoutPlan(workoutPlanId);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete(':workoutId')
+  async deleteWorkoutAlongWithSets(
+    @Param('workoutId', ParseIntPipe) workoutPlanId: number,
+    @CurrentUserId() userId: number,
+  ) {
+    return await this.workoutService.delete(workoutPlanId, userId);
   }
 }
