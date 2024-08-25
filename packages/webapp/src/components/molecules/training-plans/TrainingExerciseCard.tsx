@@ -9,8 +9,9 @@ import { DumbbellIcon, Trash2 } from "lucide-react";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { ExerciseSet, WorkoutCreateSchema } from "@gymex/commons/src";
-import { useState } from "react";
 import { Input } from "../../ui/input";
+import { CreateTrainingExerciseHeader } from "./CreateTrainingExerciseHeader";
+import { CreateTrainingExerciseSetsList } from "./CreateTrainingExerciseSetsList";
 
 type Props = {
   exerciseId: number;
@@ -74,9 +75,7 @@ export const TrainingExerciseCard = ({
           return {
             ...e,
             sets: e.sets.map((set) =>
-              set.exerciseSetNumber === setId
-                ? { ...set, reps: newReps, weight: "0" }
-                : set
+              set.exerciseSetNumber === setId ? { ...set, reps: newReps } : set
             ),
           };
         }
@@ -126,121 +125,25 @@ export const TrainingExerciseCard = ({
   return (
     exercise && (
       <Card className="flex flex-col gap-2 p-3 sm:p-4 bg-textInput-light">
-        <div className="flex items-center justify-start gap-6">
-          <div>
-            <DumbbellIcon className=" text-secondary-veryLight size-6 md:size-10" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl md:text-2xl font-display text-neutral-950">
-              {exercise.exerciseName}
-            </span>
-            <div className="flex">
-              <span className="text-sm text-textInput-default md:text-lg">
-                Muscle targeted:
-              </span>
-              &nbsp;
-              <span className="text-sm text-neutral-950 md:text-lg">
-                {exercise.primaryMuscleTargeted}
-              </span>
-            </div>
-            <div className="flex">
-              <span className="text-sm text-textInput-default md:text-lg">
-                Rest time:
-              </span>
-              &nbsp;
-              <span className="text-sm text-neutral-950 md:text-lg">
-                {exercise.restTime}
-              </span>
-            </div>
-          </div>
-          <div className="ml-auto ">
-            <Button
-              onClick={() => onDelete(exerciseId)}
-              variant={"destructive"}
-            >
-              <Trash2 className="size-6 md:size-10" />
-            </Button>
-          </div>
-        </div>
+        <CreateTrainingExerciseHeader
+          exerciseId={exerciseId}
+          exerciseName={exercise.exerciseName}
+          onDelete={onDelete}
+          primaryMuscleTargeted={exercise.primaryMuscleTargeted}
+          restTime={exercise.restTime}
+        />
         <div>
           <Separator />
         </div>
 
-        {exerciseFromWorkout.sets.map((set, index) => (
-          <>
-            <div className="flex items-center justify-start">
-              <div
-                className={`flex flex-col ${exerciseFromWorkout.sets.length > 1 ? "basis-11/12" : "flex-grow"}`}
-              >
-                {index === 0 && (
-                  <div className="flex items-center justify-between px-2 mb-2">
-                    <span className="text-sm text-neutral-950 md:text-lg">
-                      SETS
-                    </span>
-                    <span className="text-sm text-neutral-950 md:text-lg">
-                      WEIGHT
-                    </span>
-                    <span className="text-sm text-neutral-950 md:text-lg">
-                      REPS
-                    </span>
-                  </div>
-                )}
-
-                <div
-                  key={index}
-                  className="flex items-center justify-between flex-grow gap-4 p-1 rounded-lg bg-textInput-test"
-                >
-                  <span className="flex-shrink-0 ml-2 text-lg font-display text-neutral-950">
-                    {set.exerciseSetNumber}
-                  </span>
-                  <Input
-                    value={set.weight}
-                    onChange={(e) =>
-                      updateWeight(
-                        exerciseId,
-                        set.exerciseSetNumber,
-                        e.target.value
-                      )
-                    }
-                    className="w-12 text-center border-0 rounded-md bg-textInput-test focus-visible:ring-[none] text-neutral-950"
-                  />
-
-                  <Input
-                    value={set.reps}
-                    onChange={(e) =>
-                      updateReps(
-                        exerciseId,
-                        set.exerciseSetNumber,
-                        e.target.value
-                      )
-                    }
-                    className="w-12 text-center border-0 rounded-md bg-textInput-test focus-visible:ring-[none] text-neutral-950"
-                  />
-                </div>
-              </div>
-              {exerciseFromWorkout.sets.length > 1 &&
-                index === exerciseFromWorkout.sets.length - 1 && (
-                  <div className="flex-shrink-0 ml-auto">
-                    <Button
-                      onClick={() =>
-                        onSetDelete(exerciseId, set.exerciseSetNumber)
-                      }
-                      variant={"destructive"}
-                      className="p-1 md:p-2"
-                    >
-                      <Trash2 className="size-4 sm:size-6" />
-                    </Button>
-                  </div>
-                )}
-            </div>
-          </>
-        ))}
-        <Button
-          className="mt-3 ml-auto md:min-w-32"
-          onClick={() => onSetAdd(exerciseId)}
-        >
-          Add set
-        </Button>
+        <CreateTrainingExerciseSetsList
+          exerciseFromWorkout={exerciseFromWorkout}
+          exerciseId={exerciseId}
+          onSetAdd={onSetAdd}
+          onSetDelete={onSetDelete}
+          updateReps={updateReps}
+          updateWeight={updateWeight}
+        />
       </Card>
     )
   );

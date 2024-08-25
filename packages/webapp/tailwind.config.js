@@ -60,7 +60,7 @@ export const theme = {
       textInput: {
         light: "#d1d1d1",
         default: "#888888",
-        test: "#ededed",
+        exercisebg: "#ededed",
       },
       border: {
         default: "rgb(40,40,40)",
