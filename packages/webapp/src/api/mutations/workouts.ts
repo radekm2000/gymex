@@ -24,6 +24,7 @@ export const useWorkoutPlanCreateMutation = () => {
       toast.error(err.message);
     },
     onSuccess: (createdTrainingPlan: DetailedWorkoutModel) => {
+      console.log(createdTrainingPlan)
       setLocation(RoutePath.TrainingPlans);
       queryClient.setQueryData<DetailedWorkoutModel[]>(
         WorkoutQueryKeys.details(),

@@ -22,9 +22,14 @@ export const deleteExercise = async (
   return response.data;
 };
 
-export const createExercise = async (
-  dto: ExerciseCreateMutationParams
-) => {
+export const createExercise = async (dto: ExerciseCreateMutationParams) => {
   const response = await apiClient.post<ExerciseModel>("exercises/", dto);
+  return response.data;
+};
+
+export const getExerciseModel = async (exerciseId: number) => {
+  const response = await apiClient.get<ExerciseModel>(
+    `exercises/${exerciseId}`
+  );
   return response.data;
 };

@@ -18,7 +18,7 @@ export const theme = {
   },
   extend: {
     padding: {
-      'custom': '8px 14px'
+      custom: "8px 14px",
     },
     keyframes: {
       "accordion-down": {
@@ -58,8 +58,9 @@ export const theme = {
         default: "#ee7411",
       },
       textInput: {
-        light: '#d1d1d1',
+        light: "#d1d1d1",
         default: "#888888",
+        test: "#ededed",
       },
       border: {
         default: "rgb(40,40,40)",

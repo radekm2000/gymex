@@ -85,10 +85,15 @@ export const AddTrainingPlan = () => {
             Add exercises to your training plan
           </span>
         )}
-
-        {workoutExercises && workoutExercises.length > 0 && (
-          <TrainingExerciseList exercises={workout.exercises} />
-        )}
+        <div className="w-full mr-auto">
+          {workoutExercises && workoutExercises.length > 0 && (
+            <TrainingExerciseList
+            workout={workout}
+              setWorkout={setWorkout}
+              exercises={workout.exercises}
+            />
+          )}
+        </div>
         <Button
           className="mt-10 ml-auto"
           onClick={() =>

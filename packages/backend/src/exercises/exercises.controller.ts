@@ -54,6 +54,12 @@ export class ExercisesController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Get(':id')
+  async getExerciseById(@Param('id', ParseIntPipe) exerciseId: number) {
+    return await this.exerciseService.findExerciseById(exerciseId);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Delete(':id')
   async delete(
     @CurrentUserId() userId: number,
