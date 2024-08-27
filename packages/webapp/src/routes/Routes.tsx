@@ -47,6 +47,12 @@ const AddTrainingPlanRoute = lazy(() =>
   }))
 );
 
+const SpecificExercisesRoute = lazy(() =>
+  import("../components/pages/ExercisesSpecificMuscleGroup").then((module) => ({
+    default: module.ExercisesSpecificMuscleGroup,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -83,6 +89,11 @@ export const Routes = () => {
       <Route path={RoutePath.AddTrainingPlan}>
         <Suspense fallback={<LoadingProgress />}>
           <AddTrainingPlanRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.SpecificExercises}>
+        <Suspense fallback={<LoadingProgress />}>
+          <SpecificExercisesRoute />
         </Suspense>
       </Route>
       <Route>

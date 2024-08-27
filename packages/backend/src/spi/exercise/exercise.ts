@@ -42,4 +42,6 @@ export interface ExerciseService {
     exerciseId: number,
     userId: number,
   ): Promise<ExerciseModel>;
+
+  getDefaultExercises(): Promise<ExerciseModel[]>;
 }

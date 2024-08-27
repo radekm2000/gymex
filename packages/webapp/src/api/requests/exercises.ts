@@ -33,3 +33,8 @@ export const getExerciseModel = async (exerciseId: number) => {
   );
   return response.data;
 };
+
+export const getDefaultExercises = async () => {
+  const response = await apiClient.get<ExerciseModel[]>("exercises/default");
+  return response.data;
+};

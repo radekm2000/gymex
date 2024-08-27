@@ -58,7 +58,7 @@ export const AddTrainingPlan = () => {
     }
   };
   return (
-    <Card className="flex flex-col gap-2">
+    <Card className="flex flex-col gap-2 mb-6">
       <CardTitle className="flex gap-4">
         <Info />
         <span>Add plan</span>
@@ -88,7 +88,7 @@ export const AddTrainingPlan = () => {
         <div className="w-full mr-auto">
           {workoutExercises && workoutExercises.length > 0 && (
             <TrainingExerciseList
-            workout={workout}
+              workout={workout}
               setWorkout={setWorkout}
               exercises={workout.exercises}
             />
@@ -97,7 +97,7 @@ export const AddTrainingPlan = () => {
         <Button
           className="mt-10 ml-auto"
           onClick={() =>
-            setLocation(RoutePath.MyExercises, {
+            setLocation(RoutePath.Exercises, {
               state: {
                 mode: "addExerciseToTrainingPlan",
                 workout,

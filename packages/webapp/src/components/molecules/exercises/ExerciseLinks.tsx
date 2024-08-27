@@ -12,13 +12,13 @@ type Props = {
 };
 
 export const ExerciseLinks = ({ exercises }: Props) => {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const state = useHistoryState();
   //mode addExerciseToWorkoutPlan
   const mode = state?.mode;
   const workout: WorkoutCreateSchema = state?.workout;
 
-  console.log(workout);
+  const isMyExercisesPage = location === RoutePath.MyExercises;
 
   const deleteMutation = useExerciseDeleteMutation();
 
@@ -27,7 +27,6 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   };
 
   const handleAddExercise = (exercise: ExerciseModel) => {
-    console.log("clicked");
     if (mode === "addExerciseToTrainingPlan" && workout) {
       const updatedWorkout = {
         ...workout,
@@ -78,9 +77,11 @@ export const ExerciseLinks = ({ exercises }: Props) => {
                 <DumbbellIcon className=" text-secondary-veryLight" />
                 <span className="text-lg font-display">{e.exerciseName}</span>
               </div>
-              <Button onClick={() => onDelete(e.id)} variant={"destructive"}>
-                <Trash2 />
-              </Button>
+              {isMyExercisesPage && (
+                <Button onClick={() => onDelete(e.id)} variant={"destructive"}>
+                  <Trash2 />
+                </Button>
+              )}
             </div>
           ))}
         </div>

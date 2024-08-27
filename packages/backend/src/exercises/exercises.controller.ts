@@ -22,6 +22,7 @@ import {
   CreateExerciseDtoSchema,
 } from './dto/exercises.dto';
 import { RoleGuard, UserRoles } from 'src/auth/utils/RoleGuard';
+import { ExerciseModel } from 'src/workouts/types/workout.types';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -47,6 +48,11 @@ export class ExercisesController {
     return await this.exerciseService.getAll();
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Get('/default')
+  async getDefaultExercises(): Promise<ExerciseModel[]> {
+    return await this.exerciseService.getDefaultExercises();
+  }
   @UseGuards(AccessTokenGuard)
   @Get('/me')
   async getMyExercises(@CurrentUserId() userId: number) {
