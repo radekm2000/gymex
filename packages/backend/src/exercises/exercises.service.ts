@@ -52,7 +52,19 @@ export class ExercisesService implements ExerciseService {
     return await this.drizzle.db
       .select()
       .from(ExercisesTable)
-      .where(eq(ExercisesTable.userId, userId));
+      .where(
+        and(
+          eq(ExercisesTable.userId, userId),
+          eq(ExercisesTable.isDefault, false),
+        ),
+      );
+  };
+
+  public getDefaultExercises = async (): Promise<ExerciseModel[]> => {
+    return await this.drizzle.db
+      .select()
+      .from(ExercisesTable)
+      .where(eq(ExercisesTable.isDefault, true));
   };
 
   public createExerciseSets = async (
