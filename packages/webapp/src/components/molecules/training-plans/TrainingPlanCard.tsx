@@ -5,17 +5,17 @@ import { useWorkoutPlanDeleteMutation } from "../../../api/mutations/workouts";
 
 type Props = {
   trainingPlan: DetailedWorkoutModel;
+  onDelete: (id: number) => void;
+  onDeleteId: number;
 };
 
-export const TrainingPlanCard = ({ trainingPlan }: Props) => {
+export const TrainingPlanCard = ({
+  trainingPlan,
+  onDelete,
+  onDeleteId,
+}: Props) => {
   const totalExercises = trainingPlan.exercises.length;
   const trainingPlanName = trainingPlan.workout.name;
-
-  const deleteMutation = useWorkoutPlanDeleteMutation();
-
-  const onDelete = (workoutPlanId: number) => {
-    deleteMutation.mutate({ workoutPlanId });
-  };
 
   return (
     <Card className="flex items-center justify-between p-3 bg-opacity-50 cursor-pointer hover:bg-opacity-70 sm:p-4 bg-primary-dark">
@@ -28,9 +28,7 @@ export const TrainingPlanCard = ({ trainingPlan }: Props) => {
             Total exercises:
           </span>
           &nbsp;
-          <span className="text-sm md:text-lg">
-            {totalExercises}
-          </span>
+          <span className="text-sm md:text-lg">{totalExercises}</span>
         </div>
       </div>
       <DeleteButton
@@ -38,7 +36,7 @@ export const TrainingPlanCard = ({ trainingPlan }: Props) => {
         onDelete={onDelete}
         iconSize="7"
         iconMdSize="10"
-        idToDelete={trainingPlan.workout.id}
+        idToDelete={onDeleteId}
       />
     </Card>
   );
