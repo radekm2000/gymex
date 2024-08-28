@@ -5,11 +5,8 @@ import {
 } from "../../../api/requests/exercises";
 import { LoadingProgress } from "../utils/LoadingProgress";
 import { Card } from "../../ui/card";
-import { DumbbellIcon, Trash2 } from "lucide-react";
 import { Separator } from "../../ui/separator";
-import { Button } from "../../ui/button";
 import { ExerciseSet, WorkoutCreateSchema } from "@gymex/commons/src";
-import { Input } from "../../ui/input";
 import { CreateTrainingExerciseHeader } from "./CreateTrainingExerciseHeader";
 import { CreateTrainingExerciseSetsList } from "./CreateTrainingExerciseSetsList";
 

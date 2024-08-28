@@ -1,5 +1,6 @@
 import { DumbbellIcon, Trash2 } from "lucide-react";
 import { Button } from "../../ui/button";
+import { DeleteButton } from "../../atoms/inputs/DeleteButton";
 
 type Props = {
   exerciseName: string;
@@ -45,9 +46,12 @@ export const CreateTrainingExerciseHeader = ({
         </div>
       </div>
       <div className="ml-auto ">
-        <Button onClick={() => onDelete(exerciseId)} variant={"destructive"}>
-          <Trash2 className="size-6 md:size-10" />
-        </Button>
+        <DeleteButton
+          idToDelete={exerciseId}
+          iconSize="6"
+          iconMdSize="10"
+          onDelete={onDelete}
+        />
       </div>
     </div>
   );

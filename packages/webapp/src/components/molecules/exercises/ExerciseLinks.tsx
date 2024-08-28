@@ -6,6 +6,7 @@ import { Button } from "../../ui/button";
 import { useHistoryState } from "wouter/use-browser-location";
 import { useLocation } from "wouter";
 import { RoutePath } from "../../../constants/navigation";
+import { DeleteButton } from "../../atoms/inputs/DeleteButton";
 
 type Props = {
   exercises: ExerciseModel[];
@@ -77,10 +78,9 @@ export const ExerciseLinks = ({ exercises }: Props) => {
                 <DumbbellIcon className=" text-secondary-veryLight" />
                 <span className="text-lg font-display">{e.exerciseName}</span>
               </div>
+
               {isMyExercisesPage && (
-                <Button onClick={() => onDelete(e.id)} variant={"destructive"}>
-                  <Trash2 />
-                </Button>
+                <DeleteButton idToDelete={e.id} onDelete={onDelete} />
               )}
             </div>
           ))}
