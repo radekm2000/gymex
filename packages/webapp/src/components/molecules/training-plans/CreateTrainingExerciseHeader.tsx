@@ -1,5 +1,4 @@
-import { DumbbellIcon, Trash2 } from "lucide-react";
-import { Button } from "../../ui/button";
+import { DumbbellIcon } from "lucide-react";
 import { DeleteButton } from "../../atoms/inputs/DeleteButton";
 
 type Props = {

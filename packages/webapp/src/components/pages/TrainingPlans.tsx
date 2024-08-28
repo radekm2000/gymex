@@ -33,7 +33,7 @@ export const TrainingPlans = () => {
   }
 
   return (
-    <Card className="flex flex-col gap-2">
+    <Card className="flex flex-col gap-2 mb-6">
       <CardTitle className="flex gap-3">
         <div>
           <Info />
@@ -47,7 +47,7 @@ export const TrainingPlans = () => {
           />
         </div>
       </CardTitle>
-      <Separator />
+      <Separator className="mb-4" />
       {filteredTrainingPlans && filteredTrainingPlans.length > 0 ? (
         <TrainingPlansList trainingPlans={filteredTrainingPlans} />
       ) : (
