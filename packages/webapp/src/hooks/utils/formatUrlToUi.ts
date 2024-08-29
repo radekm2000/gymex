@@ -9,6 +9,8 @@ export const formatUrlToUi = (url: string) => {
   } else if (url.startsWith("/training")) {
     const firstPart = trimmedUrl.split("/")[0].replace("-", " ");
     return firstPart.charAt(0).toUpperCase() + firstPart.slice(1).toLowerCase();
+  } else if (url.startsWith("/active-workout")) {
+    return "Active workout";
   } else {
     return trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1);
   }

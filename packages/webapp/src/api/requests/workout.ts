@@ -13,7 +13,7 @@ export const WorkoutQueryKeys = {
 };
 
 export const startWorkoutById = async (
-  workoutId: string
+  workoutId: number
 ): Promise<DetailedWorkoutModel> => {
   const response = await apiClient.post<DetailedWorkoutModel>(
     `workouts/${workoutId}/start-workout`
@@ -22,7 +22,7 @@ export const startWorkoutById = async (
 };
 
 export const finishWorkoutById = async (
-  workoutId: string,
+  workoutId: number,
   dto: CreateWorkoutWithExercisesDto
 ): Promise<DetailedWorkoutModel> => {
   const response = await apiClient.post<DetailedWorkoutModel>(

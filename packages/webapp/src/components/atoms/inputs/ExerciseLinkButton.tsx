@@ -14,7 +14,26 @@ type Props = {
 export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
   const [, setLocation] = useLocation();
   const state = useHistoryState();
+  const mode = state?.mode;
   const workout: WorkoutCreateSchema = state?.workout;
+  const handleOnClick = () => {
+    if (mode === SET_LOCATION_STATES.ADD_EXERCISE_TO_ACTIVE_WORKOUT && path) {
+      setLocation(path, {
+        state: {
+          mode: SET_LOCATION_STATES.ADD_EXERCISE_TO_ACTIVE_WORKOUT,
+          activeWorkout: workout,
+        },
+      });
+    } else {
+      path &&
+        setLocation(path, {
+          state: {
+            mode: SET_LOCATION_STATES.ADD_EXERCISE_TO_TRAINING_PLAN,
+            workout,
+          },
+        });
+    }
+  };
 
   return (
     <div className="flex gap-10">
@@ -22,15 +41,7 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
         <Button
           variant={"default"}
           className="w-32 h-32 lg:size-52 border-1 border-primary-light "
-          onClick={() =>
-            path &&
-            setLocation(path, {
-              state: {
-                mode: SET_LOCATION_STATES.ADD_EXERCISE_TO_TRAINING_PLAN,
-                workout,
-              },
-            })
-          }
+          onClick={handleOnClick}
         >
           {icon}
         </Button>

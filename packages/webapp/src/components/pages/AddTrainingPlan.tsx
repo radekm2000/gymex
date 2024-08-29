@@ -24,7 +24,6 @@ export const AddTrainingPlan = () => {
   );
 
   const workoutExercises = workout.exercises;
-
   useEffect(() => {
     if (state?.mode === "addExerciseToTrainingPlan") {
       setWorkout(state.updatedWorkout as WorkoutCreateSchema);
@@ -48,6 +47,7 @@ export const AddTrainingPlan = () => {
           id: rest.id,
           notes: rest.notes ?? "",
           orderIndex: rest.orderIndex,
+          restTime: rest.restTime,
           sets: rest.sets,
         }));
       const workoutForMutation: WorkoutCreateDtoSchemaWithoutExerciseName = {

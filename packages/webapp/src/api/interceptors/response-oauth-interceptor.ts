@@ -20,7 +20,6 @@ export const useResponseOauthInterceptor = (axios: AxiosInstance) => {
         tokenIsBeingRefreshed = true;
         try {
           const accessToken = await refreshAccessToken();
-          console.log(accessToken);
           if (accessToken) localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
           retryFailedRequests();
           return axios.request(config);

@@ -52,6 +52,7 @@ export const theme = {
         light: "#5d5d5d",
         deleteLight: "#c04242",
         delete: "#ab3737",
+        create: "#98FF98",
       },
       tertiary: {
         light: "#f58b1a",

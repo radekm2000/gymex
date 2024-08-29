@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   DetailedWorkoutModel,
   WorkoutCreateDtoSchemaWithoutExerciseName,
@@ -8,10 +9,13 @@ import { useLocation } from "wouter";
 import {
   createWorkoutPlan,
   deleteWorkoutPlan,
+  finishWorkoutById,
+  startWorkoutById,
   WorkoutQueryKeys,
 } from "../requests/workout";
 import toast from "react-hot-toast";
 import { RoutePath } from "../../constants/navigation";
+import { CreateWorkoutWithExercisesDto } from "@gymex/commons";
 
 export const useWorkoutPlanCreateMutation = () => {
   const queryClient = useQueryClient();
@@ -24,7 +28,6 @@ export const useWorkoutPlanCreateMutation = () => {
       toast.error(err.message);
     },
     onSuccess: (createdTrainingPlan: DetailedWorkoutModel) => {
-      console.log(createdTrainingPlan)
       setLocation(RoutePath.TrainingPlans);
       queryClient.setQueryData<DetailedWorkoutModel[]>(
         WorkoutQueryKeys.details(),
@@ -63,6 +66,53 @@ export const useWorkoutPlanDeleteMutation = () => {
           }
         }
       );
+    },
+  });
+};
+
+type WorkoutStartMutationParams = {
+  workoutId: number;
+};
+
+export const useWorkoutStartMutation = () => {
+  const [, setLocation] = useLocation();
+
+  return useMutation({
+    mutationFn: (params: WorkoutStartMutationParams) =>
+      startWorkoutById(params.workoutId),
+    onError: (err) => {
+      toast.error(err.message);
+    },
+
+    onSuccess: (returnedWorkoutModel: DetailedWorkoutModel) => {
+      setLocation(RoutePath.ActiveWorkout, {
+        state: {
+          workoutModel: returnedWorkoutModel,
+        },
+      });
+    },
+  });
+};
+
+type WorkoutFinishMutationParams = {
+  workoutId: number;
+  dto: CreateWorkoutWithExercisesDto;
+};
+
+export const useWorkoutFinishMutation = () => {
+  const [, setLocation] = useLocation();
+
+  return useMutation({
+    mutationFn: (params: WorkoutFinishMutationParams) =>
+      finishWorkoutById(params.workoutId, params.dto),
+    onError: (err) => {
+      toast.error(err.message);
+    },
+    // TODO
+    //  return user to summary page and return workout summary
+    onSuccess: (returnedWorkoutModel: DetailedWorkoutModel) => {
+      toast.success("Workout finished!");
+      setLocation(RoutePath.MainPage);
     },
   });
 };

@@ -1,12 +1,17 @@
-import { ExerciseModel, WorkoutCreateSchema } from "@gymex/commons/src";
-import { DumbbellIcon, Trash2 } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  ActiveWorkoutFinishSchema,
+  ExerciseModel,
+  WorkoutCreateSchema,
+} from "@gymex/commons/src";
+import { DumbbellIcon } from "lucide-react";
 import { Card } from "../../ui/card";
 import { useExerciseDeleteMutation } from "../../../api/mutations/exercises";
-import { Button } from "../../ui/button";
 import { useHistoryState } from "wouter/use-browser-location";
 import { useLocation } from "wouter";
-import { RoutePath } from "../../../constants/navigation";
+import { RoutePath, SET_LOCATION_STATES } from "../../../constants/navigation";
 import { DeleteButton } from "../../atoms/inputs/DeleteButton";
+import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
 
 type Props = {
   exercises: ExerciseModel[];
@@ -15,9 +20,10 @@ type Props = {
 export const ExerciseLinks = ({ exercises }: Props) => {
   const [location, setLocation] = useLocation();
   const state = useHistoryState();
-  //mode addExerciseToWorkoutPlan
   const mode = state?.mode;
+  const activeWorkout: ActiveWorkoutFinishSchema = state?.activeWorkout;
   const workout: WorkoutCreateSchema = state?.workout;
+  const { addExercise } = useWorkoutStore();
 
   const isMyExercisesPage = location === RoutePath.MyExercises;
 
@@ -37,6 +43,7 @@ export const ExerciseLinks = ({ exercises }: Props) => {
             id: exercise.id,
             exerciseName: exercise.exerciseName,
             notes: "",
+            restTime: exercise.restTime,
             sets: [
               {
                 exerciseSetNumber: "1",
@@ -59,6 +66,12 @@ export const ExerciseLinks = ({ exercises }: Props) => {
           mode: "addExerciseToTrainingPlan",
         },
       });
+    } else if (
+      mode === SET_LOCATION_STATES.ADD_EXERCISE_TO_ACTIVE_WORKOUT &&
+      activeWorkout
+    ) {
+      addExercise(exercise);
+      setLocation(`/active-workout/${activeWorkout.workout.id}`);
     }
   };
 
