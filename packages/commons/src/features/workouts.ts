@@ -158,10 +158,19 @@ export type AddExerciseToWorkout = {
   notes?: string;
   sets: ExerciseSet[];
   exerciseName: string;
+  restTime: string;
   orderIndex: number;
 };
 export type WorkoutCreateSchema = {
   workoutName: string;
+  exercises: AddExerciseToWorkout[];
+};
+
+export type ActiveWorkoutFinishSchema = {
+  workout: {
+    name: string;
+    id: number;
+  };
   exercises: AddExerciseToWorkout[];
 };
 

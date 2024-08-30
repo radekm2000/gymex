@@ -4,16 +4,17 @@ import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useTimer } from "../../../hooks/utils/useTimer";
 import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
+import { AddExerciseToWorkout } from "@gymex/commons/src";
+import { StopwatchCountdown } from "../../../hooks/utils/StopwatchCountdown";
 
-export const ActiveWorkoutHeader = () => {
-  const [clicked, setIsClicked] = useState(false);
+type Props = {
+  activeExercise: AddExerciseToWorkout;
+};
+
+export const ActiveWorkoutHeader = ({ activeExercise }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { formattedTime } = useTimer();
-  const { activeWorkoutModel: trainingPlan } = useWorkoutStore();
 
-  const onClicked = () => {
-    setIsClicked(!clicked);
-  };
   return (
     <div className="flex items-center gap-6">
       <Button className={`${isDesktop ? "min-h-14" : ""}`}>
@@ -32,8 +33,8 @@ export const ActiveWorkoutHeader = () => {
           {formattedTime}
         </span>
       </div>
-      <div className="ml-auto" onClick={onClicked}>
-        <StopwatchIcon clicked={clicked} />
+      <div className="flex items-center ml-auto">
+        <StopwatchCountdown restTimeValue={Number(activeExercise.restTime)} />
       </div>
     </div>
   );

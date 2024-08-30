@@ -33,7 +33,7 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
             <div>
               <DumbbellIcon className=" text-secondary-light size-6 md:size-10" />
             </div>
-            <span className="text-lg text-neutral-950 md:text-lg">
+            <span className="text-lg text-neutral-950 md:text-2xl">
               {e.exerciseName}
             </span>
             <div className="flex ml-auto mr-1">

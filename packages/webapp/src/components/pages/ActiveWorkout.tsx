@@ -2,7 +2,7 @@ import { useHistoryState } from "wouter/use-browser-location";
 import { Card } from "../ui/card";
 import { ActiveWorkoutHeader } from "../molecules/active-workout/ActiveWorkoutHeader";
 import { DetailedWorkoutModel } from "@gymex/commons/src";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ActiveWorkoutContent } from "../molecules/active-workout/ActiveWorkoutContent";
 import { Separator } from "../ui/separator";
 import { ActiveWorkoutFooter } from "../molecules/active-workout/ActiveWorkoutFooter";
@@ -16,6 +16,9 @@ export const ActiveWorkout = () => {
     setTrainingPlan2,
     mapDetailedWorkoutModelToWorkoutFinishSchema,
   } = useWorkoutStore();
+
+  const [activeExerciseIndex, setActiveExerciseIndex] = useState(0);
+  const activeExercise = activeWorkoutModel.exercises[activeExerciseIndex];
 
   useEffect(() => {
     if (workoutModel) {
@@ -33,7 +36,7 @@ export const ActiveWorkout = () => {
     activeWorkoutModel && (
       <Card className="flex flex-col gap-20">
         <div className="flex flex-col gap-2">
-          <ActiveWorkoutHeader />
+          <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
         <ActiveWorkoutContent />

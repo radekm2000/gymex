@@ -2,19 +2,22 @@ type Props = {
   height?: string;
   width?: string;
   clicked: boolean;
+  onClick: () => void;
 };
 
 export const StopwatchIcon = ({
   height = "32",
   width = "32",
   clicked,
+  onClick,
 }: Props) => {
   return (
     <svg
       width={`${width}`}
       height={`${height}`}
       viewBox="0 0 15 15"
-      fill={clicked ? "#98FF98" : "#c04242"}
+      fill={clicked ? "#c04242" : "#98FF98"}
+      onClick={onClick}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

@@ -18,8 +18,6 @@ export type WokoutExerciseModel = typeof WorkoutExercisesTable.$inferSelect;
 export type WorkoutExerciseSetsModel =
   typeof WorkoutExerciseSetsTable.$inferSelect;
 
-  
-
 export type DetailedWorkoutModel = {
   workout: WorkoutModel;
   exercises: Array<
