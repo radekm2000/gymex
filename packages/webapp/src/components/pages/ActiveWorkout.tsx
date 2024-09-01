@@ -2,21 +2,27 @@ import { useHistoryState } from "wouter/use-browser-location";
 import { Card } from "../ui/card";
 import { ActiveWorkoutHeader } from "../molecules/active-workout/ActiveWorkoutHeader";
 import { DetailedWorkoutModel } from "@gymex/commons/src";
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ActiveWorkoutContent } from "../molecules/active-workout/ActiveWorkoutContent";
 import { Separator } from "../ui/separator";
 import { ActiveWorkoutFooter } from "../molecules/active-workout/ActiveWorkoutFooter";
 import { useWorkoutStore } from "../../hooks/utils/useWorkoutStore";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "../ui/carousel";
 
 export const ActiveWorkout = () => {
   const state = useHistoryState();
   const workoutModel: DetailedWorkoutModel = state?.workoutModel;
+  const setWorkoutModelUpdatedToTrue = state?.setWorkoutModelUpdatedToTrue;
+
   const [isWorkoutModelUpdated, setIsWorkoutModelUpdated] = useState(false);
   const { activeWorkoutModel, mapDetailedWorkoutModelToWorkoutFinishSchema } =
     useWorkoutStore();
-
   const [activeExerciseIndex, setActiveExerciseIndex] = useState(0);
-  console.log(activeExerciseIndex);
   useEffect(() => {
     if (workoutModel) {
       mapDetailedWorkoutModelToWorkoutFinishSchema(workoutModel);
@@ -25,11 +31,29 @@ export const ActiveWorkout = () => {
 
     return () => setIsWorkoutModelUpdated(false);
   }, [mapDetailedWorkoutModelToWorkoutFinishSchema, workoutModel]);
-  console.log("aktywny exercajs index");
-  console.log(activeExerciseIndex);
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (setWorkoutModelUpdatedToTrue) {
+      setIsWorkoutModelUpdated(true);
+    }
+    return () => setIsWorkoutModelUpdated(false);
+  }, [setWorkoutModelUpdatedToTrue]);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setActiveExerciseIndex(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setActiveExerciseIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
   const activeExercise = activeWorkoutModel.exercises[activeExerciseIndex];
-  console.log("aktynwy exercajs nejm");
-  console.log(activeExercise.exerciseName);
+
   return (
     isWorkoutModelUpdated &&
     activeExercise && (
@@ -38,10 +62,22 @@ export const ActiveWorkout = () => {
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
-        <ActiveWorkoutContent
-          activeExercise={activeExercise}
-          setActiveExerciseIndex={setActiveExerciseIndex}
-        />
+        <Carousel
+          className="w-full mx-auto max-w-64 max-w-s md:max-w-xl xl:max-w-3xl lg:max-w-2xl"
+          setApi={setApi}
+        >
+          <CarouselContent className="">
+            {activeWorkoutModel.exercises.map((e) => (
+              <CarouselItem>
+                <ActiveWorkoutContent
+                  key={e.id}
+                  activeExercise={e}
+                  setActiveExerciseIndex={setActiveExerciseIndex}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
         <ActiveWorkoutFooter activeExercise={activeExercise} />
       </Card>
     )

@@ -23,7 +23,7 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   const mode = state?.mode;
   const activeWorkout: ActiveWorkoutFinishSchema = state?.activeWorkout;
   const workout: WorkoutCreateSchema = state?.workout;
-  const { addExercise } = useWorkoutStore();
+  const { addExercise, activeWorkoutModel } = useWorkoutStore();
 
   const isMyExercisesPage = location === RoutePath.MyExercises;
 
@@ -71,7 +71,11 @@ export const ExerciseLinks = ({ exercises }: Props) => {
       activeWorkout
     ) {
       addExercise(exercise);
-      setLocation(`/active-workout/${activeWorkout.workout.id}`);
+      setLocation(`/active-workout/${activeWorkout.workout.id}`, {
+        state: {
+          setWorkoutModelUpdatedToTrue: true,
+        },
+      });
     }
   };
 

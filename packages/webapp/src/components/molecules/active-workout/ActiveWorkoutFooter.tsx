@@ -12,11 +12,11 @@ type Props = {
 export const ActiveWorkoutFooter = ({ activeExercise }: Props) => {
   const [, setLocation] = useLocation();
 
-  const { activeWorkoutModel, addExercise, addSet, deleteSet } =
-    useWorkoutStore();
+  const { activeWorkoutModel, addSet, deleteSet } = useWorkoutStore();
   return (
     <div className="flex items-center justify-between">
       <Button
+        onClick={() => addSet(activeExercise.id)}
         size={"sm"}
         className="flex-grow bg-primaryButton-create hover:bg-primaryButton-create bg-opacity-70 hover:bg-opacity-70"
       >
@@ -37,6 +37,7 @@ export const ActiveWorkoutFooter = ({ activeExercise }: Props) => {
         add exercise
       </Button>
       <Button
+        onClick={() => deleteSet(activeExercise.id)}
         size={"sm"}
         className="flex-grow bg-primaryButton-delete hover:bg-primaryButton-delete"
       >

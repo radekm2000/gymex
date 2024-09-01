@@ -8,8 +8,6 @@ import {
 import { create } from "zustand";
 
 type State = {
-  model: DetailedWorkoutModel;
-
   activeWorkoutModel: ActiveWorkoutFinishSchema;
   setActiveWorkoutModel: (
     activeWorkoutModel: ActiveWorkoutFinishSchema
@@ -17,8 +15,8 @@ type State = {
 
   addExercise: (exercise: ExerciseModel) => void;
   addSet: (exerciseId: number) => void;
+  deleteExercise: (exerciseId: number) => void;
   deleteSet: (exerciseId: number) => void;
-  setTrainingPlan: (plan: DetailedWorkoutModel) => void;
   updateReps: (exerciseId: number, setId: string, newReps: string) => void;
   updateWeight: (exerciseId: number, setId: string, newWeight: string) => void;
 
@@ -36,46 +34,16 @@ export const useWorkoutStore = create<State>((set) => ({
     },
     exercises: [],
   },
-  setTrainingPlan: (plan) => set({ model: plan }),
 
   setActiveWorkoutModel: (activeWorkoutModel) => {
     set({ activeWorkoutModel: activeWorkoutModel });
   },
 
-  addExercise: (exercise) => {
+  addSet: (exerciseId: number) => {
     set((prevState) => ({
       activeWorkoutModel: {
         ...prevState.activeWorkoutModel,
-        exercises: [
-          ...prevState.activeWorkoutModel.exercises,
-          {
-            id: exercise.id,
-            exerciseName: exercise.exerciseName,
-            notes: "",
-            restTime: exercise.restTime,
-            sets: [
-              {
-                exerciseSetNumber: "1",
-                reps: "10",
-                weight: "0",
-                rir: "",
-                tempo: "",
-                isStaticSet: false,
-                holdSecs: "",
-              },
-            ],
-            orderIndex: prevState.activeWorkoutModel.exercises.length,
-          },
-        ],
-      },
-    }));
-  },
-
-  addSet: (exerciseId: number) => {
-    set((prevState) => ({
-      model: {
-        ...prevState.model,
-        exercises: prevState.model.exercises.map((exercise) => {
+        exercises: prevState.activeWorkoutModel.exercises.map((exercise) => {
           if (exercise.id === exerciseId) {
             const lastSetToCopy = exercise.sets[exercise.sets.length - 1];
 
@@ -97,29 +65,49 @@ export const useWorkoutStore = create<State>((set) => ({
 
   deleteSet: (exerciseId) => {
     set((prevState) => ({
-      model: {
-        ...prevState.model,
-        exercises: prevState.model.exercises.map((exercise) => {
+      activeWorkoutModel: {
+        ...prevState.activeWorkoutModel,
+        exercises: prevState.activeWorkoutModel.exercises.map((exercise) => {
           if (exercise.id === exerciseId) {
             const lastSetToDelete = exercise.sets[exercise.sets.length - 1];
-            return {
-              ...exercise,
-              sets: exercise.sets.filter(
-                (set) => set.exerciseSetNumber !== lastSetToDelete.id.toString()
-              ),
-            };
+            if (exercise.sets.length > 1) {
+              return {
+                ...exercise,
+                sets: exercise.sets.filter(
+                  (set) =>
+                    set.exerciseSetNumber !==
+                    lastSetToDelete.exerciseSetNumber.toString()
+                ),
+              };
+            }
           }
           return exercise;
         }),
       },
     }));
   },
+  deleteExercise: (exerciseId) => {
+    set((prevState) => {
+      const { exercises } = prevState.activeWorkoutModel;
+
+      if (exercises.length <= 1) {
+        return prevState;
+      }
+
+      return {
+        activeWorkoutModel: {
+          ...prevState.activeWorkoutModel,
+          exercises: exercises.filter((e) => e.id !== exerciseId),
+        },
+      };
+    });
+  },
 
   updateReps: (exerciseId, setId, newReps) => {
     set((prevState) => ({
-      model: {
-        ...prevState.model,
-        exercises: prevState.model.exercises.map((e) => {
+      activeWorkoutModel: {
+        ...prevState.activeWorkoutModel,
+        exercises: prevState.activeWorkoutModel.exercises.map((e) => {
           if (e.id === exerciseId) {
             return {
               ...e,
@@ -138,9 +126,9 @@ export const useWorkoutStore = create<State>((set) => ({
 
   updateWeight: (exerciseId, setId, newWeight) => {
     set((prevState) => ({
-      model: {
-        ...prevState.model,
-        exercises: prevState.model.exercises.map((exercise) => {
+      activeWorkoutModel: {
+        ...prevState.activeWorkoutModel,
+        exercises: prevState.activeWorkoutModel.exercises.map((exercise) => {
           if (exercise.id === exerciseId) {
             return {
               ...exercise,
@@ -191,5 +179,34 @@ export const useWorkoutStore = create<State>((set) => ({
     };
     setActiveWorkoutModel(newModel);
     return newModel;
+  },
+
+  addExercise: (exercise) => {
+    set((prevState) => ({
+      activeWorkoutModel: {
+        ...prevState.activeWorkoutModel,
+        exercises: [
+          ...prevState.activeWorkoutModel.exercises,
+          {
+            id: exercise.id,
+            exerciseName: exercise.exerciseName,
+            notes: "",
+            restTime: exercise.restTime,
+            sets: [
+              {
+                exerciseSetNumber: "1",
+                reps: "10",
+                weight: "0",
+                rir: "",
+                tempo: "",
+                isStaticSet: false,
+                holdSecs: "",
+              },
+            ],
+            orderIndex: prevState.activeWorkoutModel.exercises.length,
+          },
+        ],
+      },
+    }));
   },
 }));
