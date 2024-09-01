@@ -3,8 +3,13 @@ import { useLocation } from "wouter";
 import { Button } from "../../ui/button";
 import { RoutePath, SET_LOCATION_STATES } from "../../../constants/navigation";
 import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
+import { AddExerciseToWorkout } from "@gymex/commons/src";
 
-export const ActiveWorkoutFooter = () => {
+type Props = {
+  activeExercise: AddExerciseToWorkout;
+};
+
+export const ActiveWorkoutFooter = ({ activeExercise }: Props) => {
   const [, setLocation] = useLocation();
 
   const { activeWorkoutModel, addExercise, addSet, deleteSet } =

@@ -18,13 +18,13 @@ type State = {
   addExercise: (exercise: ExerciseModel) => void;
   addSet: (exerciseId: number) => void;
   deleteSet: (exerciseId: number) => void;
-  setTrainingPlan2: (plan: DetailedWorkoutModel) => void;
+  setTrainingPlan: (plan: DetailedWorkoutModel) => void;
   updateReps: (exerciseId: number, setId: string, newReps: string) => void;
   updateWeight: (exerciseId: number, setId: string, newWeight: string) => void;
 
   mapDetailedWorkoutModelToWorkoutFinishSchema: (
     model: DetailedWorkoutModel
-  ) => void;
+  ) => ActiveWorkoutFinishSchema;
 };
 
 export const useWorkoutStore = create<State>((set) => ({
@@ -36,7 +36,7 @@ export const useWorkoutStore = create<State>((set) => ({
     },
     exercises: [],
   },
-  setTrainingPlan2: (plan) => set({ model: plan }),
+  setTrainingPlan: (plan) => set({ model: plan }),
 
   setActiveWorkoutModel: (activeWorkoutModel) => {
     set({ activeWorkoutModel: activeWorkoutModel });
@@ -172,6 +172,7 @@ export const useWorkoutStore = create<State>((set) => ({
         exerciseName: e.exerciseName,
         orderIndex: index,
         restTime: e.restTime,
+        primaryMuscleTargeted: e.primaryMuscleTargeted,
         sets: e.sets.map((set) => ({
           exerciseSetNumber: set.exerciseSetNumber,
           reps: set.reps,

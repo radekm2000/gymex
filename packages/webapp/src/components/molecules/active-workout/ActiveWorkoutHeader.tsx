@@ -1,9 +1,6 @@
 import { Button } from "../../ui/button";
-import { StopwatchIcon } from "../../atoms/icons/StopwatchIcon";
-import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useTimer } from "../../../hooks/utils/useTimer";
-import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
 import { AddExerciseToWorkout } from "@gymex/commons/src";
 import { StopwatchCountdown } from "../../../hooks/utils/StopwatchCountdown";
 
@@ -14,7 +11,6 @@ type Props = {
 export const ActiveWorkoutHeader = ({ activeExercise }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { formattedTime } = useTimer();
-
   return (
     <div className="flex items-center gap-6">
       <Button className={`${isDesktop ? "min-h-14" : ""}`}>

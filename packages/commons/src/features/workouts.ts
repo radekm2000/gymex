@@ -160,6 +160,7 @@ export type AddExerciseToWorkout = {
   exerciseName: string;
   restTime: string;
   orderIndex: number;
+  primaryMuscleTargeted?: string;
 };
 export type WorkoutCreateSchema = {
   workoutName: string;
