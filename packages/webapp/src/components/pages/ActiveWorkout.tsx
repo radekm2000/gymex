@@ -18,11 +18,14 @@ export const ActiveWorkout = () => {
   const state = useHistoryState();
   const workoutModel: DetailedWorkoutModel = state?.workoutModel;
   const setWorkoutModelUpdatedToTrue = state?.setWorkoutModelUpdatedToTrue;
-
   const [isWorkoutModelUpdated, setIsWorkoutModelUpdated] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+
   const { activeWorkoutModel, mapDetailedWorkoutModelToWorkoutFinishSchema } =
     useWorkoutStore();
+
   const [activeExerciseIndex, setActiveExerciseIndex] = useState(0);
+
   useEffect(() => {
     if (workoutModel) {
       mapDetailedWorkoutModelToWorkoutFinishSchema(workoutModel);
@@ -31,7 +34,6 @@ export const ActiveWorkout = () => {
 
     return () => setIsWorkoutModelUpdated(false);
   }, [mapDetailedWorkoutModelToWorkoutFinishSchema, workoutModel]);
-  const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
     if (setWorkoutModelUpdatedToTrue) {
@@ -57,28 +59,28 @@ export const ActiveWorkout = () => {
   return (
     isWorkoutModelUpdated &&
     activeExercise && (
-      <Card className="flex flex-col gap-20">
+      <Card className="relative flex flex-col h-full max-h-[600px] gap-4">
         <div className="flex flex-col gap-2">
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
-        <Carousel
-          className="w-full mx-auto max-w-64 max-w-s md:max-w-xl xl:max-w-3xl lg:max-w-2xl"
-          setApi={setApi}
-        >
-          <CarouselContent className="">
-            {activeWorkoutModel.exercises.map((e) => (
-              <CarouselItem>
-                <ActiveWorkoutContent
-                  key={e.id}
-                  activeExercise={e}
-                  setActiveExerciseIndex={setActiveExerciseIndex}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-        <ActiveWorkoutFooter activeExercise={activeExercise} />
+        <div className="w-full h-[81%] rounded-sm overflow-y-scroll [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
+          <Carousel
+            className="w-full mx-auto max-w-64 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem]"
+            setApi={setApi}
+          >
+            <CarouselContent className="">
+              {activeWorkoutModel.exercises.map((e, index) => (
+                <CarouselItem className="" key={index}>
+                  <ActiveWorkoutContent key={e.id} activeExercise={e} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+        <div className="absolute bottom-0 w-full">
+          <ActiveWorkoutFooter activeExercise={activeExercise} />
+        </div>
       </Card>
     )
   );

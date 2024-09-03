@@ -25,7 +25,7 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
   return (
     <Card className="flex flex-col gap-5 p-0 border-t-0 rounded-t-none bg-textInput-light bg-opacity-90">
       {trainingPlan.exercises.map((e, index) => (
-        <>
+        <div key={index}>
           <div
             key={index}
             className="flex items-center justify-between gap-4 first:pt-4"
@@ -56,7 +56,7 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
           <Separator
             className={index === isLastElement ? "bg-primary-dark" : ""}
           />
-        </>
+        </div>
       ))}
       <Button
         onClick={() =>

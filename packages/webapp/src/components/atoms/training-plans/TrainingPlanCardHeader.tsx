@@ -34,13 +34,13 @@ export const TrainingPlanCardHeader = ({
           <span className="text-sm md:text-lg">{totalExercises}</span>
         </div>
       </div>
-      <DeleteButton
-        className="px-0"
-        onDelete={onDelete}
-        iconSize="8"
-        iconMdSize="9"
-        idToDelete={onDeleteId}
-      />
+        <DeleteButton
+          className="px-0"
+          onDelete={onDelete}
+          iconSize="8"
+          iconMdSize="9"
+          idToDelete={onDeleteId}
+        />
     </Card>
   );
 };

@@ -20,7 +20,6 @@ export const CreateTrainingExerciseSetsList = ({
   updateReps,
   updateWeight,
 }: Props) => {
-
   return (
     <>
       {exerciseFromWorkout.sets.map((set, index) => (

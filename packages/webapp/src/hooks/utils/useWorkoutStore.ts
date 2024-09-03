@@ -192,6 +192,7 @@ export const useWorkoutStore = create<State>((set) => ({
             exerciseName: exercise.exerciseName,
             notes: "",
             restTime: exercise.restTime,
+            primaryMuscleTargeted: exercise.primaryMuscleTargeted,
             sets: [
               {
                 exerciseSetNumber: "1",
