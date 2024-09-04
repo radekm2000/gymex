@@ -23,7 +23,7 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   const mode = state?.mode;
   const activeWorkout: ActiveWorkoutFinishSchema = state?.activeWorkout;
   const workout: WorkoutCreateSchema = state?.workout;
-  const { addExercise, activeWorkoutModel } = useWorkoutStore();
+  const { addExercise } = useWorkoutStore();
 
   const isMyExercisesPage = location === RoutePath.MyExercises;
 

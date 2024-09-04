@@ -33,6 +33,8 @@ export class WorkoutController {
 
   @Get()
   async getAllWorkouts() {
+    // TODO
+    //  if there was previous session fetch exercises from previous sesion
     return await this.workoutService.getAll();
   }
 
@@ -83,7 +85,13 @@ export class WorkoutController {
     @CurrentUserId() userId: number,
     @Param('workoutId', ParseIntPipe) workoutPlanId: number,
   ) {
-    return await this.workoutService.startWorkout(workoutPlanId, userId);
+    const workout = await this.workoutService.startWorkout(
+      workoutPlanId,
+      userId,
+    );
+    const workoutSets = workout.exercises.map((e) => e.sets);
+    console.log(workoutSets);
+    return workout;
   }
 
   @UseGuards(AccessTokenGuard)
@@ -93,7 +101,13 @@ export class WorkoutController {
     @Param('workoutId', ParseIntPipe) workoutPlanId: number,
     @CurrentUserId() userId: number,
   ) {
-    return await this.workoutService.finishWorkout(workoutPlanId, userId, dto);
+    const workout = await this.workoutService.finishWorkout(
+      workoutPlanId,
+      userId,
+      dto,
+    );
+
+    return workout;
   }
 
   @UseGuards(AccessTokenGuard)

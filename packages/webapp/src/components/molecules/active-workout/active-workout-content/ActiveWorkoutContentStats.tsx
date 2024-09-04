@@ -9,7 +9,6 @@ type Props = {
 
 export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
   const { updateReps, updateWeight } = useWorkoutStore();
-
   return activeExercise.sets.map((set, index) => (
     <div key={index} className="flex flex-col items-center">
       {index === 0 && (
@@ -23,7 +22,9 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
       )}
       <Separator />
       <div className="flex items-center justify-between w-full">
-        <span className="text-center cursor-default ">{set.exerciseSetNumber}</span>
+        <span className="text-center cursor-default ">
+          {set.exerciseSetNumber}
+        </span>
         <Input
           value={set.weight}
           onChange={(e) =>

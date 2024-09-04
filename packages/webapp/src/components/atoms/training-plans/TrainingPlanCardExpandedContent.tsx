@@ -19,7 +19,6 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
   const onStart = (trainingPlanId: number) => {
     startWorkoutMutation.mutate({ workoutId: trainingPlanId });
   };
-
   const isLastElement = trainingPlan.exercises.length - 1;
 
   return (
@@ -58,7 +57,7 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
           />
         </div>
       ))}
-      <Button
+      {/* <Button
         onClick={() =>
           setLocation(`/active-workout/${trainingPlan.workout.id}`, {
             state: {
@@ -69,13 +68,13 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
         className="mb-4 text-2xl bg-transparent rounded-none hover:bg-transparent hover:shadow-none text-neutral-950 font-display"
       >
         Start training
-      </Button>
-      {/* <Button
+      </Button> */}
+      <Button
         onClick={() => onStart(trainingPlan.workout.id)}
         className="mb-4 text-2xl bg-transparent rounded-none hover:bg-transparent hover:shadow-none text-neutral-950 font-display"
       >
         Start training
-      </Button> */}
+      </Button>
     </Card>
   );
 };

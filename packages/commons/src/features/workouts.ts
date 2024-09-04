@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type WorkoutModel = {
   id: number;
   createdAt: Date;
@@ -151,6 +153,33 @@ export type ExerciseSet = {
   tempo?: string;
   isStaticSet?: boolean;
   holdSecs?: string;
+};
+
+export type MuscleName =
+  | "chest"
+  | "back"
+  | "legs"
+  | "shoulders"
+  | "bicep"
+  | "triceps"
+  | "abs"
+  | "calves"
+  | "cardio"
+  | "butt"
+  | "forearm"
+  | "base";
+
+export type MuscleStats = {
+  [key in MuscleName]?: number;
+};
+
+export type WorkoutSummary = {
+  totalSets: number;
+  totalWeight: number;
+  maxWeight: number;
+  totalExercises: number;
+  muscleStats: MuscleStats;
+  totalTrainingTimeInSeconds: number;
 };
 
 export type AddExerciseToWorkout = {

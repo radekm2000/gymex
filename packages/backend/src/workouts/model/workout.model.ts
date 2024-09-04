@@ -179,7 +179,19 @@ export class Workout {
         primaryMuscleTargeted: exercise.primaryMuscleTargeted,
         userId: exercise.userId ?? 0,
         isCreatorDeveloper: exercise.isCreatorDeveloper ?? false,
-        sets: this.mapExerciseSetsWithoutPlanAndExerciseIds(exerciseSets),
+        // sets: this.mapExerciseSetsWithoutPlanAndExerciseIds(exerciseSets),
+        sets: exerciseSets.map((set) => ({
+          id: set.id,
+          exerciseSetNumber: set.exerciseSetNumber ?? '1',
+          reps: set.reps,
+          weight: set.weight,
+          rir: set.rir ?? '',
+          tempo: set.tempo ?? '',
+          userId: set.userId ?? 0,
+          workoutSessionId: set.workoutSessionId ?? 0,
+          isStaticSet: set.isStaticSet ?? false,
+          holdSecs: set.holdSecs ?? '0',
+        })),
         restTime: exercise.restTime ?? '60',
       };
     });

@@ -1,7 +1,7 @@
 import { ChartData } from 'src/exercises/chart/chart.model';
 import { AddExerciseToWorkoutDto } from 'src/exercises/dto/exercises.dto';
 import { CreateWorkoutWithExercisesDto } from 'src/workouts/dto/workout.dto';
-import { Workout } from 'src/workouts/model/workout.model';
+import { Workout, WorkoutSummary } from 'src/workouts/model/workout.model';
 import {
   DetailedWorkoutModel,
   WorkoutModel,
@@ -29,7 +29,10 @@ export interface WorkoutService {
     workoutPlanId: number,
     userId: number,
     dto: CreateWorkoutWithExercisesDto,
-  ): Promise<DetailedWorkoutModel>;
+  ): Promise<{
+    detailedWorkoutModel: DetailedWorkoutModel;
+    summary: WorkoutSummary;
+  }>;
 
   getSessionsByWorkoutPlan(workoutPlanId: number): Promise<Workout[]>;
 

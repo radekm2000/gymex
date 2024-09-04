@@ -3,6 +3,7 @@ import {
   DetailedWorkoutModel,
   WorkoutCreateDtoSchemaWithoutExerciseName,
   WorkoutModel,
+  WorkoutSummary,
 } from "@gymex/commons/src";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -85,7 +86,7 @@ export const useWorkoutStartMutation = () => {
     },
 
     onSuccess: (returnedWorkoutModel: DetailedWorkoutModel) => {
-      setLocation(RoutePath.ActiveWorkout, {
+      setLocation(`/active-workout/${returnedWorkoutModel.workout.id}`, {
         state: {
           workoutModel: returnedWorkoutModel,
         },
@@ -101,7 +102,7 @@ type WorkoutFinishMutationParams = {
 
 export const useWorkoutFinishMutation = () => {
   const [, setLocation] = useLocation();
-
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (params: WorkoutFinishMutationParams) =>
       finishWorkoutById(params.workoutId, params.dto),
@@ -110,8 +111,20 @@ export const useWorkoutFinishMutation = () => {
     },
     // TODO
     //  return user to summary page and return workout summary
-    onSuccess: (returnedWorkoutModel: DetailedWorkoutModel) => {
+    onSuccess: (returnedData: {
+      detailedWorkoutModel: DetailedWorkoutModel;
+      summary: WorkoutSummary;
+    }) => {
+      console.log(returnedData.summary);
       toast.success("Workout finished!");
+      queryClient.setQueryData<DetailedWorkoutModel[]>(
+        WorkoutQueryKeys.details(),
+        (prev) => {
+          if (prev !== undefined) {
+            return [...prev, returnedData.detailedWorkoutModel];
+          }
+        }
+      );
       setLocation(RoutePath.MainPage);
     },
   });

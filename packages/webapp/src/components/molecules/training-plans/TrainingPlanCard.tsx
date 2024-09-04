@@ -16,7 +16,6 @@ type Props = {
 
 export const TrainingPlanCard = ({ trainingPlan }: Props) => {
   const deleteMutation = useWorkoutPlanDeleteMutation();
-
   const onDelete = (workoutPlanId: number) => {
     deleteMutation.mutate({ workoutPlanId });
   };

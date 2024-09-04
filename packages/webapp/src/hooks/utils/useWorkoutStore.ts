@@ -1,3 +1,4 @@
+import { CreateWorkoutWithExercisesDto } from "@gymex/commons";
 import {
   ActiveWorkoutFinishSchema,
   AddExerciseToWorkout,
@@ -23,6 +24,10 @@ type State = {
   mapDetailedWorkoutModelToWorkoutFinishSchema: (
     model: DetailedWorkoutModel
   ) => ActiveWorkoutFinishSchema;
+
+  formatWorkoutModelIntoRequiredFinishWorkoutDto: (
+    activeWorkoutModel: ActiveWorkoutFinishSchema
+  ) => CreateWorkoutWithExercisesDto;
 };
 
 export const useWorkoutStore = create<State>((set) => ({
@@ -33,6 +38,27 @@ export const useWorkoutStore = create<State>((set) => ({
       name: "",
     },
     exercises: [],
+  },
+
+  formatWorkoutModelIntoRequiredFinishWorkoutDto: (activeWorkoutModel) => {
+    const dto: CreateWorkoutWithExercisesDto = {
+      workoutName: activeWorkoutModel.workout.name,
+      exercises: activeWorkoutModel.exercises.map((exercise) => ({
+        id: exercise.id,
+        notes: exercise.notes,
+        orderIndex: exercise.orderIndex,
+        sets: exercise.sets.map((set) => ({
+          exerciseSetNumber: set.exerciseSetNumber,
+          reps: set.reps,
+          weight: set.weight,
+          tempo: set.tempo ?? "0",
+          isStaticSet: set.isStaticSet ?? false,
+          holdSecs: set.holdSecs ?? "0",
+        })),
+      })),
+    };
+
+    return dto;
   },
 
   setActiveWorkoutModel: (activeWorkoutModel) => {

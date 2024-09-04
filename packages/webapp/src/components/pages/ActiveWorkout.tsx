@@ -64,9 +64,9 @@ export const ActiveWorkout = () => {
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
-        <div className="w-full h-[81%] rounded-sm overflow-y-scroll [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
+        <div className="h-[70%] rounded-sm overflow-y-scroll [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
           <Carousel
-            className="w-full mx-auto max-w-64 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem]"
+            className="w-[950px] mx-auto max-w-64 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem]"
             setApi={setApi}
           >
             <CarouselContent className="">

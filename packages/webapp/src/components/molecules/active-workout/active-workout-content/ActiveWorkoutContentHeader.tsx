@@ -28,7 +28,7 @@ export const ActiveWorkoutContentHeader = ({ activeExercise }: Props) => {
           </span>
         </div>
       </div>
-      <div className="ml-auto -mt-4 -mr-5">
+      <div className="ml-auto -mt-4 -mr-4">
         <DeleteButton
           idToDelete={activeExercise.id}
           iconSize="6"

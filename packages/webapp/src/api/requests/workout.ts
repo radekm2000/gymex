@@ -4,6 +4,7 @@ import {
   DetailedWorkoutModel,
   WorkoutCreateDtoSchemaWithoutExerciseName,
   WorkoutModel,
+  WorkoutSummary,
 } from "@gymex/commons/src";
 
 export const WorkoutQueryKeys = {
@@ -24,11 +25,14 @@ export const startWorkoutById = async (
 export const finishWorkoutById = async (
   workoutId: number,
   dto: CreateWorkoutWithExercisesDto
-): Promise<DetailedWorkoutModel> => {
-  const response = await apiClient.post<DetailedWorkoutModel>(
-    `workouts/${workoutId}/finish-workout`,
-    dto
-  );
+): Promise<{
+  detailedWorkoutModel: DetailedWorkoutModel;
+  summary: WorkoutSummary;
+}> => {
+  const response = await apiClient.post<{
+    detailedWorkoutModel: DetailedWorkoutModel;
+    summary: WorkoutSummary;
+  }>(`workouts/${workoutId}/finish-workout`, dto);
   return response.data;
 };
 

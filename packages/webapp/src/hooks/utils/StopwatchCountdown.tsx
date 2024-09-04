@@ -49,8 +49,10 @@ export const StopwatchCountdown = ({ restTimeValue }: Props) => {
 
   return (
     <div className="flex items-center gap-4">
-      <span className={`text-${isDesktop ? "3xl" : "xl"}`}>{count}</span>
-      <StopwatchIcon clicked={stopwatchClicked} onClick={onStopwatchClick} />
+      <span className={`text-${isDesktop ? "3xl" : "xl"} cursor-default`}>{count}</span>
+      <div className="cursor-pointer">
+        <StopwatchIcon clicked={stopwatchClicked} onClick={onStopwatchClick} />
+      </div>
     </div>
   );
 };
