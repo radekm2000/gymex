@@ -9,6 +9,8 @@ type Props = {
 
 export const ActiveWorkoutContentHeader = ({ activeExercise }: Props) => {
   const { deleteExercise } = useWorkoutStore();
+
+  console.log(activeExercise.orderIndex);
   return (
     <div className="flex items-center gap-6">
       <div className="self-center -mt-4">

@@ -36,6 +36,16 @@ export const ActiveWorkout = () => {
   }, [mapDetailedWorkoutModelToWorkoutFinishSchema, workoutModel]);
 
   useEffect(() => {
+    if (activeWorkoutModel.exercises.length === 0) {
+      setActiveExerciseIndex(0);
+      return;
+    }
+    if (activeExerciseIndex >= activeWorkoutModel.exercises.length) {
+      setActiveExerciseIndex(activeWorkoutModel.exercises.length - 1);
+    }
+  }, [activeExerciseIndex, activeWorkoutModel.exercises.length]);
+
+  useEffect(() => {
     if (setWorkoutModelUpdatedToTrue) {
       setIsWorkoutModelUpdated(true);
     }

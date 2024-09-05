@@ -57,7 +57,7 @@ export const SidebarLinkButton = ({
         {...props}
         onClick={() => {
           if (!disabled) {
-            path && setLocation(path);
+            path && setLocation(path, { replace: false });
           }
         }}
       >

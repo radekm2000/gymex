@@ -89,8 +89,6 @@ export class WorkoutController {
       workoutPlanId,
       userId,
     );
-    const workoutSets = workout.exercises.map((e) => e.sets);
-    console.log(workoutSets);
     return workout;
   }
 

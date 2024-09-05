@@ -115,7 +115,6 @@ export const useWorkoutFinishMutation = () => {
       detailedWorkoutModel: DetailedWorkoutModel;
       summary: WorkoutSummary;
     }) => {
-      console.log(returnedData.summary);
       toast.success("Workout finished!");
       queryClient.setQueryData<DetailedWorkoutModel[]>(
         WorkoutQueryKeys.details(),

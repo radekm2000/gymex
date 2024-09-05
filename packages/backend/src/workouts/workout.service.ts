@@ -335,15 +335,57 @@ export class WorkoutsService implements WorkoutService {
     return result[0];
   };
 
+  private getPreviousWorkoutSession = async (workoutPlan: WorkoutModel) => {
+    return await this.drizzleService.db
+      .select()
+      .from(WorkoutSessionsTable)
+      .where(
+        and(
+          isNotNull(WorkoutSessionsTable.finishedAt),
+          eq(WorkoutSessionsTable.workoutPlanId, workoutPlan.id),
+          eq(WorkoutSessionsTable.userId, workoutPlan.creatorId),
+        ),
+      )
+      .limit(1)
+      .orderBy(desc(WorkoutSessionsTable.finishedAt));
+  };
+
+  // public getAll = async () => {
+  //   const workoutPlans = await this.drizzleService.db
+  //     .select()
+  //     .from(WorkoutPlansTable);
+  //   const detailedWorkoutModels: DetailedWorkoutModel[] = [];
+  //   for (const workoutPlan of workoutPlans) {
+  //     const detailedWorkoutModel =
+  //       await this.getDetailedWorkoutModelWithoutSession(workoutPlan.id);
+  //     detailedWorkoutModels.push(detailedWorkoutModel);
+  //   }
+  //   return detailedWorkoutModels;
+  // };
+
   public getAll = async () => {
     const workoutPlans = await this.drizzleService.db
       .select()
       .from(WorkoutPlansTable);
+
     const detailedWorkoutModels: DetailedWorkoutModel[] = [];
+
     for (const workoutPlan of workoutPlans) {
-      const detailedWorkoutModel =
-        await this.getDetailedWorkoutModelWithoutSession(workoutPlan.id);
-      detailedWorkoutModels.push(detailedWorkoutModel);
+      const previousWorkoutSession =
+        await this.getPreviousWorkoutSession(workoutPlan);
+
+      if (previousWorkoutSession.length > 0) {
+        const detailedWorkoutModel =
+          await this.getDetailedWorkoutModelByWorkoutPlanId(
+            workoutPlan.id,
+            previousWorkoutSession[0].id,
+          );
+        detailedWorkoutModels.push(detailedWorkoutModel);
+      } else {
+        const detailedWorkoutModel =
+          await this.getDetailedWorkoutModelWithoutSession(workoutPlan.id);
+        detailedWorkoutModels.push(detailedWorkoutModel);
+      }
     }
     return detailedWorkoutModels;
   };
