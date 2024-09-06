@@ -79,7 +79,7 @@ export const ActiveWorkout = () => {
             className="w-[950px] mx-auto max-w-64 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem]"
             setApi={setApi}
           >
-            <CarouselContent className="">
+          <CarouselContent className="">
               {activeWorkoutModel.exercises.map((e, index) => (
                 <CarouselItem className="" key={index}>
                   <ActiveWorkoutContent key={e.id} activeExercise={e} />

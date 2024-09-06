@@ -11,7 +11,9 @@ export enum RoutePath {
   TrainingPlans = "/training-plans",
   AddTrainingPlan = "/training-plans/add",
   ActiveWorkout = "/active-workout/:workoutPlanId",
+  WorkoutSummary = "/workout/:workoutPlanId/summary",
   Github = "https://github.com/radekm2000/gymex",
+  WorkoutsHistory = '/workouts/history'
 }
 
 export const SET_LOCATION_STATES = {

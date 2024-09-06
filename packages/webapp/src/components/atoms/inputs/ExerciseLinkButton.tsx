@@ -40,7 +40,7 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
       <div className="flex flex-col items-center w-full h-full ">
         <Button
           variant={"default"}
-          className="w-32 h-32 lg:size-52 border-1 border-primary-light "
+          className="w-32 h-32 lg:size-60 border-1 border-primary-light "
           onClick={handleOnClick}
         >
           {icon}

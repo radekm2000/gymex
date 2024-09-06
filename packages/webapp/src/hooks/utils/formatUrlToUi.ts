@@ -1,6 +1,6 @@
 export const formatUrlToUi = (url: string) => {
   const trimmedUrl = url.replace("/", "");
-
+  console.log(url);
   if (url.startsWith("/exercises/")) {
     const slashIndex = url.indexOf("/", 2);
     return (
@@ -11,6 +11,10 @@ export const formatUrlToUi = (url: string) => {
     return firstPart.charAt(0).toUpperCase() + firstPart.slice(1).toLowerCase();
   } else if (url.startsWith("/active-workout")) {
     return "Active workout";
+  } else if (url.startsWith("/workouts/history")) {
+    return "History";
+  } else if (url.startsWith("/workout")) {
+    return "Workout summary";
   } else {
     return trimmedUrl.charAt(0).toUpperCase() + trimmedUrl.slice(1);
   }

@@ -2,7 +2,13 @@ import { RoutePath } from "../../constants/navigation";
 import { GithubIcon } from "../atoms/icons/GithubIcon";
 import { Logo } from "../atoms/icons/Logo";
 import { SidebarLinkButton } from "../atoms/sidebar/SidebarLinkButton";
-import { Ambulance, DumbbellIcon, NotepadText, Store } from "lucide-react";
+import {
+  Ambulance,
+  CalendarDays,
+  DumbbellIcon,
+  NotepadText,
+  Store,
+} from "lucide-react";
 
 export const SidebarLinks = () => {
   return (
@@ -29,6 +35,11 @@ export const SidebarLinks = () => {
         name="Training plans"
         path={RoutePath.TrainingPlans}
         icon={<NotepadText size={22} />}
+      />
+      <SidebarLinkButton
+        name="History"
+        path={RoutePath.WorkoutsHistory}
+        icon={<CalendarDays size={22} />}
       />
 
       <div className="pb-1 mt-auto">

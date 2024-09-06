@@ -13,7 +13,7 @@ export const Exercises = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-8 p-6 border sm:grid-cols-3 bg-primary border-primary-light">
+    <div className="grid grid-cols-2 gap-4 p-6 border sm:grid-cols-3 bg-primary border-primary-light">
       <ExerciseLinkButton
         name="My exercises"
         path={RoutePath.MyExercises}
