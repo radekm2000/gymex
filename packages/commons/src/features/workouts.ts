@@ -73,6 +73,8 @@ export type DetailedWorkoutModel = {
   >;
   allExerciseSets: WorkoutExerciseSetsModel[];
   session: {
+    startedAt: Date;
+    finishedAt: Date;
     id: number;
   };
 };
@@ -142,6 +144,8 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   ],
   session: {
     id: 0,
+    finishedAt: null,
+    startedAt: null,
   },
 };
 
@@ -178,6 +182,7 @@ export type WorkoutSummary = {
   totalWeight: number;
   maxWeight: number;
   totalExercises: number;
+  totalReps: number;
   muscleStats: MuscleStats;
   totalTrainingTimeInSeconds: number;
 };

@@ -25,6 +25,8 @@ export type DetailedWorkoutModel = {
   >;
   allExerciseSets: WorkoutExerciseSetsModel[];
   session: {
+    startedAt: Date;
+    finishedAt: Date;
     id: number;
   };
 };
@@ -86,5 +88,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   ],
   session: {
     id: 0,
+    finishedAt: null,
+    startedAt: null,
   },
 };

@@ -19,6 +19,7 @@ export type WorkoutSummary = {
   totalExercises: number;
   muscleStats: MuscleStats;
   totalTrainingTimeInSeconds: number;
+  totalReps: number;
 };
 
 export class Workout {
@@ -90,7 +91,10 @@ export class Workout {
     const totalExercises = this._exercises.length;
     const muscleStats: MuscleStats = {};
     this.mapMuscleStats(this.exercises, muscleStats);
-
+    const totalReps = this.exerciseSets.reduce(
+      (sum, set) => sum + Number(set.reps),
+      0,
+    );
     return {
       totalWeight,
       totalSets,
@@ -98,19 +102,20 @@ export class Workout {
       totalExercises,
       muscleStats,
       totalTrainingTimeInSeconds,
+      totalReps,
     } satisfies WorkoutSummary;
   }
 
   private mapMuscleStats(exercises: ExerciseModel[], muscleStats: MuscleStats) {
     for (const exercise of exercises) {
       const primaryMuscle = exercise.primaryMuscleTargeted;
-      const exerciseWeight = this.exerciseSets
+      const exerciseSets = this.exerciseSets
         .filter((set) => set.workoutExerciseId === exercise.id)
-        .reduce((sum, set) => sum + Number(set.weight), 0);
+        .reduce((sum, set) => sum + Number(set.exerciseSetNumber), 0);
       if (muscleStats[primaryMuscle]) {
-        muscleStats[primaryMuscle] += exerciseWeight;
+        muscleStats[primaryMuscle] += exerciseSets;
       } else {
-        muscleStats[primaryMuscle] = exerciseWeight;
+        muscleStats[primaryMuscle] = exerciseSets;
       }
     }
   }
@@ -128,7 +133,13 @@ export class Workout {
         this._exerciseSets.length > 0
           ? this.mapExerciseSets(this._exerciseSets)
           : [],
-      session: this._workoutSession ? { id: this._workoutSession.id } : null,
+      session: {
+        id: this._workoutSession ? this._workoutSession.id : null,
+        startedAt: this._workoutSession ? this._workoutSession.startedAt : null,
+        finishedAt: this._workoutSession
+          ? this._workoutSession.finishedAt
+          : null,
+      },
     };
   }
 

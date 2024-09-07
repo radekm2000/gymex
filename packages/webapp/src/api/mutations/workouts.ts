@@ -124,7 +124,15 @@ export const useWorkoutFinishMutation = () => {
           }
         }
       );
-      setLocation(RoutePath.MainPage);
+      setLocation(
+        `/workout/${returnedData.detailedWorkoutModel.workout.id}/summary`,
+        {
+          state: {
+            summary: returnedData.summary,
+            trainingPlan: returnedData.detailedWorkoutModel,
+          },
+        }
+      );
     },
   });
 };

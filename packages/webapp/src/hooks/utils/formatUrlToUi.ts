@@ -1,6 +1,5 @@
 export const formatUrlToUi = (url: string) => {
   const trimmedUrl = url.replace("/", "");
-  console.log(url);
   if (url.startsWith("/exercises/")) {
     const slashIndex = url.indexOf("/", 2);
     return (
