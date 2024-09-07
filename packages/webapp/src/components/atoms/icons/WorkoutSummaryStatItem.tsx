@@ -7,7 +7,7 @@ type Props = {
   suffix?: string;
 };
 
-export const WorkoutSummaryStatIcon = ({ icon, title, data, suffix }: Props) => {
+export const WorkoutSummaryStatItem = ({ icon, title, data, suffix }: Props) => {
   return (
     <div className="flex gap-2 text-opacity-70 text-border-default ">
       <div className="flex items-center justify-center">{icon}</div>
