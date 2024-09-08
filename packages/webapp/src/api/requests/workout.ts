@@ -2,7 +2,10 @@ import { apiClient } from "../http-client";
 import { CreateWorkoutWithExercisesDto } from "@gymex/commons/";
 import {
   DetailedWorkoutModel,
+  GroupedWorkouts,
+  MonthYear,
   WorkoutCreateDtoSchemaWithoutExerciseName,
+  WorkoutHistory,
   WorkoutModel,
   WorkoutSummary,
 } from "@gymex/commons/src";
@@ -11,6 +14,8 @@ export const WorkoutQueryKeys = {
   all: ["workouts"] as const,
   details: () => [...WorkoutQueryKeys.all, "detail"] as const,
   detail: (id: number) => [...WorkoutQueryKeys.details(), id] as const,
+  plansGroupedByMonths: () =>
+    [...WorkoutQueryKeys.all, "groupedByMonths"] as const,
 };
 
 export const startWorkoutById = async (
@@ -54,3 +59,11 @@ export const deleteWorkoutPlan = async (workoutPlanId: number) => {
   );
   return response.data;
 };
+
+export const getWorkoutPlansWithSessionsGroupedByMonths =
+  async (): Promise<GroupedWorkouts> => {
+    const response = await apiClient.get<GroupedWorkouts>(
+      "workouts/groupedByMonths"
+    );
+    return response.data;
+  };

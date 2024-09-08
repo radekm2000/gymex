@@ -45,6 +45,9 @@ importers:
       '@types/passport-discord':
         specifier: ^0.1.13
         version: 0.1.13
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5

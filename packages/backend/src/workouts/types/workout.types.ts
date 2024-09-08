@@ -5,7 +5,11 @@ import {
   WorkoutPlansTable,
   WorkoutSessionsTable,
 } from 'src/db/schema/workout';
-import { WorkoutExerciseSetsWithoutPlanAndExerciseIds } from '../model/workout.model';
+import {
+  WorkoutExerciseSetsWithoutPlanAndExerciseIds,
+  WorkoutSummary,
+} from '../model/workout.model';
+import { MonthYear } from 'src/utils/constants';
 
 export type WorkoutModel = typeof WorkoutPlansTable.$inferSelect;
 
@@ -91,4 +95,13 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
     finishedAt: null,
     startedAt: null,
   },
+};
+
+export type GroupedWorkouts = {
+  date: Record<MonthYear, WorkoutHistory[]>;
+};
+
+export type WorkoutHistory = {
+  detailedWorkoutModel: DetailedWorkoutModel;
+  workoutSummary: WorkoutSummary;
 };

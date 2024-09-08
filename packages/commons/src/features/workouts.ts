@@ -149,6 +149,32 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   },
 };
 
+export type WorkoutHistory = {
+  detailedWorkoutModel: DetailedWorkoutModel;
+  workoutSummary: WorkoutSummary;
+};
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+export type Month = (typeof months)[number];
+
+export type MonthYear = `${Month} ${number}`;
+
+export type GroupedWorkouts = {
+  date: Record<MonthYear, WorkoutHistory[]>;
+};
 export type ExerciseSet = {
   exerciseSetNumber: string;
   reps: string;

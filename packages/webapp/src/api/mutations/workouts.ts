@@ -109,8 +109,6 @@ export const useWorkoutFinishMutation = () => {
     onError: (err) => {
       toast.error(err.message);
     },
-    // TODO
-    //  return user to summary page and return workout summary
     onSuccess: (returnedData: {
       detailedWorkoutModel: DetailedWorkoutModel;
       summary: WorkoutSummary;

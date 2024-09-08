@@ -4,7 +4,9 @@ import { CreateWorkoutWithExercisesDto } from './dto/workout.dto';
 import {
   DetailedWorkoutModel,
   ExerciseModel,
+  GroupedWorkouts,
   WorkoutExerciseSetsModel,
+  WorkoutHistory,
   WorkoutModel,
 } from './types/workout.types';
 import {
@@ -36,6 +38,8 @@ import { Chart } from 'src/exercises/chart/chart.model';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import { DrizzleSchema, DrizzleService } from 'src/drizzle/drizzle.service';
+import { MonthYear } from 'src/utils/constants';
+import { format, isValid, parseISO } from 'date-fns';
 
 // TODO assign userId  to creatorId when retrieveing workouts
 
@@ -335,6 +339,18 @@ export class WorkoutsService implements WorkoutService {
     return result[0];
   };
 
+  private getAllWorkoutsSessionFor = async (workoutPlan: WorkoutModel) => {
+    return await this.drizzleService.db
+      .select()
+      .from(WorkoutSessionsTable)
+      .where(
+        and(
+          eq(WorkoutSessionsTable.workoutPlanId, workoutPlan.id),
+          eq(WorkoutSessionsTable.userId, workoutPlan.creatorId),
+        ),
+      );
+  };
+
   private getPreviousWorkoutSession = async (workoutPlan: WorkoutModel) => {
     return await this.drizzleService.db
       .select()
@@ -362,6 +378,61 @@ export class WorkoutsService implements WorkoutService {
   //   }
   //   return detailedWorkoutModels;
   // };
+
+  public getAllWorkoutsSessions = async (userId: number) => {
+    const allWorkoutPlans = await this.drizzleService.db
+      .select()
+      .from(WorkoutPlansTable)
+      .where(eq(WorkoutPlansTable.creatorId, userId));
+
+    const allTrainingPlansSessions: Workout[] = [];
+
+    for (const workoutPlan of allWorkoutPlans) {
+      const workoutSessions = await this.getAllWorkoutsSessionFor(workoutPlan);
+
+      if (workoutSessions.length < 1) {
+        continue;
+      }
+      const trainingPlanWorkoutModels: Workout[] = [];
+
+      for (const workoutSession of workoutSessions) {
+        const model = await this.getWorkoutModelFor(
+          workoutPlan.id,
+          workoutSession.id,
+        );
+        trainingPlanWorkoutModels.push(model);
+      }
+      allTrainingPlansSessions.push(...trainingPlanWorkoutModels);
+    }
+    return allTrainingPlansSessions;
+  };
+
+  public getAllWorkoutsSessionGroupedByMonth = async (
+    userId: number,
+  ): Promise<GroupedWorkouts> => {
+    const allTrainingPlansSessions = await this.getAllWorkoutsSessions(userId);
+    if (allTrainingPlansSessions.length < 1) {
+      return;
+    }
+
+    const sessionsGroupedByMonth: Record<MonthYear, WorkoutHistory[]> = {};
+
+    allTrainingPlansSessions.forEach((trainingPlanModel) => {
+      const monthYear: MonthYear = format(
+        trainingPlanModel.session.finishedAt,
+        'MMMM-yyyy',
+      ) as MonthYear;
+      if (!sessionsGroupedByMonth[monthYear]) {
+        sessionsGroupedByMonth[monthYear] = [];
+      }
+
+      sessionsGroupedByMonth[monthYear].push({
+        detailedWorkoutModel: trainingPlanModel.detailedWorkoutModel,
+        workoutSummary: trainingPlanModel.workoutSummary,
+      });
+    });
+    return { date: sessionsGroupedByMonth };
+  };
 
   public getAll = async () => {
     const workoutPlans = await this.drizzleService.db
@@ -500,6 +571,74 @@ export class WorkoutsService implements WorkoutService {
         flattenExerciseSets,
         workoutSession,
       ).detailedWorkoutModel;
+    });
+  };
+
+  private getWorkoutModelFor = async (
+    workoutPlanId: number,
+    workoutSessionId: number,
+  ) => {
+    return await this.drizzleService.db.transaction(async (tx) => {
+      const [workout] = await tx
+        .select()
+        .from(WorkoutPlansTable)
+        .where(eq(WorkoutPlansTable.id, workoutPlanId));
+
+      const [workoutSession] = await tx
+        .select()
+        .from(WorkoutSessionsTable)
+        .where(eq(WorkoutSessionsTable.id, workoutSessionId));
+
+      const exercisesWithSetsFromPreviousSession = await tx
+        .select({
+          exercise: ExercisesTable,
+        })
+        .from(WorkoutExercisesTable)
+        .innerJoin(
+          WorkoutExerciseSetsTable,
+          and(
+            eq(
+              WorkoutExercisesTable.exerciseId,
+              WorkoutExerciseSetsTable.workoutExerciseId,
+            ),
+            eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+          ),
+        )
+        .innerJoin(
+          ExercisesTable,
+          eq(WorkoutExercisesTable.exerciseId, ExercisesTable.id),
+        )
+        .where(eq(WorkoutExercisesTable.workoutPlanId, workout.id))
+        .groupBy(ExercisesTable.id);
+
+      const exerciseSetsPromise = exercisesWithSetsFromPreviousSession.map(
+        async (exercise) => {
+          const exerciseSets = await tx
+            .select()
+            .from(WorkoutExerciseSetsTable)
+            .where(
+              and(
+                eq(
+                  WorkoutExerciseSetsTable.workoutExerciseId,
+                  exercise.exercise.id,
+                ),
+                eq(WorkoutExerciseSetsTable.workoutPlanId, workout.id),
+                eq(WorkoutExerciseSetsTable.workoutSessionId, workoutSessionId),
+              ),
+            );
+          return exerciseSets;
+        },
+      );
+
+      const fullExerciseSets = await Promise.all(exerciseSetsPromise);
+      const flattenExerciseSets = fullExerciseSets.flat(1);
+
+      return Workout.from(
+        workout,
+        exercisesWithSetsFromPreviousSession.map((e) => e.exercise),
+        flattenExerciseSets,
+        workoutSession,
+      );
     });
   };
 

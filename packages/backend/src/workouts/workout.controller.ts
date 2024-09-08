@@ -19,11 +19,12 @@ import {
 } from './dto/workout.dto';
 import { AccessTokenGuard } from 'src/auth/utils/AccessTokenGuard';
 import { CurrentUserId } from 'src/users/decorators/user.decorator';
-import { DetailedWorkoutModel } from './types/workout.types';
+import { DetailedWorkoutModel, WorkoutHistory } from './types/workout.types';
 import {
   AddExerciseToWorkoutDto,
   AddExerciseToWorkoutDtoSchema,
 } from 'src/exercises/dto/exercises.dto';
+import { MonthYear } from 'src/utils/constants';
 
 @Controller('workouts')
 export class WorkoutController {
@@ -33,8 +34,6 @@ export class WorkoutController {
 
   @Get()
   async getAllWorkouts() {
-    // TODO
-    //  if there was previous session fetch exercises from previous sesion
     return await this.workoutService.getAll();
   }
 
@@ -46,6 +45,15 @@ export class WorkoutController {
     @CurrentUserId() userId: number,
   ): Promise<DetailedWorkoutModel> {
     return await this.workoutService.createWorkoutWithExercises(dto, userId);
+  }
+  @UseGuards(AccessTokenGuard)
+  @Get('/groupedByMonths')
+  async getAllWorkoutTrainingPlansWithSessionsGroupedByMonth(
+    @CurrentUserId() userId: number,
+  ): Promise<Record<MonthYear, WorkoutHistory[]>> {
+    return await this.workoutService.getAllWorkoutsSessionGroupedByMonth(
+      userId,
+    );
   }
 
   @UseGuards(AccessTokenGuard)
