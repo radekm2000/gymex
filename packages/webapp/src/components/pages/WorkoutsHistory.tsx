@@ -18,15 +18,13 @@ export const WorkoutsHistory = () => {
     queryFn: getWorkoutPlansWithSessionsGroupedByMonths,
   });
 
-  if (isLoading) {
-    return <LoadingProgress />;
-  }
-
   if (!isAuthed) {
     return <NotAuthed />;
   }
 
-  console.log(data);
+  if (isLoading) {
+    return <LoadingProgress />;
+  }
 
   return (
     <Card className="flex flex-col gap-2 mb-6">
@@ -36,7 +34,7 @@ export const WorkoutsHistory = () => {
         </div>
         <span>Workouts history</span>
       </CardTitle>
-      <Separator className="mb-4" />
+      <Separator className="mb-0" />
 
       {data ? (
         <WorkoutsHistoryMonthsList groupedWorkouts={data} />

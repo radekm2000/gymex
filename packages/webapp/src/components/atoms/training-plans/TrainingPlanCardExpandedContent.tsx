@@ -5,15 +5,12 @@ import { DumbbellIcon } from "lucide-react";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { useWorkoutStartMutation } from "../../../api/mutations/workouts";
-import { useLocation } from "wouter";
 
 type Props = {
   trainingPlan: DetailedWorkoutModel;
 };
 
 export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
-  const [, setLocation] = useLocation();
-
   const startWorkoutMutation = useWorkoutStartMutation();
 
   const onStart = (trainingPlanId: number) => {
@@ -24,12 +21,9 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
   return (
     <Card className="flex flex-col gap-5 p-0 border-t-0 rounded-t-none bg-textInput-light bg-opacity-90">
       {trainingPlan.exercises.map((e, index) => (
-        <div key={index}>
-          <div
-            key={index}
-            className="flex items-center justify-between gap-4 first:pt-4"
-          >
-            <div>
+        <div key={index} className="first:pt-2">
+          <div key={index} className="flex items-center justify-between gap-4 ">
+            <div className="pl-2">
               <DumbbellIcon className=" text-secondary-light size-6 md:size-10" />
             </div>
             <span className="text-lg text-neutral-950 md:text-2xl">

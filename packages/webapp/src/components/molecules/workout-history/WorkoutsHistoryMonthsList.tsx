@@ -1,4 +1,5 @@
-import { GroupedWorkouts } from "@gymex/commons/src";
+import { GroupedWorkouts, MonthYear } from "@gymex/commons/src";
+import { WorkoutHistoryMonthCard } from "./WorkoutHistoryMonthCard";
 
 type Props = {
   groupedWorkouts: GroupedWorkouts;
@@ -8,18 +9,13 @@ export const WorkoutsHistoryMonthsList = ({ groupedWorkouts }: Props) => {
   return (
     <div className="py-4">
       {Object.entries(groupedWorkouts.date).map(([monthYear, workouts]) => {
-        const totalSessions = workouts.length;
         return (
           workouts.length > 0 && (
-            <div
+            <WorkoutHistoryMonthCard
               key={monthYear}
-              className="flex flex-col py-4 border border-red-500"
-            >
-              <div className="flex">
-                <h1>{monthYear}</h1>
-                <h1>total sesji w tym miesiacu : {totalSessions} </h1>
-              </div>
-            </div>
+              monthYear={monthYear as MonthYear}
+              workouts={workouts}
+            />
           )
         );
       })}

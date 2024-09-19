@@ -62,6 +62,7 @@ export const theme = {
         light: "#d1d1d1",
         default: "#888888",
         exercisebg: "#ededed",
+        darker: "#4f4f4f",
       },
       border: {
         default: "rgb(40,40,40)",
