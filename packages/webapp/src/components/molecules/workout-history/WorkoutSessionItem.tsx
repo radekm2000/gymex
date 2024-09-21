@@ -3,12 +3,15 @@ import { formatSessionTimeStamps } from "../../../hooks/utils/formatSessionTimes
 import { Clock, DumbbellIcon } from "lucide-react";
 import { formatSecondsToDuration } from "../../../hooks/utils/formatSecondsToDuration";
 import { useMediaQuery } from "usehooks-ts";
+import { useLocation } from "wouter";
 
 type Props = {
   workout: WorkoutHistory;
 };
 
 export const WorkoutSessionItem = ({ workout }: Props) => {
+  const [, setLocation] = useLocation();
+
   const durationTimeInSeconds =
     workout.workoutSummary.totalTrainingTimeInSeconds;
   const { formattedDate, timeDuration } = formatSessionTimeStamps(
@@ -18,13 +21,18 @@ export const WorkoutSessionItem = ({ workout }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const onClick = () => {
-    return;
+    setLocation(`/workout/${workout.detailedWorkoutModel.workout.id}/summary`, {
+      state: {
+        summary: workout.workoutSummary,
+        trainingPlan: workout.detailedWorkoutModel,
+      },
+    });
   };
 
   return (
     <div
       onClick={onClick}
-      className="flex items-center px-2 text-textInput-darker "
+      className="flex items-center px-2 cursor-pointer text-textInput-darker "
     >
       <DumbbellIcon size={isDesktop ? 32 : 20} />
       <div className="flex flex-col ml-4">

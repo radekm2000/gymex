@@ -2,6 +2,7 @@ import { AddExerciseToWorkout } from "@gymex/commons/src";
 import { useWorkoutStore } from "../../../../hooks/utils/useWorkoutStore";
 import { Input } from "../../../ui/input";
 import { Separator } from "../../../ui/separator";
+import { useForm } from "react-hook-form";
 
 type Props = {
   activeExercise: AddExerciseToWorkout;
@@ -9,6 +10,7 @@ type Props = {
 
 export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
   const { updateReps, updateWeight } = useWorkoutStore();
+
   return activeExercise.sets.map((set, index) => (
     <div key={index} className="flex flex-col items-center">
       {index === 0 && (
@@ -26,6 +28,7 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
           {set.exerciseSetNumber}
         </span>
         <Input
+          type="number"
           value={set.weight}
           onChange={(e) =>
             updateWeight(
@@ -34,14 +37,19 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
               e.target.value
             )
           }
-          className="w-12 !p-0 text-center border-0 focus-visible:ring-[none] text-textInput-light "
+          className="w-12 !p-0 text-center border-0 focus-visible:ring-[none] text-textInput-light [&::-webkit-inner-spin-button]:appearance-none "
         />
         <Input
+          type="number"
           value={set.reps}
-          onChange={(e) =>
-            updateReps(activeExercise.id, set.exerciseSetNumber, e.target.value)
-          }
-          className="w-12 !p-0 text-center border-0  focus-visible:ring-[none] text-textInput-light "
+          onChange={(e) => {
+            updateReps(
+              activeExercise.id,
+              set.exerciseSetNumber,
+              e.target.value
+            );
+          }}
+          className="w-12 !p-0 text-center border-0  focus-visible:ring-[none] text-textInput-light [&::-webkit-inner-spin-button]:appearance-none "
         />
       </div>
     </div>
