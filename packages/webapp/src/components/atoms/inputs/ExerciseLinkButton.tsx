@@ -24,12 +24,18 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
           activeWorkout: workout,
         },
       });
+    } else if (path && workout) {
+      setLocation(path, {
+        state: {
+          mode: SET_LOCATION_STATES.ADD_EXERCISE_TO_TRAINING_PLAN,
+          workout,
+        },
+      });
     } else {
       path &&
         setLocation(path, {
           state: {
-            mode: SET_LOCATION_STATES.ADD_EXERCISE_TO_TRAINING_PLAN,
-            workout,
+            mode: SET_LOCATION_STATES.NORMAL_MODE,
           },
         });
     }

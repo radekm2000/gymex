@@ -19,4 +19,5 @@ export enum RoutePath {
 export const SET_LOCATION_STATES = {
   ADD_EXERCISE_TO_TRAINING_PLAN: "addExerciseToTrainingPlan",
   ADD_EXERCISE_TO_ACTIVE_WORKOUT: "addExerciseToActiveWorkout",
+  NORMAL_MODE: 'normalMode'
 };

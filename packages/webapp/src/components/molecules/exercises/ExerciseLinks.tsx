@@ -13,6 +13,7 @@ import { RoutePath, SET_LOCATION_STATES } from "../../../constants/navigation";
 import { DeleteButton } from "../../atoms/inputs/DeleteButton";
 import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
 import { BarChart3 } from "lucide-react";
+import { useMediaQuery } from "usehooks-ts";
 type Props = {
   exercises: ExerciseModel[];
 };
@@ -24,7 +25,8 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   const activeWorkout: ActiveWorkoutFinishSchema = state?.activeWorkout;
   const workout: WorkoutCreateSchema = state?.workout;
   const { addExercise } = useWorkoutStore();
-
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  console.log(mode);
   const isMyExercisesPage = location === RoutePath.MyExercises;
 
   const deleteMutation = useExerciseDeleteMutation();
@@ -96,18 +98,26 @@ export const ExerciseLinks = ({ exercises }: Props) => {
                 onClick={() => handleAddExercise(e)}
                 className="flex items-center gap-8 cursor-pointer "
               >
-                <DumbbellIcon className=" text-secondary-veryLight" />
+                {isDesktop ? (
+                  <DumbbellIcon className=" text-secondary-veryLight" />
+                ) : null}
                 <span className="text-lg font-display">{e.exerciseName}</span>
               </div>
 
-              <div
-                onClick={() => onChartIconClick(e.id)}
-                className="flex items-center ml-auto cursor-pointer"
-              >
-                <BarChart3 color="#4bbbe5" />
-              </div>
+              {mode === SET_LOCATION_STATES.NORMAL_MODE && (
+                <div
+                  onClick={() => onChartIconClick(e.id)}
+                  className="flex items-center ml-auto cursor-pointer"
+                >
+                  <BarChart3 color="#4bbbe5" />
+                </div>
+              )}
               {isMyExercisesPage && (
-                <DeleteButton idToDelete={e.id} onDelete={onDelete} />
+                <DeleteButton
+                  className={`${isDesktop ? "" : "px-0 pl-1"}`}
+                  idToDelete={e.id}
+                  onDelete={onDelete}
+                />
               )}
             </div>
           ))}
