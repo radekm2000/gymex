@@ -39,10 +39,7 @@ import { PgTransaction } from 'drizzle-orm/pg-core';
 import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import { DrizzleSchema, DrizzleService } from 'src/drizzle/drizzle.service';
 import { MonthYear } from 'src/utils/constants';
-import { format, isValid, parseISO } from 'date-fns';
-import { ExerciseStatsInsert } from 'src/exercises/exercises.service';
-
-// TODO assign userId  to creatorId when retrieveing workouts
+import { format } from 'date-fns';
 
 @Injectable()
 export class WorkoutsService implements WorkoutService {

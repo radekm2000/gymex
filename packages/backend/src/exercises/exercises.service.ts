@@ -146,6 +146,7 @@ export class ExercisesService implements ExerciseService {
       value.exerciseId,
       value.userId,
     );
+
     const exercise = Exercise.from(value.userId, value.exerciseId, history);
 
     exercise.updateStats({
@@ -166,6 +167,8 @@ export class ExercisesService implements ExerciseService {
     history: ExerciseHistory;
     overallStats: ExerciseOverallStats;
   }> => {
+    const exerciseBase = await this.findExerciseById(exerciseId);
+
     const historyRecords = await this.drizzle.db
       .select()
       .from(UserExerciseStatsTable)
@@ -182,6 +185,7 @@ export class ExercisesService implements ExerciseService {
       userId,
       exerciseId,
       historyRecords,
+      exerciseBase.exerciseName,
     ).mapHistoryToOverallStats(historyRecords);
 
     return { history, overallStats };

@@ -13,6 +13,7 @@ export type ExerciseOverallStats = {
   overallTotalSets: number;
   overallTotalReps: number;
   overallMaxWeight: number;
+  exerciseName: string;
 };
 
 export type ExerciseHistory = Omit<
@@ -31,13 +32,15 @@ export class Exercise {
     private readonly _exerciseId: number,
     private readonly userId: number,
     private readonly _history: ExerciseHistory,
+    private readonly exerciseName: string,
   ) {}
 
   public static from = (
     userId: number,
     exerciseId: number,
     history: ExerciseHistory,
-  ) => new Exercise(exerciseId, userId, history);
+    exerciseName?: string,
+  ) => new Exercise(exerciseId, userId, history, exerciseName);
 
   public get history() {
     return this._history;
@@ -67,6 +70,7 @@ export class Exercise {
         0,
       ),
       overallMaxWeight: Math.max(...history.map((record) => record.maxWeight)),
+      exerciseName: this.exerciseName,
     };
   }
 

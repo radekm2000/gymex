@@ -26,7 +26,6 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   const workout: WorkoutCreateSchema = state?.workout;
   const { addExercise } = useWorkoutStore();
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  console.log(mode);
   const isMyExercisesPage = location === RoutePath.MyExercises;
 
   const deleteMutation = useExerciseDeleteMutation();
@@ -36,7 +35,7 @@ export const ExerciseLinks = ({ exercises }: Props) => {
   };
 
   const onChartIconClick = (exerciseId: number) => {
-    console.log(exerciseId);
+    setLocation(`/exercises/${exerciseId}/statistics`);
   };
 
   const handleAddExercise = (exercise: ExerciseModel) => {

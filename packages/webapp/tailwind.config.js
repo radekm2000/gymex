@@ -56,7 +56,7 @@ export const theme = {
       },
       tertiary: {
         light: "#f58b1a",
-        default: "#ee7411",
+        default: "#f7a540",
       },
       textInput: {
         light: "#d1d1d1",

@@ -14,6 +14,7 @@ export enum RoutePath {
   WorkoutSummary = "/workout/:workoutPlanId/summary",
   Github = "https://github.com/radekm2000/gymex",
   WorkoutsHistory = "/workouts/history",
+  ExerciseStatistics = '/exercises/:exerciseId/statistics'
 }
 
 export const SET_LOCATION_STATES = {

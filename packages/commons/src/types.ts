@@ -48,4 +48,5 @@ export type ExerciseOverallStats = {
   overallTotalSets: number;
   overallTotalReps: number;
   overallMaxWeight: number;
+  exerciseName: string;
 };

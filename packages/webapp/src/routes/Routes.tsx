@@ -71,6 +71,12 @@ const WorkoutSummaryRoute = lazy(() =>
   }))
 );
 
+const ExerciseStatisticsRoute = lazy(() =>
+  import("../components/pages/ExerciseStatistics").then((module) => ({
+    default: module.ExerciseStatistics,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -127,6 +133,11 @@ export const Routes = () => {
       <Route path={RoutePath.WorkoutSummary}>
         <Suspense fallback={<LoadingProgress />}>
           <WorkoutSummaryRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.ExerciseStatistics}>
+        <Suspense fallback={<LoadingProgress />}>
+          <ExerciseStatisticsRoute />
         </Suspense>
       </Route>
       <Route>
