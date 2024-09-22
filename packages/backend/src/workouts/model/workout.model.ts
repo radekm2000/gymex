@@ -160,22 +160,22 @@ export class Workout {
     }));
   };
 
-  private mapExerciseSetsWithoutPlanAndExerciseIds = (
-    exerciseSets: WorkoutExerciseSetsModel[],
-  ) => {
-    return exerciseSets.map((exerciseSet) => ({
-      id: exerciseSet.id,
-      exerciseSetNumber: exerciseSet.exerciseSetNumber ?? '1',
-      reps: exerciseSet.reps ?? '10',
-      weight: exerciseSet.weight ?? '0',
-      rir: exerciseSet.rir ?? '',
-      tempo: exerciseSet.tempo ?? '',
-      userId: exerciseSet.userId ?? 0,
-      workoutSessionId: exerciseSet.workoutSessionId ?? 0,
-      isStaticSet: exerciseSet.isStaticSet ?? false,
-      holdSecs: exerciseSet.holdSecs ?? '0',
-    }));
-  };
+  // private mapExerciseSetsWithoutPlanAndExerciseIds = (
+  //   exerciseSets: WorkoutExerciseSetsModel[],
+  // ) => {
+  //   return exerciseSets.map((exerciseSet) => ({
+  //     id: exerciseSet.id,
+  //     exerciseSetNumber: exerciseSet.exerciseSetNumber ?? '1',
+  //     reps: exerciseSet.reps ?? '10',
+  //     weight: exerciseSet.weight ?? '0',
+  //     rir: exerciseSet.rir ?? '',
+  //     tempo: exerciseSet.tempo ?? '',
+  //     userId: exerciseSet.userId ?? 0,
+  //     workoutSessionId: exerciseSet.workoutSessionId ?? 0,
+  //     isStaticSet: exerciseSet.isStaticSet ?? false,
+  //     holdSecs: exerciseSet.holdSecs ?? '0',
+  //   }));
+  // };
 
   private mapExercisesWithSets = () => {
     return this._exercises.map((exercise) => {

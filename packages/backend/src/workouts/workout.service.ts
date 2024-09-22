@@ -40,6 +40,7 @@ import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import { DrizzleSchema, DrizzleService } from 'src/drizzle/drizzle.service';
 import { MonthYear } from 'src/utils/constants';
 import { format, isValid, parseISO } from 'date-fns';
+import { ExerciseStatsInsert } from 'src/exercises/exercises.service';
 
 // TODO assign userId  to creatorId when retrieveing workouts
 
@@ -309,7 +310,20 @@ export class WorkoutsService implements WorkoutService {
 
       this.eventEmitter.emit(WorkoutEvents.WorkoutFinished, payload);
 
+      for (const exercise of dto.exercises) {
+        const valueToUpdate =
+          await this.exerciseService.getExerciseValueForUpdate(
+            exercise,
+            new Date(),
+            userId,
+          );
+        await this.exerciseService.upsertExerciseStatsToDbAndUpdateModel(
+          valueToUpdate,
+        );
+      }
+
       // return workout.detailedWorkoutModel;
+
       return {
         detailedWorkoutModel: workout.detailedWorkoutModel,
         summary: workout.workoutSummary,
@@ -345,6 +359,7 @@ export class WorkoutsService implements WorkoutService {
       .from(WorkoutSessionsTable)
       .where(
         and(
+          isNotNull(WorkoutSessionsTable.finishedAt),
           eq(WorkoutSessionsTable.workoutPlanId, workoutPlan.id),
           eq(WorkoutSessionsTable.userId, workoutPlan.creatorId),
         ),

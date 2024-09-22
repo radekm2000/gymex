@@ -10,6 +10,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+import { ExercisesTable } from './workout';
 
 export type UserDiscordModel = typeof UserDiscordConnections.$inferSelect;
 
@@ -56,6 +57,27 @@ export const UserDiscordConnections = pgTable('user_discord_connections', {
   avatar: text('discord_avatar'),
   discordId: text('discord_id'),
   username: text('discord_username'),
+});
+
+export const UserExerciseStatsTable = pgTable('user_exercise_stats', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
+    .references(() => UsersTable.id, {
+      onDelete: 'cascade',
+    })
+    .notNull(),
+  exerciseId: integer('exercise_id').references(() => ExercisesTable.id, {
+    onDelete: 'cascade',
+  }),
+
+  finishedAt: timestamp('finished_at', {
+    mode: 'date',
+    withTimezone: true,
+  }),
+  totalWeight: doublePrecision('total_weight').notNull().default(0),
+  totalReps: integer('total_reps').notNull().default(0),
+  totalSets: integer('total_sets').notNull().default(0),
+  maxWeight: doublePrecision('max_weight').notNull().default(0),
 });
 
 export const UserAchievementsTable = pgTable(

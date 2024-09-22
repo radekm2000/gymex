@@ -23,6 +23,7 @@ import {
 } from './dto/exercises.dto';
 import { RoleGuard, UserRoles } from 'src/auth/utils/RoleGuard';
 import { ExerciseModel } from 'src/workouts/types/workout.types';
+import { ExerciseHistory, ExerciseOverallStats } from './exercise.model';
 
 @Controller('exercises')
 export class ExercisesController {
@@ -53,6 +54,16 @@ export class ExercisesController {
   async getDefaultExercises(): Promise<ExerciseModel[]> {
     return await this.exerciseService.getDefaultExercises();
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get(':id/history')
+  async getExerciseHistory(
+    @CurrentUserId() userId: number,
+    @Param('id', ParseIntPipe) exerciseId: number,
+  ): Promise<{ history: ExerciseHistory; overallStats: ExerciseOverallStats }> {
+    return await this.exerciseService.getExerciseHistory(exerciseId, userId);
+  }
+
   @UseGuards(AccessTokenGuard)
   @Get('/me')
   async getMyExercises(@CurrentUserId() userId: number) {

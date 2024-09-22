@@ -8,6 +8,7 @@ import { NotAuthed } from "./NotAuthed";
 export const Exercises = () => {
   const { isAuthed } = useAuth();
   const largeSize = useMediaQuery("(min-width: 1500px)");
+
   if (!isAuthed) {
     return <NotAuthed />;
   }

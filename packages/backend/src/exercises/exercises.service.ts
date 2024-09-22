@@ -17,7 +17,14 @@ import { UserRoles } from 'src/auth/utils/RoleGuard';
 import { and, eq, ExtractTablesWithRelations } from 'drizzle-orm';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import { NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
-import { User } from 'src/users/user.model';
+import {
+  Exercise,
+  ExerciseHistory,
+  ExerciseOverallStats,
+} from './exercise.model';
+import { UserExerciseStatsTable } from 'src/db/schema/users';
+
+export type ExerciseStatsInsert = typeof UserExerciseStatsTable.$inferInsert;
 
 @Injectable()
 export class ExercisesService implements ExerciseService {
@@ -120,5 +127,95 @@ export class ExercisesService implements ExerciseService {
       )
       .returning();
     return exercise;
+  };
+
+  public upsertExerciseStatsToDbAndUpdateModel = async (
+    value: ExerciseStatsInsert,
+  ) => {
+    await this.drizzle.db
+      .insert(UserExerciseStatsTable)
+      .values(value)
+      .onConflictDoNothing()
+      .returning();
+
+    this.updateExerciseStatsModel(value);
+  };
+
+  private updateExerciseStatsModel = async (value: ExerciseStatsInsert) => {
+    const { history } = await this.getExerciseHistory(
+      value.exerciseId,
+      value.userId,
+    );
+    const exercise = Exercise.from(value.userId, value.exerciseId, history);
+
+    exercise.updateStats({
+      userId: value.userId,
+      exerciseId: value.exerciseId,
+      totalWeight: value.totalWeight,
+      totalSets: value.totalSets,
+      totalReps: value.totalReps,
+      maxWeight: value.maxWeight,
+      finishedAt: value.finishedAt,
+    });
+  };
+
+  public getExerciseHistory = async (
+    exerciseId: number,
+    userId: number,
+  ): Promise<{
+    history: ExerciseHistory;
+    overallStats: ExerciseOverallStats;
+  }> => {
+    const historyRecords = await this.drizzle.db
+      .select()
+      .from(UserExerciseStatsTable)
+      .where(
+        and(
+          eq(UserExerciseStatsTable.exerciseId, exerciseId),
+          eq(UserExerciseStatsTable.userId, userId),
+        ),
+      );
+
+    const history = Exercise.from(userId, exerciseId, historyRecords).history;
+
+    const overallStats = Exercise.from(
+      userId,
+      exerciseId,
+      historyRecords,
+    ).mapHistoryToOverallStats(historyRecords);
+
+    return { history, overallStats };
+  };
+
+  public getExerciseValueForUpdate = async (
+    exercise: {
+      id?: number;
+      notes?: string;
+      orderIndex?: number;
+      sets?: {
+        exerciseSetNumber?: string;
+        reps?: string;
+        weight?: string;
+        rir?: string;
+        tempo?: string;
+        isStaticSet?: boolean;
+        holdSecs?: string;
+      }[];
+    },
+    finishedAt: Date,
+    userId: number,
+  ): Promise<ExerciseStatsInsert> => {
+    return {
+      totalReps: exercise.sets.reduce((acc, set) => acc + Number(set.reps), 0),
+      totalSets: exercise.sets.length,
+      finishedAt,
+      exerciseId: exercise.id,
+      maxWeight: Math.max(...exercise.sets.map((set) => Number(set.weight))),
+      totalWeight: exercise.sets.reduce(
+        (sum, set) => sum + Number(set.weight),
+        0,
+      ),
+      userId,
+    };
   };
 }

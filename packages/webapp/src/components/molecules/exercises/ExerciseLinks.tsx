@@ -12,7 +12,7 @@ import { useLocation } from "wouter";
 import { RoutePath, SET_LOCATION_STATES } from "../../../constants/navigation";
 import { DeleteButton } from "../../atoms/inputs/DeleteButton";
 import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
-
+import { BarChart3 } from "lucide-react";
 type Props = {
   exercises: ExerciseModel[];
 };
@@ -31,6 +31,10 @@ export const ExerciseLinks = ({ exercises }: Props) => {
 
   const onDelete = (exerciseId: number) => {
     deleteMutation.mutate({ exerciseId });
+  };
+
+  const onChartIconClick = (exerciseId: number) => {
+    console.log(exerciseId);
   };
 
   const handleAddExercise = (exercise: ExerciseModel) => {
@@ -96,6 +100,12 @@ export const ExerciseLinks = ({ exercises }: Props) => {
                 <span className="text-lg font-display">{e.exerciseName}</span>
               </div>
 
+              <div
+                onClick={() => onChartIconClick(e.id)}
+                className="flex items-center ml-auto cursor-pointer"
+              >
+                <BarChart3 color="#4bbbe5" />
+              </div>
               {isMyExercisesPage && (
                 <DeleteButton idToDelete={e.id} onDelete={onDelete} />
               )}

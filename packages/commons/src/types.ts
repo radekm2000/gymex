@@ -27,3 +27,25 @@ export const CreateWorkoutWithExercisesDtoSchema = z.object({
 export type CreateWorkoutWithExercisesDto = z.infer<
   typeof CreateWorkoutWithExercisesDtoSchema
 >;
+
+export type UpdateExerciseStatsDto = {
+  userId: number;
+  exerciseId: number;
+  totalWeight: number;
+  totalSets: number;
+  totalReps: number;
+  maxWeight: number;
+  finishedAt: Date;
+};
+
+export type ExerciseHistory = Omit<
+  UpdateExerciseStatsDto,
+  "exerciseId" | "userId"
+>[];
+
+export type ExerciseOverallStats = {
+  overallTotalWeight: number;
+  overallTotalSets: number;
+  overallTotalReps: number;
+  overallMaxWeight: number;
+};

@@ -19,6 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:generate": "drizzle-kit generate --config=./drizzle.config.ts",
+    "db:amend": "drizzle-kit drop && drizzle-kit generate --config=./drizzle.config.ts ",
+    "db:introspect": "drizzle-kit introspect --config=./drizzle.config.ts",
     "db:studio": "drizzle-kit studio",
     "db:migrate": "drizzle-kit migrate --config=./drizzle.config.ts",
     "db:push": "drizzle-kit push"

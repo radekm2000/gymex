@@ -8,6 +8,11 @@ import {
   CreateExerciseDto,
 } from 'src/exercises/dto/exercises.dto';
 import {
+  ExerciseHistory,
+  ExerciseOverallStats,
+} from 'src/exercises/exercise.model';
+import { ExerciseStatsInsert } from 'src/exercises/exercises.service';
+import {
   ExerciseModel,
   WorkoutExerciseSetsModel,
 } from 'src/workouts/types/workout.types';
@@ -44,4 +49,32 @@ export interface ExerciseService {
   ): Promise<ExerciseModel>;
 
   getDefaultExercises(): Promise<ExerciseModel[]>;
+
+  getExerciseHistory(
+    exerciseId: number,
+    userId: number,
+  ): Promise<{ history: ExerciseHistory; overallStats: ExerciseOverallStats }>;
+
+  upsertExerciseStatsToDbAndUpdateModel(
+    value: ExerciseStatsInsert,
+  ): Promise<void>;
+
+  getExerciseValueForUpdate(
+    exercise: {
+      id?: number;
+      notes?: string;
+      orderIndex?: number;
+      sets?: {
+        exerciseSetNumber?: string;
+        reps?: string;
+        weight?: string;
+        rir?: string;
+        tempo?: string;
+        isStaticSet?: boolean;
+        holdSecs?: string;
+      }[];
+    },
+    finishedAt: Date,
+    userId: number,
+  ): Promise<ExerciseStatsInsert>;
 }
