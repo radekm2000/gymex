@@ -1,5 +1,5 @@
 export enum RoutePath {
-  MainPage = "/main",
+  Profile = "/profile",
   Test = "/test",
   Exercises = "/exercises",
   AddExercise = "/exercises/own/add",
@@ -14,11 +14,11 @@ export enum RoutePath {
   WorkoutSummary = "/workout/:workoutPlanId/summary",
   Github = "https://github.com/radekm2000/gymex",
   WorkoutsHistory = "/workouts/history",
-  ExerciseStatistics = '/exercises/:exerciseId/statistics'
+  ExerciseStatistics = "/exercises/:exerciseId/statistics",
 }
 
 export const SET_LOCATION_STATES = {
   ADD_EXERCISE_TO_TRAINING_PLAN: "addExerciseToTrainingPlan",
   ADD_EXERCISE_TO_ACTIVE_WORKOUT: "addExerciseToActiveWorkout",
-  NORMAL_MODE: 'normalMode'
+  NORMAL_MODE: "normalMode",
 };

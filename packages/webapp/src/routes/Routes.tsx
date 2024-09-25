@@ -5,9 +5,9 @@ import { LoadingProgress } from "../components/molecules/utils/LoadingProgress";
 import { RoutePath } from "../constants/navigation";
 import { TestPage } from "../components/pages/TestPage";
 
-const MainRoute = lazy(() =>
-  import("../components/pages/Main").then((module) => ({
-    default: module.Main,
+const ProfileRoute = lazy(() =>
+  import("../components/pages/Profile").then((module) => ({
+    default: module.Profile,
   }))
 );
 
@@ -80,9 +80,9 @@ const ExerciseStatisticsRoute = lazy(() =>
 export const Routes = () => {
   return (
     <Switch>
-      <Route path={RoutePath.MainPage}>
+      <Route path={RoutePath.Profile}>
         <Suspense fallback={<LoadingProgress />}>
-          <MainRoute />
+          <ProfileRoute />
         </Suspense>
       </Route>
       <Route path={RoutePath.Test}>

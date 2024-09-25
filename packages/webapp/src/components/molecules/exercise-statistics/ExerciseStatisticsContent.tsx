@@ -25,7 +25,7 @@ export const ExerciseStatisticsContent = ({ data }: Props) => {
   return (
     <div className="mt-4">
       {isDesktop && (
-        <div className="h-[400px] w-[700px]">
+        <div className="h-[400px] w-3/4">
           <ResponsiveLine
             data={chartData}
             margin={{ top: 50, right: 110, bottom: 50, left: 50 }}

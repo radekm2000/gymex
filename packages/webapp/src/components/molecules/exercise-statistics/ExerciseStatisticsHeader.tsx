@@ -1,5 +1,6 @@
 import { ExerciseHistory, ExerciseOverallStats } from "@gymex/commons/src";
 import { Separator } from "../../ui/separator";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   data: {
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export const ExerciseStatisticsHeader = ({ data }: Props) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-center">
@@ -27,8 +30,16 @@ export const ExerciseStatisticsHeader = ({ data }: Props) => {
               key={statisticName}
               className="flex items-center justify-between"
             >
-              <span className="font-display text-">{statisticName}</span>
-              <span className="text-tertiary-default">{value}</span>
+              <span className={`font-display ${isDesktop ? "text-3xl" : ""} `}>
+                {statisticName.startsWith("overall")
+                  ? statisticName.slice(7)
+                  : statisticName}
+              </span>
+              <span
+                className={`text-tertiary-default ${isDesktop ? "text-xl" : ""}`}
+              >
+                {value}
+              </span>
             </div>
             <Separator />
           </div>

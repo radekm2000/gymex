@@ -42,11 +42,11 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
   };
 
   return (
-    <div className="flex gap-10">
-      <div className="flex flex-col items-center w-full h-full ">
+    <div className="flex rounded-full">
+      <div className="flex flex-col items-center w-full h-full gap-4 ">
         <Button
           variant={"default"}
-          className="w-32 h-32 lg:size-60 border-1 border-primary-light "
+          className="w-full h-32 lg:size-60 border-1 border-primary-light "
           onClick={handleOnClick}
         >
           {icon}

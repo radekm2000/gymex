@@ -8,6 +8,7 @@ import {
   DumbbellIcon,
   NotepadText,
   Store,
+  UserRound,
 } from "lucide-react";
 
 export const SidebarLinks = () => {
@@ -16,26 +17,28 @@ export const SidebarLinks = () => {
       <SidebarLinkButton isLogo={true} name="logo" icon={<Logo />} />
 
       <SidebarLinkButton
+        name="Profile"
+        path={RoutePath.Profile}
+        icon={<UserRound size={22} />}
+      />
+
+      <SidebarLinkButton
         name="Exercises"
         path={RoutePath.Exercises}
         icon={<DumbbellIcon size={22} />}
       />
       <SidebarLinkButton
-        name="Main Page"
-        path={RoutePath.MainPage}
-        icon={<Store size={22} />}
+        name="Training plans"
+        path={RoutePath.TrainingPlans}
+        icon={<NotepadText size={22} />}
       />
+
       <SidebarLinkButton
         name="Test Page"
         path={RoutePath.Test}
         icon={<Ambulance size={22} />}
       />
 
-      <SidebarLinkButton
-        name="Training plans"
-        path={RoutePath.TrainingPlans}
-        icon={<NotepadText size={22} />}
-      />
       <SidebarLinkButton
         name="History"
         path={RoutePath.WorkoutsHistory}
