@@ -16,7 +16,7 @@ export const TopBar = ({ currentUrlLocation, toggleSheet }: Props) => {
     <div className="flex items-center justify-between p-2 border-b border-primary-light min-h-16 max-h-16">
       <div className="hidden md:block">
         {currentUrlLocation && (
-          <div className="px-5 text-2xl text-white">
+          <div className="px-5 text-3xl text-white font-display">
             {formatUrlToUi(currentUrlLocation)}
           </div>
         )}

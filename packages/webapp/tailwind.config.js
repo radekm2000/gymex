@@ -40,8 +40,10 @@ export const theme = {
         light: "#262626",
         DEFAULT: "#202020",
         dark: "#151515",
+        darker: "#111111",
       },
       secondary: {
+        ultraLight: "#c1e6f6",
         veryLight: "#4bbbe5",
         light: "#1684b3",
         DEFAULT: "#146d96",
