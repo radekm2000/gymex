@@ -10,6 +10,15 @@ export class UserDetailsWrapper {
     return this.details;
   }
 
+  public get achievementsUnlocked() {
+    const achievements = this.details.stats.achievements;
+
+    const achievementsUnlocked = Object.values(achievements).filter(
+      (achievement) => achievement.unlocked
+    );
+    return achievementsUnlocked.length;
+  }
+
   public get achievements() {
     return this.details.stats.achievements;
   }

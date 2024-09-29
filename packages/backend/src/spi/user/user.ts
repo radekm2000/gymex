@@ -16,4 +16,6 @@ export interface UserService {
     model: DetailedUserModel,
     achievements: Record<string, number>,
   ): DetailedUserModel;
+
+  getLeaderboardInfo(): Promise<DetailedUserModel[]>;
 }

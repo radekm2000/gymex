@@ -1,15 +1,15 @@
 import { RoutePath } from "../../constants/navigation";
+import { CustomIcon } from "../atoms/icons/CustomIcon";
 import { GithubIcon } from "../atoms/icons/GithubIcon";
 import { Logo } from "../atoms/icons/Logo";
 import { SidebarLinkButton } from "../atoms/sidebar/SidebarLinkButton";
 import {
-  Ambulance,
   CalendarDays,
   DumbbellIcon,
   NotepadText,
-  Store,
   UserRound,
 } from "lucide-react";
+import leaderboard from "../../assets/leaderboard.png";
 
 export const SidebarLinks = () => {
   return (
@@ -34,9 +34,9 @@ export const SidebarLinks = () => {
       />
 
       <SidebarLinkButton
-        name="Test Page"
-        path={RoutePath.Test}
-        icon={<Ambulance size={22} />}
+        name="Leaderboard"
+        path={RoutePath.Leaderboard}
+        icon={<CustomIcon height={22} width={22} icon={leaderboard} />}
       />
 
       <SidebarLinkButton

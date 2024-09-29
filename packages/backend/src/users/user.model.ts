@@ -36,6 +36,7 @@ export class User {
   public get stats(): UserStatsModel {
     return this._stats;
   }
+
   public get detailedUserModel(): DetailedUserModel {
     return {
       user: {

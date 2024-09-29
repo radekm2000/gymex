@@ -77,6 +77,12 @@ const ExerciseStatisticsRoute = lazy(() =>
   }))
 );
 
+const LeaderboardRoute = lazy(() =>
+  import("../components/pages/Leaderboard").then((module) => ({
+    default: module.Leaderboard,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -140,9 +146,14 @@ export const Routes = () => {
           <ExerciseStatisticsRoute />
         </Suspense>
       </Route>
+      <Route path={RoutePath.Leaderboard}>
+        <Suspense fallback={<LoadingProgress />}>
+          <LeaderboardRoute />
+        </Suspense>
+      </Route>
       <Route>
-        <Redirect to={RoutePath.Test} />
-        <TestPage />
+        <Redirect to={RoutePath.Profile} />
+        <ProfileRoute />
       </Route>
     </Switch>
   );

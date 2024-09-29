@@ -4,6 +4,6 @@ type Props = {
   icon: string;
 };
 
-export const ExerciseIcon = ({ width, height, icon }: Props) => {
+export const CustomIcon = ({ width, height, icon }: Props) => {
   return <img height={height} width={width} src={icon} />;
 };

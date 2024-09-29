@@ -36,6 +36,11 @@ export class UsersController {
     return await this.userService.getDetailedUserModelFor(userId);
   }
 
+  @Get('/leaderboard')
+  async getLeaderboardInfo(): Promise<DetailedUserModel[]> {
+    return await this.userService.getLeaderboardInfo();
+  }
+
   @UsePipes(new ZodValidationPipe(UpdateUserDtoSchema))
   @UseGuards(AccessTokenGuard)
   @UsePipes()

@@ -234,4 +234,16 @@ export class UsersService implements UserService {
       }
     );
   };
+
+  public getLeaderboardInfo = async () => {
+    const users = await this.drizzleService.db.select().from(UsersTable);
+
+    const detailedUsers: DetailedUserModel[] = [];
+
+    for (const user of users) {
+      const detailedUser = await this.getDetailedUserModelFor(user.id);
+      detailedUsers.push(detailedUser);
+    }
+    return detailedUsers;
+  };
 }

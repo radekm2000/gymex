@@ -28,6 +28,7 @@ export type UserStatsModel = {
   userId: number;
   totalWeight: number;
   maxWeight: number;
+  
   totalSessions: number;
   totalTrainingTime: number;
   achievements: Record<string, UserAchievementStatus>;

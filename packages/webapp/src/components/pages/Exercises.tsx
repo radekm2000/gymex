@@ -3,7 +3,7 @@ import { RoutePath } from "../../constants/navigation";
 import { useAuth } from "../../hooks/use-auth";
 import { ExerciseLinkButton } from "../atoms/inputs/ExerciseLinkButton";
 import { NotAuthed } from "./NotAuthed";
-import { ExerciseIcon } from "../atoms/icons/ExerciseIcon";
+import { CustomIcon } from "../atoms/icons/CustomIcon";
 import squat from "../../assets/powerlifting.png";
 import back from "../../assets/pull-ups.png";
 import chest from "../../assets/bench-press-weightlifting.png";
@@ -28,9 +28,9 @@ export const Exercises = () => {
         path={RoutePath.MyExercises}
         icon={
           largeSize ? (
-            <ExerciseIcon icon={myexercise} />
+            <CustomIcon icon={myexercise} />
           ) : (
-            <ExerciseIcon icon={myexercise} />
+            <CustomIcon icon={myexercise} />
           )
         }
       />
@@ -38,33 +38,21 @@ export const Exercises = () => {
         name="Chest"
         path={RoutePath.ChestExercises}
         icon={
-          largeSize ? (
-            <ExerciseIcon icon={chest} />
-          ) : (
-            <ExerciseIcon icon={chest} />
-          )
+          largeSize ? <CustomIcon icon={chest} /> : <CustomIcon icon={chest} />
         }
       />
       <ExerciseLinkButton
         name="Back"
         path={RoutePath.BackExercises}
         icon={
-          largeSize ? (
-            <ExerciseIcon icon={back} />
-          ) : (
-            <ExerciseIcon icon={back} />
-          )
+          largeSize ? <CustomIcon icon={back} /> : <CustomIcon icon={back} />
         }
       />
       <ExerciseLinkButton
         name="Legs"
         path={RoutePath.LegExercises}
         icon={
-          largeSize ? (
-            <ExerciseIcon icon={squat} />
-          ) : (
-            <ExerciseIcon icon={squat} />
-          )
+          largeSize ? <CustomIcon icon={squat} /> : <CustomIcon icon={squat} />
         }
       />
     </div>
