@@ -3,9 +3,7 @@ import { CreateWorkoutWithExercisesDto } from "@gymex/commons/";
 import {
   DetailedWorkoutModel,
   GroupedWorkouts,
-  MonthYear,
   WorkoutCreateDtoSchemaWithoutExerciseName,
-  WorkoutHistory,
   WorkoutModel,
   WorkoutSummary,
 } from "@gymex/commons/src";

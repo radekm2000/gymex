@@ -2,7 +2,6 @@ import { AddExerciseToWorkout } from "@gymex/commons/src";
 import { useWorkoutStore } from "../../../../hooks/utils/useWorkoutStore";
 import { Input } from "../../../ui/input";
 import { Separator } from "../../../ui/separator";
-import { useForm } from "react-hook-form";
 
 type Props = {
   activeExercise: AddExerciseToWorkout;

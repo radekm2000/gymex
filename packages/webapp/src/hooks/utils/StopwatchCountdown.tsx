@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCountdown, useCounter, useMediaQuery } from "usehooks-ts";
+import { useCountdown, useMediaQuery } from "usehooks-ts";
 import { StopwatchIcon } from "../../components/atoms/icons/StopwatchIcon";
 
 type Props = {
@@ -49,7 +49,9 @@ export const StopwatchCountdown = ({ restTimeValue }: Props) => {
 
   return (
     <div className="flex items-center gap-4">
-      <span className={`text-${isDesktop ? "3xl" : "xl"} cursor-default`}>{count}</span>
+      <span className={`text-${isDesktop ? "3xl" : "xl"} cursor-default`}>
+        {count}
+      </span>
       <div className="cursor-pointer">
         <StopwatchIcon clicked={stopwatchClicked} onClick={onStopwatchClick} />
       </div>

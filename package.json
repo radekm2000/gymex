@@ -7,7 +7,11 @@
     "start:backend:dev": "pnpm --filter backend start:dev",
     "start:frontend:dev": "pnpm --filter webapp dev",
     "test": "pnpm --filter backend test",
-    "build:all": "npx nx run-many --target=build --all"
+    "build:all": "npx nx run-many --target=build --all",
+    "build:backend": "npx nx run @gymex/backend:build",
+    "build:backend2": "pnpm --filter backend start",
+    "build:frontend": "npx nx run @gymex/webapp:build",
+    "start:backend:prod": "pnpm --filter backend start"
   },
   "keywords": [],
   "author": "",

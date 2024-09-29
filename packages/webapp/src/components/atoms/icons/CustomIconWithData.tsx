@@ -7,7 +7,7 @@ type Props = {
   dataSize?: string;
 };
 
-export const CustomIconWithData = ({ icon, data, dataSize = "xl" }: Props) => {
+export const CustomIconWithData = ({ icon, data }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (

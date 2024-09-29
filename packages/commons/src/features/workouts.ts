@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 export type WorkoutModel = {
   id: number;
   createdAt: Date;
@@ -105,7 +103,7 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
       notes: "",
       exerciseName: "",
       id: -1,
-      userId: null,
+      userId: 0,
       isDefault: false,
       primaryMuscleTargeted: "base",
       isCreatorDeveloper: false,
@@ -115,8 +113,8 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
           exerciseSetNumber: "1",
           id: -1,
           reps: "10",
-          rir: null,
-          tempo: null,
+          rir: "",
+          tempo: "",
           userId: -1,
           weight: "0",
           workoutSessionId: 0,
@@ -144,8 +142,8 @@ export const initDetailedWorkoutModel: DetailedWorkoutModel = {
   ],
   session: {
     id: 0,
-    finishedAt: null,
-    startedAt: null,
+    finishedAt: new Date(),
+    startedAt: new Date(),
   },
 };
 

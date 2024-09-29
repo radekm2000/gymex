@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from "wouter";
 import { lazy, Suspense } from "react";
 import { LoadingProgress } from "../components/molecules/utils/LoadingProgress";
 import { RoutePath } from "../constants/navigation";
-import { TestPage } from "../components/pages/TestPage";
 
 const ProfileRoute = lazy(() =>
   import("../components/pages/Profile").then((module) => ({
