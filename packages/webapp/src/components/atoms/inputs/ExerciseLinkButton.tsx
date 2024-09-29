@@ -40,21 +40,22 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
         });
     }
   };
-
   return (
-    <div className="flex rounded-full">
-      <div className="flex flex-col items-center w-full h-full gap-4 ">
-        <Button
-          variant={"default"}
-          className="w-full h-32 lg:size-60 border-1 border-primary-light "
-          onClick={handleOnClick}
-        >
+    <div className="flex flex-col items-center w-auto">
+      <Button
+        variant={"default"}
+        className="w-full rounded-sm size-36 lg:size-60 border-primary-light bg-secondary-light"
+        onClick={handleOnClick}
+      >
+        <div className="flex flex-col">
           {icon}
-        </Button>
-        <span className="text-xl text-center text-white text font-display">
-          {name}
-        </span>
-      </div>
+          <div className="justify-center w-full rounded-none rounded-b-sm ">
+            <span className="text-xl text-center text-white font-display">
+              {name}
+            </span>
+          </div>
+        </div>
+      </Button>
     </div>
   );
 };

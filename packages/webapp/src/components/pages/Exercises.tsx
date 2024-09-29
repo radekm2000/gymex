@@ -1,52 +1,58 @@
 import { useMediaQuery } from "usehooks-ts";
 import { RoutePath } from "../../constants/navigation";
 import { useAuth } from "../../hooks/use-auth";
-import { MuscleArmIcon } from "../atoms/icons/MuscleArmIcon";
 import { ExerciseLinkButton } from "../atoms/inputs/ExerciseLinkButton";
 import { NotAuthed } from "./NotAuthed";
-
+import { ExerciseIcon } from "../atoms/icons/ExerciseIcon";
+import squat from "../../assets/powerlifting.png";
+import back from "../../assets/pull-ups.png";
+import chest from "../../assets/bench-press-weightlifting.png";
+import myexercise from "../../assets/kettlebell.png";
 export const Exercises = () => {
   const { isAuthed } = useAuth();
   const largeSize = useMediaQuery("(min-width: 1500px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (!isAuthed) {
     return <NotAuthed />;
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-6 border sm:grid-cols-3 bg-primary border-primary-light">
+    <div
+      className={`${
+        isDesktop ? "grid grid-cols-3" : "grid grid-cols-2 sm:grid-cols-2"
+      } gap-4 p-6 border bg-primary border-primary-light`}
+    >
       <ExerciseLinkButton
-        name="My exercises"
+        name="My own"
         path={RoutePath.MyExercises}
         icon={
           largeSize ? (
-            <MuscleArmIcon width={96} height={96} />
+            <ExerciseIcon icon={myexercise} />
           ) : (
-            <MuscleArmIcon width={60} height={60} />
+            <ExerciseIcon icon={myexercise} />
           )
         }
       />
-
       <ExerciseLinkButton
         name="Chest"
         path={RoutePath.ChestExercises}
         icon={
           largeSize ? (
-            <MuscleArmIcon width={96} height={96} />
+            <ExerciseIcon icon={chest} />
           ) : (
-            <MuscleArmIcon width={60} height={60} />
+            <ExerciseIcon icon={chest} />
           )
         }
       />
-
       <ExerciseLinkButton
         name="Back"
         path={RoutePath.BackExercises}
         icon={
           largeSize ? (
-            <MuscleArmIcon width={96} height={96} />
+            <ExerciseIcon icon={back} />
           ) : (
-            <MuscleArmIcon width={60} height={60} />
+            <ExerciseIcon icon={back} />
           )
         }
       />
@@ -55,9 +61,9 @@ export const Exercises = () => {
         path={RoutePath.LegExercises}
         icon={
           largeSize ? (
-            <MuscleArmIcon width={96} height={96} />
+            <ExerciseIcon icon={squat} />
           ) : (
-            <MuscleArmIcon width={60} height={60} />
+            <ExerciseIcon icon={squat} />
           )
         }
       />
