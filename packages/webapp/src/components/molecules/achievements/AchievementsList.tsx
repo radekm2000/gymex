@@ -9,9 +9,8 @@ export const AchievementsList = () => {
   const { user } = useAuth();
 
   const userId = user.model.user.id;
+  const userAchievements = user.achievements;
 
-  const userAchievements = user.achievements
-  console.log(userAchievements['MAX_WEIGHT_50KG']);
   return (
     <Card className="flex flex-col flex-grow w-full gap-4 min-h-3">
       <span className="mr-auto text-2xl">Achievements</span>
