@@ -12,25 +12,34 @@ export const AchievementsList = () => {
   const userAchievements = user.achievements;
 
   return (
-    <Card className="flex flex-col flex-grow w-full gap-4 min-h-3">
+    <Card className="flex flex-col flex-grow w-full gap-4 min-h-3 ">
       <span className="mr-auto text-2xl">Achievements</span>
       {userId ? (
         <div
           className={`${isDesktop ? "grid grid-cols-2" : "grid grid-cols-1 "} gap-4 `}
         >
-          {Object.entries(ACHIEVEMENTS).map(([achievementKey, achievement]) => {
-            const userAchievement = userAchievements[achievementKey];
-            return (
-              <AchievementItem
-                key={achievementKey}
-                achievementName={achievement.name}
-                description={achievement.description}
-                userProgress={userAchievement?.progress}
-                requiredProgress={achievement.requiredProgress}
-                unlocked={userAchievement?.unlocked}
-              />
-            );
-          })}
+          {Object.entries(ACHIEVEMENTS)
+            .sort(([achievementKeyA], [achievementKeyB]) => {
+              const userAchievementA = userAchievements[achievementKeyA];
+              const userAchievementB = userAchievements[achievementKeyB];
+              return (
+                (userAchievementB?.unlocked ? 1 : 0) -
+                (userAchievementA?.unlocked ? 1 : 0)
+              );
+            })
+            .map(([achievementKey, achievement]) => {
+              const userAchievement = userAchievements[achievementKey];
+              return (
+                <AchievementItem
+                  key={achievementKey}
+                  achievementName={achievement.name}
+                  description={achievement.description}
+                  userProgress={userAchievement?.progress}
+                  requiredProgress={achievement.requiredProgress}
+                  unlocked={userAchievement?.unlocked}
+                />
+              );
+            })}
         </div>
       ) : (
         <span className="text-secondary-customGray">

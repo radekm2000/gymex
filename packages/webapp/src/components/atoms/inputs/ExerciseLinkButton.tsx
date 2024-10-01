@@ -44,7 +44,7 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
     <div className="flex flex-col items-center w-auto">
       <Button
         variant={"default"}
-        className="w-full rounded-sm size-36 lg:size-60 border-primary-light bg-secondary-light"
+        className="w-full rounded-lg size-36 lg:size-60 border-primary-light bg-secondary-light"
         onClick={handleOnClick}
       >
         <div className="flex flex-col">
