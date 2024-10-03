@@ -12,6 +12,8 @@ import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.modul
 import { AchievementsModule } from './achievements/achievements.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WorkoutEventsModule } from './workout-events/workout-events.module';
+import { SyncModule } from './sync/sync.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { WorkoutEventsModule } from './workout-events/workout-events.module';
     WorkoutSessionsModule,
     AchievementsModule,
     WorkoutEventsModule,
+    SyncModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

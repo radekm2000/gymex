@@ -142,3 +142,12 @@ export const ACHIEVEMENTS: Record<UserAchievementType, UserAchievement> = {
     requiredProgress: 100,
   },
 };
+
+export const UserBadgeType = {
+  NOVICE: "Novice",
+  WARRIOR: "Warrior",
+  ELITE: "Elite",
+  OG: "OG",
+} as const;
+
+export type UserBadgeType = (typeof UserBadgeType)[keyof typeof UserBadgeType];

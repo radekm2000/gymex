@@ -9,7 +9,7 @@ import {
   UserStatsSessionsTable,
   UserStatsWeightLiftTable,
 } from 'src/db/schema/users';
-import { eq } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import { DetailedUserModel, UserModel, UserStatsModel } from './user.types';
 import { UserService } from 'src/spi/user/user';
 import {
@@ -245,5 +245,19 @@ export class UsersService implements UserService {
       detailedUsers.push(detailedUser);
     }
     return detailedUsers;
+  };
+
+  public findUsersByCreatedAtAsc = async (
+    limit: number,
+  ): Promise<{ username: string }[]> => {
+    return await this.drizzleService.db
+      .select({ username: UsersTable.username })
+      .from(UsersTable)
+      .orderBy(asc(UsersTable.createdAt))
+      .limit(limit);
+  };
+
+  public getAll = async (): Promise<UserModel[]> => {
+    return await this.drizzleService.db.select().from(UsersTable);
   };
 }

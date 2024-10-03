@@ -18,4 +18,8 @@ export interface UserService {
   ): DetailedUserModel;
 
   getLeaderboardInfo(): Promise<DetailedUserModel[]>;
+
+  findUsersByCreatedAtAsc(limit: number): Promise<{ username: string }[]>;
+
+  getAll(): Promise<UserModel[]>;
 }
