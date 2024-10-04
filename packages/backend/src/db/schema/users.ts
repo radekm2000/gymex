@@ -41,6 +41,7 @@ export const UsersMetricsTable = pgTable(
 
     weight: text('weight'),
     height: text('height'),
+    badges: text('badges').array(),
   },
   (table) => ({
     userIdIndex: index('user_metrics_user_id_index').on(table.userId),

@@ -31,6 +31,7 @@ export const initUserMetrics: UserMetricsModel = {
   userId: 0,
   weight: '',
   height: '',
+  badges: [],
 };
 
 export const initDiscordUserModel: UserDiscordModel = {
@@ -63,6 +64,7 @@ export const initDetailedUserModel: DetailedUserModel = {
   },
   metrics: {
     weight: '',
+    badges: [],
     height: '',
   },
   stats: {

@@ -1,0 +1,1 @@
+ALTER TABLE "user_metrics" ALTER COLUMN "badges" DROP DEFAULT;

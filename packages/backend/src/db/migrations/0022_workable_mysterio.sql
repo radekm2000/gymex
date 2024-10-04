@@ -1,0 +1,1 @@
+ALTER TABLE "user_metrics" ADD COLUMN "badges" text[]

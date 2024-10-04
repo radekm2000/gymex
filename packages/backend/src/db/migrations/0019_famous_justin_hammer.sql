@@ -1,0 +1,1 @@
+ALTER TABLE "user_metrics" DROP COLUMN IF EXISTS "badges";

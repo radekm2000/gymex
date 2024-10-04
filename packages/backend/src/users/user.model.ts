@@ -57,6 +57,7 @@ export class User {
         ? {
             height: this._metrics.height,
             weight: this._metrics.weight,
+            badges: this._metrics.badges,
           }
         : null,
       stats: this._stats ? this._stats : null,

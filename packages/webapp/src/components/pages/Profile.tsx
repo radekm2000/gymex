@@ -7,7 +7,7 @@ import { CircleUser } from "lucide-react";
 import { BadgesCard } from "../molecules/profile/BadgesCard";
 
 export const Profile = () => {
-  const { user } = useAuth();
+  const { user, isAuthed } = useAuth();
   const { avatar, discordId } = user.model.discordConnection;
 
   const over1200 = useMediaQuery("(min-width: 1024px)");
@@ -29,7 +29,19 @@ export const Profile = () => {
           )}
           <span>{user.model.user.username}</span>
         </Card>
-        <BadgesCard />
+        {isAuthed ? (
+          <BadgesCard />
+        ) : (
+          <Card
+            className={`flex flex-col gap-4 ${over1200 ? "w-[300px]" : ""} `}
+          >
+            {" "}
+            <span className="mr-auto text-xl font-display">Badges</span>
+            <span className="text-secondary-customGray">
+              SIGN IN TO SEE BADGES
+            </span>
+          </Card>
+        )}
       </div>
       <AchievementsList />
     </div>

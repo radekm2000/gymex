@@ -18,6 +18,7 @@ import {
 } from 'src/achievements/types';
 import { User } from './user.model';
 import { getAchievementStatusForProgress } from 'src/achievements/utils';
+import { UserBadgeType } from 'src/badges/badges';
 @Injectable()
 export class UsersService implements UserService {
   constructor(private readonly drizzleService: DrizzleService) {}
@@ -43,6 +44,7 @@ export class UsersService implements UserService {
       userId: newUser.id,
       height: '',
       weight: '',
+      badges: [],
     });
 
     return newUser;
@@ -259,5 +261,18 @@ export class UsersService implements UserService {
 
   public getAll = async (): Promise<UserModel[]> => {
     return await this.drizzleService.db.select().from(UsersTable);
+  };
+
+  public updateBadges = async (
+    badges: UserBadgeType[],
+    userId: number,
+  ): Promise<void> => {
+    await this.drizzleService.db
+      .insert(UsersMetricsTable)
+      .values({ badges, userId })
+      .onConflictDoUpdate({
+        target: UsersMetricsTable.userId,
+        set: { badges },
+      });
   };
 }

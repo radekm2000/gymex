@@ -9,6 +9,7 @@ export type UserMetricsModel = {
   weight: string;
   userId: number;
   height: string;
+  badges: [];
 };
 
 export type UserDiscordModel = {
@@ -28,7 +29,7 @@ export type UserStatsModel = {
   userId: number;
   totalWeight: number;
   maxWeight: number;
-  
+
   totalSessions: number;
   totalTrainingTime: number;
   achievements: Record<string, UserAchievementStatus>;

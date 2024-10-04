@@ -1,3 +1,4 @@
+import { UserBadgeType } from 'src/badges/badges';
 import { DiscordProfile, UpdateUserDto } from 'src/users/dto/users.dto';
 import { DetailedUserModel, UserModel } from 'src/users/user.types';
 
@@ -18,8 +19,7 @@ export interface UserService {
   ): DetailedUserModel;
 
   getLeaderboardInfo(): Promise<DetailedUserModel[]>;
-
   findUsersByCreatedAtAsc(limit: number): Promise<{ username: string }[]>;
-
   getAll(): Promise<UserModel[]>;
+  updateBadges(badges: UserBadgeType[], userId: number): Promise<void>;
 }
