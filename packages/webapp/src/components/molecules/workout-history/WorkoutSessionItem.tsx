@@ -1,9 +1,11 @@
 import { WorkoutHistory } from "@gymex/commons/src";
 import { formatSessionTimeStamps } from "../../../hooks/utils/formatSessionTimestamps";
-import { Clock, DumbbellIcon } from "lucide-react";
+import { Clock } from "lucide-react";
 import { formatSecondsToDuration } from "../../../hooks/utils/formatSecondsToDuration";
 import { useMediaQuery } from "usehooks-ts";
 import { useLocation } from "wouter";
+import dumbell from "../../../assets/dumbell.png";
+import { CustomIcon } from "../../atoms/icons/CustomIcon";
 
 type Props = {
   workout: WorkoutHistory;
@@ -34,7 +36,9 @@ export const WorkoutSessionItem = ({ workout }: Props) => {
       onClick={onClick}
       className="flex items-center px-2 cursor-pointer text-textInput-darker "
     >
-      <DumbbellIcon size={isDesktop ? 32 : 20} />
+      <div className="pl-2">
+        <CustomIcon icon={dumbell} />
+      </div>
       <div className="flex flex-col ml-4">
         <span className={`${isDesktop ? "text-2xl" : "text-md"} font-display`}>
           {workout.detailedWorkoutModel.workout.name.toUpperCase()}

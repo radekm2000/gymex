@@ -19,6 +19,7 @@ const NOT_LOGGED_IN_USER: UserDetails = {
   metrics: {
     height: "",
     weight: "",
+    badges: [],
   },
   stats: {
     achievements: {},

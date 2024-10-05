@@ -21,7 +21,7 @@ export const Exercises = () => {
     <div
       className={`${
         isDesktop ? "grid grid-cols-3" : "grid grid-cols-2 sm:grid-cols-2"
-      } gap-4 p-6 border bg-primary border-primary-light`}
+      } gap-4 p-6 border bg-primary border-primary-light rounded-lg`}
     >
       <ExerciseLinkButton
         name="My own"

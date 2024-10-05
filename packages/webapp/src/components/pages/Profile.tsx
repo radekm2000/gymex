@@ -27,7 +27,8 @@ export const Profile = () => {
           ) : (
             <CircleUser size={over1200 ? "96" : "80"} />
           )}
-          <span>{user.model.user.username}</span>
+
+          <span>{isAuthed ? user.model.user.username : "GUEST"}</span>
         </Card>
         {isAuthed ? (
           <BadgesCard />

@@ -7,7 +7,7 @@ type Props = {
 
 export const WorkoutsHistoryMonthsList = ({ groupedWorkouts }: Props) => {
   return (
-    <div className="py-4">
+    <div className="flex flex-col gap-2 py-4">
       {Object.entries(groupedWorkouts.date).map(([monthYear, workouts]) => {
         return (
           workouts.length > 0 && (

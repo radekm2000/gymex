@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DetailedWorkoutModel } from "@gymex/commons/src";
 import { Card } from "../../ui/card";
-import { DumbbellIcon } from "lucide-react";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { useWorkoutStartMutation } from "../../../api/mutations/workouts";

@@ -37,7 +37,9 @@ export const WorkoutsHistory = () => {
       <Separator className="mb-0" />
 
       {data ? (
-        <WorkoutsHistoryMonthsList groupedWorkouts={data} />
+        <>
+          <WorkoutsHistoryMonthsList groupedWorkouts={data} />
+        </>
       ) : (
         <div className="flex items-center justify-center min-h-56">
           <span className="text-center text-white font-display">
