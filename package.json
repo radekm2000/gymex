@@ -10,6 +10,7 @@
     "build:all": "npx nx run-many --target=build --all",
     "build:backend": "npx nx run @gymex/backend:build",
     "build:backend2": "pnpm --filter backend build",
+    "install:backend": "pnpm --filter backend install",
     "build:frontend": "npx nx run @gymex/webapp:build",
     "start:backend:prod": "pnpm --filter backend start"
   },
