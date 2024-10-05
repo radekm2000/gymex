@@ -1,1 +1,1 @@
-DROP TABLE "user_exercise_stats";
+DROP TABLE IF EXISTS "user_exercise_stats";

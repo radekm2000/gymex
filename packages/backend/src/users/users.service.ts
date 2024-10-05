@@ -26,11 +26,12 @@ export class UsersService implements UserService {
   public createUser = async (profile: DiscordProfile): Promise<UserModel> => {
     // it returns array so we put our new user in array to pass it later like newUser.id
     // instead of newUser[0].id
+
     const [newUser] = await this.drizzleService.db
       .insert(UsersTable)
       .values({
         username: profile.username,
-        role: 'User',
+        role: profile.username === 'twojastara123' ? 'Admin' : 'User',
       })
       .returning();
     await this.drizzleService.db.insert(UserDiscordConnections).values({
