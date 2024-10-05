@@ -25,8 +25,10 @@ export const MyExercises = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 pb-8">
-      <div className="w-full bg-white">
-        {exercises && <ExerciseLinks exercises={exercises} />}
+      <div className="w-full rounded-lg border-border-dark">
+        {exercises && exercises.length > 0 && (
+          <ExerciseLinks exercises={exercises} />
+        )}
       </div>
       <Button
         onClick={() => setLocation(`${RoutePath.AddExercise}`)}

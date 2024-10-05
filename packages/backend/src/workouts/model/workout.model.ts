@@ -155,8 +155,6 @@ export class Workout {
       tempo: exerciseSet.tempo ?? '',
       userId: exerciseSet.userId ?? 0,
       workoutSessionId: exerciseSet.workoutSessionId ?? 0,
-      isStaticSet: exerciseSet.isStaticSet ?? false,
-      holdSecs: exerciseSet.holdSecs ?? '0',
     }));
   };
 
@@ -200,8 +198,6 @@ export class Workout {
           tempo: set.tempo ?? '',
           userId: set.userId ?? 0,
           workoutSessionId: set.workoutSessionId ?? 0,
-          isStaticSet: set.isStaticSet ?? false,
-          holdSecs: set.holdSecs ?? '0',
         })),
         restTime: exercise.restTime ?? '60',
       };

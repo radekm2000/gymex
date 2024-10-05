@@ -17,7 +17,7 @@ export class DrizzleService {
   constructor(@Inject(ConfigService) private readonly config: ConfigService) {
     this.db = drizzle(
       new Pool({
-        connectionString: this.config.getOrThrow('PG_CONNECTION_STRING2'),
+        connectionString: this.config.getOrThrow('PG_CONNECTION_STRING'),
 
         idleTimeoutMillis: 15_000,
         max: 256,

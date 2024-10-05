@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
+  "exclude": ["dist"],
   "references": [
     {
       "path": "../commons"
