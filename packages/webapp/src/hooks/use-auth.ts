@@ -38,6 +38,6 @@ export const useAuth = () => {
 
   return {
     user: UserDetailsWrapper.wrap(userInfo ?? NOT_LOGGED_IN_USER),
-    isAuthed: !!userInfo?.user.id,
+    isAuthed: !!userInfo?.user?.id,
   };
 };
