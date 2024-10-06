@@ -11,7 +11,6 @@ export abstract class WorkoutFinishedEventEventHandlerBase {
     try {
       await fn();
     } catch (error) {
-      console.log(error);
       this._logger.error(
         { error },
         `${this.name} Error when handling WorkoutFinishedEvent`,

@@ -2,6 +2,7 @@ import { AddExerciseToWorkout } from "@gymex/commons/src";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { Trash2 } from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
 
 type Props = {
   exerciseId: number;
@@ -23,7 +24,7 @@ export const CreateTrainingExerciseSetsList = ({
   return (
     <>
       {exerciseFromWorkout.sets.map((set, index) => (
-        <>
+        <Fragment key={index}>
           <div className="flex items-center justify-start">
             <div
               className={`flex flex-col ${exerciseFromWorkout.sets.length > 1 ? "basis-11/12" : "flex-grow"}`}
@@ -51,25 +52,83 @@ export const CreateTrainingExerciseSetsList = ({
                 </span>
                 <Input
                   value={set.weight}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    if (["e", "E", "+", "-"].includes(e.key)) {
+                      e.preventDefault();
+                    }
+
+                    if (
+                      [
+                        "Backspace",
+                        "Delete",
+                        "ArrowLeft",
+                        "ArrowRight",
+                      ].includes(e.key)
+                    ) {
+                      return;
+                    }
+
+                    if (
+                      isNaN(Number(e.key)) ||
+                      e.key === " " ||
+                      e.key === "189" ||
+                      e.key === "69"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onChange={(e) => {
+                    if (e.target.value === "0" && e.target.value.length >= 0) {
+                      e.preventDefault();
+                      return;
+                    }
                     updateWeight(
                       exerciseId,
                       set.exerciseSetNumber,
                       e.target.value
-                    )
-                  }
+                    );
+                  }}
                   className="w-12 !p-0 text-center border-0 rounded-md bg-textInput-exercisebg focus-visible:ring-[none] text-neutral-950"
                 />
 
                 <Input
                   value={set.reps}
-                  onChange={(e) =>
+                  onKeyDown={(e) => {
+                    if (["e", "E", "+", "-"].includes(e.key)) {
+                      e.preventDefault();
+                    }
+
+                    if (
+                      [
+                        "Backspace",
+                        "Delete",
+                        "ArrowLeft",
+                        "ArrowRight",
+                      ].includes(e.key)
+                    ) {
+                      return;
+                    }
+
+                    if (
+                      isNaN(Number(e.key)) ||
+                      e.key === " " ||
+                      e.key === "189" ||
+                      e.key === "69"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onChange={(e) => {
+                    if (e.target.value === "0" && e.target.value.length >= 0) {
+                      e.preventDefault();
+                      return;
+                    }
                     updateReps(
                       exerciseId,
                       set.exerciseSetNumber,
                       e.target.value
-                    )
-                  }
+                    );
+                  }}
                   className="w-12 !p-0 text-center border-0 rounded-md bg-textInput-exercisebg focus-visible:ring-[none] text-neutral-950"
                 />
               </div>
@@ -89,7 +148,7 @@ export const CreateTrainingExerciseSetsList = ({
                 </div>
               )}
           </div>
-        </>
+        </Fragment>
       ))}
       <Button
         className="mt-3 ml-auto md:min-w-32"

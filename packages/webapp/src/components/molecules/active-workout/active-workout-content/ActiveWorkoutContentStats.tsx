@@ -29,19 +29,67 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
         <Input
           type="number"
           value={set.weight}
-          onChange={(e) =>
+          onKeyDown={(e) => {
+            if (["e", "E", "+", "-"].includes(e.key)) {
+              e.preventDefault();
+            }
+
+            if (
+              ["Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)
+            ) {
+              return;
+            }
+
+            if (
+              isNaN(Number(e.key)) ||
+              e.key === " " ||
+              e.key === "189" ||
+              e.key === "69"
+            ) {
+              e.preventDefault();
+            }
+          }}
+          onChange={(e) => {
+            if (e.target.value === "0" && e.target.value.length >= 0) {
+              e.preventDefault();
+              return;
+            }
             updateWeight(
               activeExercise.id,
               set.exerciseSetNumber,
               e.target.value
-            )
-          }
+            );
+          }}
           className="w-12 !p-0 text-center border-0 focus-visible:ring-[none] text-textInput-light [&::-webkit-inner-spin-button]:appearance-none "
         />
         <Input
           type="number"
+          onKeyDown={(e) => {
+            if (["e", "E", "+", "-"].includes(e.key)) {
+              e.preventDefault();
+            }
+
+            if (
+              ["Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)
+            ) {
+              return;
+            }
+
+            if (
+              isNaN(Number(e.key)) ||
+              e.key === " " ||
+              e.key === "189" ||
+              e.key === "69"
+            ) {
+              e.preventDefault();
+            }
+          }}
           value={set.reps}
           onChange={(e) => {
+            if (e.target.value === "0" && e.target.value.length >= 0) {
+              e.preventDefault();
+              return;
+            }
             updateReps(
               activeExercise.id,
               set.exerciseSetNumber,

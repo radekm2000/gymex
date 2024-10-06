@@ -26,7 +26,6 @@ export const ExerciseStatistics = () => {
     return <LoadingProgress />;
   }
 
-  console.log(data?.overallStats.exerciseName);
   return (
     <Card className={`${isDesktop ? "" : "px-1"}`}>
       {data?.history.length && data.history.length > 0 && exerciseId ? (

@@ -19,9 +19,12 @@ export const DeleteButton = ({
     <Button
       {...props}
       variant={"destructive"}
-      onClick={() => onDelete(idToDelete)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onDelete(idToDelete);
+      }}
     >
-      <DeleteIcon size={iconSize} mdSize={iconMdSize} />
+    <DeleteIcon size={iconSize} mdSize={iconMdSize} />
     </Button>
   );
 };
