@@ -9,6 +9,7 @@ import { LoadingProgress } from "../molecules/utils/LoadingProgress";
 import { Button } from "../ui/button";
 import { useLocation } from "wouter";
 import { RoutePath } from "../../constants/navigation";
+import { Card } from "../ui/card";
 
 export const MyExercises = () => {
   const { user } = useAuth();
@@ -26,8 +27,12 @@ export const MyExercises = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-8 pb-8">
       <div className="w-full rounded-lg border-border-dark">
-        {exercises && exercises.length > 0 && (
+        {exercises && exercises.length > 0 ? (
           <ExerciseLinks exercises={exercises} />
+        ) : (
+          <Card className="flex items-center justify-center text-2xl gap-2 text-white font-display h-[100px]">
+            <span>No exercises found, please add some exercises first!</span>
+          </Card>
         )}
       </div>
       <Button
