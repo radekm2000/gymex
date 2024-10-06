@@ -30,8 +30,7 @@ export class AuthController {
     if (process.env.IS_DEV == 'true') {
       return res.redirect(process.env.AUTH_DEV_REDIRECT);
     } else {
-      // nothing here yet
-      return;
+      return res.redirect(process.env.AUTH_PROD_REDIRECT);
     }
   }
 
