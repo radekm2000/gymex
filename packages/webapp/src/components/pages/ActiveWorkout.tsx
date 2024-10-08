@@ -88,7 +88,7 @@ export const ActiveWorkout = () => {
             </CarouselContent>
           </Carousel>
         </div>
-        <div className="absolute bottom-0 w-full">
+        <div className="absolute w-full bottom-1">
           <ActiveWorkoutFooter activeExercise={activeExercise} />
         </div>
       </Card>

@@ -16,7 +16,7 @@ export const MyExercises = () => {
   const [, setLocation] = useLocation();
 
   const { data: exercises, isLoading } = useQuery({
-    queryKey: ExercisesQueryKeys.details(),
+    queryKey: ExercisesQueryKeys.me(),
     queryFn: getMyExercises,
     enabled: !!user.model.user.id,
   });

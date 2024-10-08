@@ -11,6 +11,7 @@ export const ExercisesQueryKeys = {
   details: () => [...ExercisesQueryKeys.all, "detail"] as const,
   detail: (id: number) => [...ExercisesQueryKeys.details(), id] as const,
   history: (id: number) => [...ExercisesQueryKeys.all, "history", id] as const,
+  me: () => [...ExercisesQueryKeys.details(), "me"] as const,
 };
 
 export const getMyExercises = async () => {

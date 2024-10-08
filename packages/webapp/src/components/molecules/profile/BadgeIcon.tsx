@@ -7,7 +7,7 @@ type Props = {
 
 export const BadgeIcon = ({ badgeName, icon }: Props) => {
   return (
-    <FadingTooltip tooltipPlacement="top" tooltipText={badgeName}>
+    <FadingTooltip tooltipPlacement="top" opacity={100} tooltipText={badgeName}>
       <img className="cursor-pointer" src={icon} />
     </FadingTooltip>
   );
