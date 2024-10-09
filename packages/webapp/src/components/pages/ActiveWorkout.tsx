@@ -11,6 +11,7 @@ import {
   Carousel,
   CarouselApi,
   CarouselContent,
+  CarouselDots,
   CarouselItem,
 } from "../ui/carousel";
 
@@ -74,20 +75,22 @@ export const ActiveWorkout = () => {
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
-        <div className="h-[70%] rounded-sm overflow-y-scroll [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
-          <Carousel
-            className="w-[950px] mx-auto max-w-64 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem]"
-            setApi={setApi}
-          >
+        <Carousel
+          className="w-[950px] h-3/4 mx-auto max-w-80 md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
+          setApi={setApi}
+        >
           <CarouselContent className="">
-              {activeWorkoutModel.exercises.map((e, index) => (
-                <CarouselItem className="" key={index}>
-                  <ActiveWorkoutContent key={e.id} activeExercise={e} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+            {activeWorkoutModel.exercises.map((e, index) => (
+              <CarouselItem
+                className="overflow-y-scroll overflow-x-hidden  max-h-[55vh] [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light"
+                key={index}
+              >
+                <ActiveWorkoutContent key={e.id} activeExercise={e} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselDots className="absolute bottom-0 w-full mx-auto" />
+        </Carousel>
         <div className="absolute w-full bottom-1">
           <ActiveWorkoutFooter activeExercise={activeExercise} />
         </div>
