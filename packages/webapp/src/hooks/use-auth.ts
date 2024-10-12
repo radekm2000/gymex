@@ -34,6 +34,7 @@ export const useAuth = () => {
   const { data: userInfo } = useQuery({
     queryKey: UserQueryKeys.me(),
     queryFn: getUserDetails,
+    retry: false,
   });
 
   return {

@@ -118,7 +118,19 @@ export const useWorkoutFinishMutation = () => {
         WorkoutQueryKeys.details(),
         (prev) => {
           if (prev !== undefined) {
-            return [...prev, returnedData.detailedWorkoutModel];
+            const exists = prev.some(
+              (plan) =>
+                plan.workout.id === returnedData.detailedWorkoutModel.workout.id
+            );
+            if (exists) {
+              return prev.map((plan) =>
+                plan.workout.id === returnedData.detailedWorkoutModel.workout.id
+                  ? returnedData.detailedWorkoutModel
+                  : plan
+              );
+            } else {
+              return [...prev, returnedData.detailedWorkoutModel];
+            }
           }
         }
       );
