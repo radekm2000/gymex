@@ -32,7 +32,9 @@ export const FadingTooltip = ({
             sideOffset={5}
           >
             <p>{tooltipText}</p>
-            <TooltipArrow className="fill-secondary-customGray opacity-80" />
+            <TooltipArrow
+              className={`opacity-${opacity} fill-secondary-customGray`}
+            />
           </TooltipContent>
         </TooltipPortal>
       </Tooltip>

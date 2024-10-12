@@ -33,15 +33,17 @@ export const ExerciseStatisticsHeader = ({ data }: Props) => {
               <span className={`font-display ${isDesktop ? "text-3xl" : ""} `}>
                 {statisticName.startsWith("overall")
                   ? statisticName.slice(7)
-                  : statisticName}
+                  : statisticName.includes("exerciseName")
+                    ? ""
+                    : statisticName}
               </span>
               <span
                 className={`text-tertiary-default ${isDesktop ? "text-xl" : ""}`}
               >
-                {value}
+                {statisticName.includes("exerciseName") ? "" : value}
               </span>
             </div>
-            <Separator />
+            {statisticName !== "exerciseName" && <Separator />}
           </div>
         ))}
       </div>
