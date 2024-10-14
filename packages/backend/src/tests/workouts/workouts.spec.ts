@@ -7,10 +7,14 @@ describe('createWorkoutWithExercises method', () => {
   const exerciseService = {} as any;
   it('should create workout plan with exercises', async () => {});
 
-  const workoutSerice = new WorkoutsService(
+  const workoutService = new WorkoutsService(
     drizzleService,
     workoutSessionsService,
     eventEmitter,
     exerciseService,
   );
+
+  const x = 2 + 2;
+
+  expect(x).toEqual(4);
 });

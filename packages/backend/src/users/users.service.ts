@@ -195,10 +195,11 @@ export class UsersService implements UserService {
     return newModel;
   };
   private getUserStatsFor = async (userId: number) => {
-    const weightLiftStats = await this.getUserStatsWeightLiftFor(userId);
-    const sessionsStats = await this.getUserStatsSessionsFor(userId);
-    const achievements = await this.getUserAchievements(userId);
-
+    const [weightLiftStats, sessionsStats, achievements] = await Promise.all([
+      this.getUserStatsWeightLiftFor(userId),
+      this.getUserStatsSessionsFor(userId),
+      this.getUserAchievements(userId),
+    ]);
     const stats: UserStatsModel = {
       userId: userId,
       maxWeight: weightLiftStats.maxWeight,
@@ -241,12 +242,9 @@ export class UsersService implements UserService {
   public getLeaderboardInfo = async () => {
     const users = await this.drizzleService.db.select().from(UsersTable);
 
-    const detailedUsers: DetailedUserModel[] = [];
-
-    for (const user of users) {
-      const detailedUser = await this.getDetailedUserModelFor(user.id);
-      detailedUsers.push(detailedUser);
-    }
+    const detailedUsers: DetailedUserModel[] = await Promise.all(
+      users.map(async (user) => await this.getDetailedUserModelFor(user.id)),
+    );
     return detailedUsers;
   };
 

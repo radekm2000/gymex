@@ -37,8 +37,10 @@ export const SidebarLinkButton = ({
           if (!disabled) {
             if (path?.startsWith("http")) {
               window.location.href = path;
+            } else if (path) {
+              setLocation(path);
             } else {
-              path && setLocation(path);
+              setLocation(RoutePath.Profile);
             }
           }
         }}

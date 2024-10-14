@@ -14,7 +14,12 @@ import leaderboard from "../../assets/leaderboard.png";
 export const SidebarLinks = () => {
   return (
     <div className="flex flex-col h-full gap-4 mx-2 place-items-center">
-      <SidebarLinkButton isLogo={true} name="logo" icon={<Logo />} className="cursor-default" />
+      <SidebarLinkButton
+        isLogo={true}
+        name="logo"
+        icon={<Logo />}
+        className="cursor-pointer"
+      />
 
       <SidebarLinkButton
         name="Profile"
