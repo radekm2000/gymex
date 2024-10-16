@@ -10,6 +10,10 @@ export class UserDetailsWrapper {
     return this.details;
   }
 
+  public get isUserFirstTimeLoggedIn(): boolean {
+    return this.model.user.isUserFirstTimeLoggedIn;
+  }
+
   public get achievementsUnlocked() {
     const achievements = this.details.stats.achievements;
 

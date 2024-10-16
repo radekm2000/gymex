@@ -44,12 +44,14 @@ export const Leaderboard = () => {
         <div className="flex flex-col w-full gap-4">
           {sortedUsers.map((user, index) => {
             const rank = index + 1;
+            const username = user.user.username;
+            const displayName = user.user.displayName;
             return (
               <>
                 <LeaderboardUserCard
                   totalAchievements={totalAchievements}
                   rank={rank}
-                  username={user.user.username}
+                  username={displayName ? displayName : username}
                   achievementsUnlocked={user.achievementsUnlocked}
                   avatar={
                     <UserAvatar

@@ -27,6 +27,10 @@ export const UsersTable = pgTable('users', {
   })
     .notNull()
     .defaultNow(),
+  isUserFirstTimeLoggedIn: boolean('is_user_first_time_logged_in').default(
+    true,
+  ),
+  displayName: text('display_name'),
   role: roleEnum('user_role').default('User').notNull(),
 });
 

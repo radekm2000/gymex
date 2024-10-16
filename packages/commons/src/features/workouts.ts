@@ -247,3 +247,11 @@ export const initialWorkout: WorkoutCreateSchema = {
   workoutName: "",
   exercises: [],
 };
+
+export type UserMetricsUpdateDto = {
+  displayName: string;
+  height: string;
+  weight: string;
+};
+
+

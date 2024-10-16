@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   Inject,
-  Put,
+  Post,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -44,12 +44,11 @@ export class UsersController {
   @UsePipes(new ZodValidationPipe(UpdateUserDtoSchema))
   @UseGuards(AccessTokenGuard)
   @UsePipes()
-  @Put(':userId')
+  @Post(':userId/metrics')
   async updateFirstTimeUserMetrics(
     @CurrentUserId() userId: number,
     @Body() dto: UpdateUserDto,
-  ): Promise<void> {
-    // user is logged in first time if rows in metrics table are not defined
+  ): Promise<DetailedUserModel> {
     return await this.userService.updateUserMetricsAndOptionalUsername(
       userId,
       dto,

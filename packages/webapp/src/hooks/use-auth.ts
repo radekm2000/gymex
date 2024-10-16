@@ -7,6 +7,8 @@ const NOT_LOGGED_IN_USER: UserDetails = {
   user: {
     createdAt: new Date(),
     id: 0,
+    displayName: "",
+    isUserFirstTimeLoggedIn: false,
     role: "User",
     username: "",
   },
@@ -40,5 +42,6 @@ export const useAuth = () => {
   return {
     user: UserDetailsWrapper.wrap(userInfo ?? NOT_LOGGED_IN_USER),
     isAuthed: !!userInfo?.user?.id,
+    
   };
 };

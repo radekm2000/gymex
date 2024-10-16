@@ -2,6 +2,8 @@ export type UserModel = {
   id: number;
   username: string;
   createdAt: Date;
+  displayName: string;
+  isUserFirstTimeLoggedIn: boolean;
   role: "Admin" | "User";
 };
 
@@ -29,7 +31,6 @@ export type UserStatsModel = {
   userId: number;
   totalWeight: number;
   maxWeight: number;
-
   totalSessions: number;
   totalTrainingTime: number;
   achievements: Record<string, UserAchievementStatus>;

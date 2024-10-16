@@ -1,13 +1,35 @@
 import { z } from 'zod';
 
 export const UpdateUserDtoSchema = z.object({
-  username: z.string().optional(),
-  weight: z.string({
-    required_error: 'Weight is required',
-  }),
-  height: z.string({
-    required_error: 'Height is required',
-  }),
+  displayName: z.string().optional(),
+  weight: z
+    .string()
+    .optional()
+    .refine(
+      (v) => {
+        if (v === undefined || '') {
+          return true;
+        } else {
+          const n = Number(v);
+          return !isNaN(n);
+        }
+      },
+      { message: 'Invalid weight' },
+    ),
+  height: z
+    .string()
+    .optional()
+    .refine(
+      (v) => {
+        if (v === undefined || '') {
+          return true;
+        } else {
+          const n = Number(v);
+          return !isNaN(n);
+        }
+      },
+      { message: 'Invalid height' },
+    ),
 });
 
 export type UpdateUserDto = z.infer<typeof UpdateUserDtoSchema>;

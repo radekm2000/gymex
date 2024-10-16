@@ -20,12 +20,11 @@ describe('ExercisesService', () => {
   let exerciseService: ExercisesService;
 
   beforeEach(() => {
-    // Mock Drizzle service
     drizzleService = {
       db: {
         select: jest.fn().mockReturnThis(),
         from: jest.fn().mockReturnThis(),
-        where: jest.fn().mockResolvedValue([exerciseMock]), // Resolve with an array containing the mock
+        where: jest.fn().mockResolvedValue([exerciseMock]),
       },
     };
 

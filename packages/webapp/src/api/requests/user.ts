@@ -1,3 +1,4 @@
+import { UserMetricsUpdateDto } from "@gymex/commons/src";
 import { UserDetails } from "../../models/user.model";
 import { apiClient } from "../http-client";
 
@@ -14,5 +15,16 @@ export const getUserDetails = async (): Promise<UserDetails> => {
 
 export const getUsersLeaderboardInfo = async (): Promise<UserDetails[]> => {
   const response = await apiClient.get<UserDetails[]>("/users/leaderboard");
+  return response.data;
+};
+
+export const updateUserMetrics = async (
+  dto: UserMetricsUpdateDto,
+  userId: number
+): Promise<UserDetails> => {
+  const response = await apiClient.post<UserDetails>(
+    `users/${userId}/metrics`,
+    dto
+  );
   return response.data;
 };

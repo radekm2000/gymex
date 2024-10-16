@@ -11,7 +11,7 @@ export interface UserService {
   updateUserMetricsAndOptionalUsername(
     userId: number,
     dto: UpdateUserDto,
-  ): Promise<void>;
+  ): Promise<DetailedUserModel>;
 
   updateUserModelAchievements(
     model: DetailedUserModel,
@@ -22,4 +22,5 @@ export interface UserService {
   findUsersByCreatedAtAsc(limit: number): Promise<{ username: string }[]>;
   getAll(): Promise<UserModel[]>;
   updateBadges(badges: UserBadgeType[], userId: number): Promise<void>;
+  updateDisplayName(userId: number, displayName: string): Promise<void>;
 }

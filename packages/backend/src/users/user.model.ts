@@ -37,13 +37,19 @@ export class User {
     return this._stats;
   }
 
+  public get isUserFirstTimeLoggedIn(): boolean {
+    return this._model.isUserFirstTimeLoggedIn;
+  }
+
   public get detailedUserModel(): DetailedUserModel {
     return {
       user: {
         id: this._model.id,
         createdAt: this._model.createdAt,
         username: this._model.username,
+        displayName: this._model.displayName ?? null,
         role: this._model.role ?? 'User',
+        isUserFirstTimeLoggedIn: this._model.isUserFirstTimeLoggedIn,
       },
       discordConnection: this._discordConnection
         ? {

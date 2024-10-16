@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "is_user_first_time_logged_in" SET DEFAULT true;

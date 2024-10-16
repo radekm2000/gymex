@@ -84,7 +84,7 @@ export class UsersService implements UserService {
   public updateUserMetricsAndOptionalUsername = async (
     userId: number,
     dto: UpdateUserDto,
-  ): Promise<void> => {
+  ): Promise<DetailedUserModel> => {
     const [user] = await this.drizzleService.db
       .select()
       .from(UsersTable)
@@ -94,33 +94,34 @@ export class UsersService implements UserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    await this.drizzleService.db
-      .update(UsersMetricsTable)
-      .set({
-        height: dto.height,
-        weight: dto.weight,
-      })
-      .where(eq(UsersMetricsTable.userId, userId));
+    const userMetrics: Partial<Record<'height' | 'weight', string>> = {
+      height: '',
+      weight: '',
+    };
 
-    await this.drizzleService.db.transaction(async (tx) => {
-      await tx
-        .update(UsersMetricsTable)
-        .set({
-          height: dto.height,
-          weight: dto.weight,
-        })
-        .where(eq(UsersMetricsTable.userId, userId));
-
-      //set username if one is given, otherwise use discord username as primary username
-      if (dto.username) {
+    if (dto.height) userMetrics.height = dto.height;
+    if (dto.weight) userMetrics.weight = dto.weight;
+    if (Object.keys(userMetrics).length > 0) {
+      await this.drizzleService.db.transaction(async (tx) => {
         await tx
-          .update(UsersTable)
-          .set({
-            username: dto.username,
-          })
-          .where(eq(UsersTable.id, userId));
-      }
-    });
+          .update(UsersMetricsTable)
+          .set(userMetrics)
+          .where(eq(UsersMetricsTable.userId, userId));
+      });
+    }
+
+    if (dto.displayName) {
+      await this.updateDisplayName(userId, dto.displayName);
+    }
+
+    await this.drizzleService.db
+      .update(UsersTable)
+      .set({ isUserFirstTimeLoggedIn: false })
+      .where(eq(UsersTable.id, userId));
+
+    const detailedUserModel = await this.getDetailedUserModelFor(userId);
+
+    return detailedUserModel;
   };
 
   private getUserAchievements = async (userId: number) => {
@@ -273,5 +274,24 @@ export class UsersService implements UserService {
         target: UsersMetricsTable.userId,
         set: { badges },
       });
+  };
+
+  public updateDisplayName = async (userId: number, displayName: string) => {
+    const userWithThisName = await this.drizzleService.db
+      .select()
+      .from(UsersTable)
+      .where(eq(UsersTable.displayName, displayName))[0];
+
+    if (userWithThisName) {
+      throw new HttpException(
+        'This display name is already being used!',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    await this.drizzleService.db
+      .update(UsersTable)
+      .set({ displayName: displayName })
+      .where(eq(UsersTable.id, userId));
   };
 }
