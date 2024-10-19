@@ -3,6 +3,7 @@ import { RoutePath } from "../../../constants/navigation";
 import { useLocation } from "wouter";
 import { FadingTooltip } from "../tooltip/FadingTooltip";
 import { Button } from "../../ui/button";
+import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
 
 type Props = {
   name: string;
@@ -10,6 +11,7 @@ type Props = {
   path?: RoutePath;
   disabled?: boolean;
   isLogo?: boolean;
+  dynamicPath?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SidebarLinkButton = ({
@@ -18,9 +20,12 @@ export const SidebarLinkButton = ({
   path,
   disabled,
   isLogo,
+  dynamicPath,
   ...props
 }: Props) => {
   const [location, setLocation] = useLocation();
+
+  const { activeWorkoutModel } = useWorkoutStore();
 
   const isActive = (() => {
     return path === location || (path && location.includes(path));
@@ -59,7 +64,16 @@ export const SidebarLinkButton = ({
         {...props}
         onClick={() => {
           if (!disabled) {
-            path && setLocation(path, { replace: false });
+            if (activeWorkoutModel.workout.id !== 0 && dynamicPath) {
+              setLocation(`/active-workout/${activeWorkoutModel.workout.id}`, {
+                state: {
+                  workoutModdel: activeWorkoutModel,
+                  setWorkoutModelUpdatedToTrue: true,
+                },
+              });
+            } else {
+              path && setLocation(path, { replace: false });
+            }
           }
         }}
       >

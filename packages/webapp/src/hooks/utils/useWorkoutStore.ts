@@ -14,6 +14,8 @@ type State = {
     activeWorkoutModel: ActiveWorkoutFinishSchema
   ) => void;
 
+  clearWorkoutModel: () => void;
+
   addExercise: (exercise: ExerciseModel) => void;
   addSet: (exerciseId: number) => void;
   deleteExercise: (exerciseId: number) => void;
@@ -38,6 +40,18 @@ export const useWorkoutStore = create<State>((set) => ({
       name: "",
     },
     exercises: [],
+  },
+
+  clearWorkoutModel: () => {
+    set({
+      activeWorkoutModel: {
+        exercises: [],
+        workout: {
+          id: 0,
+          name: "",
+        },
+      },
+    });
   },
 
   formatWorkoutModelIntoRequiredFinishWorkoutDto: (activeWorkoutModel) => {

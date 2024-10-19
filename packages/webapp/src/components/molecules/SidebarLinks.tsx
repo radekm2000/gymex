@@ -36,6 +36,7 @@ export const SidebarLinks = () => {
         name="Training plans"
         path={RoutePath.TrainingPlans}
         icon={<NotepadText size={22} />}
+        dynamicPath
       />
 
       <SidebarLinkButton

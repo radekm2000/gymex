@@ -17,6 +17,7 @@ import {
 import toast from "react-hot-toast";
 import { RoutePath } from "../../constants/navigation";
 import { CreateWorkoutWithExercisesDto } from "@gymex/commons";
+import { useWorkoutStore } from "../../hooks/utils/useWorkoutStore";
 
 export const useWorkoutPlanCreateMutation = () => {
   const queryClient = useQueryClient();
@@ -89,6 +90,7 @@ export const useWorkoutStartMutation = () => {
       setLocation(`/active-workout/${returnedWorkoutModel.workout.id}`, {
         state: {
           workoutModel: returnedWorkoutModel,
+          setWorkoutModelUpdatedToTrue: true,
         },
       });
     },
@@ -101,6 +103,7 @@ type WorkoutFinishMutationParams = {
 };
 
 export const useWorkoutFinishMutation = () => {
+  const { clearWorkoutModel } = useWorkoutStore();
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
   return useMutation({
@@ -113,6 +116,7 @@ export const useWorkoutFinishMutation = () => {
       detailedWorkoutModel: DetailedWorkoutModel;
       summary: WorkoutSummary;
     }) => {
+      clearWorkoutModel();
       toast.success("Workout finished!");
       queryClient.setQueryData<DetailedWorkoutModel[]>(
         WorkoutQueryKeys.details(),
