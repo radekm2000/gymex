@@ -26,6 +26,11 @@ export const SidebarLinkButton = ({
   const [location, setLocation] = useLocation();
 
   const { activeWorkoutModel } = useWorkoutStore();
+  console.log(activeWorkoutModel);
+
+  const isDynamicPathActive = (() => {
+    return dynamicPath && path && location.includes("active-workout");
+  })();
 
   const isActive = (() => {
     return path === location || (path && location.includes(path));
@@ -52,6 +57,37 @@ export const SidebarLinkButton = ({
       >
         {icon}
       </Button>
+    );
+  } else if (dynamicPath) {
+    return (
+      <FadingTooltip tooltipPlacement="right" tooltipText={name}>
+        <Button
+          size={"icon"}
+          className={` hover:bg-primary-light text-secondary-veryLight ${isDynamicPathActive ? "opacity-100" : "opacity-60"}`}
+          variant={isDynamicPathActive ? "active" : "none"}
+          disabled={disabled}
+          {...props}
+          onClick={() => {
+            if (!disabled) {
+              if (activeWorkoutModel.workout.id !== 0 && dynamicPath) {
+                setLocation(
+                  `/active-workout/${activeWorkoutModel.workout.id}`,
+                  {
+                    state: {
+                      workoutModdel: activeWorkoutModel,
+                      setWorkoutModelUpdatedToTrue: true,
+                    },
+                  }
+                );
+              } else {
+                path && setLocation(path, { replace: false });
+              }
+            }
+          }}
+        >
+          {icon}
+        </Button>
+      </FadingTooltip>
     );
   }
   return (
