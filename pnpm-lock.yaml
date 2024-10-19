@@ -179,9 +179,6 @@ importers:
 
   packages/webapp:
     dependencies:
-      '@gymex/backend':
-        specifier: workspace:*
-        version: link:../backend
       '@gymex/commons':
         specifier: workspace:*
         version: link:../commons
