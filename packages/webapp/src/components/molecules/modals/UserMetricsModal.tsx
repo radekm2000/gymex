@@ -1,6 +1,5 @@
 import { UserMetricsUpdateDto } from "@gymex/commons/src";
 import { useAuth } from "../../../hooks/use-auth";
-import { NotAuthed } from "../../pages/NotAuthed";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -29,7 +28,7 @@ export const UserMetricsModal = () => {
   };
 
   return (
-    user && (
+    user.model.user.username && (
       <AlertDialog
         open={isUserFirstTimeLoggedIn}
         onOpenChange={(open) => open === isUserFirstTimeLoggedIn}

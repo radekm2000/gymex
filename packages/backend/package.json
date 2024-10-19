@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build && pnpm run db:generate && pnpm run db:copy",
+    "build": "nest build && pnpm run db:generate && pnpm run db:push && pnpm run db:copy",
     "clean": "rm -rf dist",
     "db:copy": "cp -r ./src/db/migrations ./dist/src/db/migrations",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

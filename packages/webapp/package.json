@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@gymex/backend": "workspace:*",
     "@gymex/commons": "workspace:*",
     "@mui/joy": "5.0.0-beta.48",
     "@nivo/bar": "^0.87.0",

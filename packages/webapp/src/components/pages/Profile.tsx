@@ -37,11 +37,7 @@ export const Profile = () => {
             )}
 
             <span>
-              {isAuthed
-                ? displayName
-                  ? displayName
-                  : username
-                : "GUEST"}
+              {isAuthed ? (displayName ? displayName : username) : "GUEST"}
             </span>
           </Card>
           {isAuthed ? (

@@ -6,7 +6,7 @@ export const NotAuthed = () => {
   return (
     <div className="flex flex-col items-center justify-center pt-10">
       <SidebarLinkButton
-        path={RoutePath.Test}
+        path={RoutePath.Profile}
         isLogo={true}
         name="logo"
         icon={<Logo />}
