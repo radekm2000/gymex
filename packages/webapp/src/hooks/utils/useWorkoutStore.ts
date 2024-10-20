@@ -22,12 +22,17 @@ type State = {
   deleteSet: (exerciseId: number) => void;
   updateReps: (exerciseId: number, setId: string, newReps: string) => void;
   updateWeight: (exerciseId: number, setId: string, newWeight: string) => void;
+  toggleSetIsFinished: (exerciseId: number, setId: string) => void;
 
   mapDetailedWorkoutModelToWorkoutFinishSchema: (
     model: DetailedWorkoutModel
   ) => ActiveWorkoutFinishSchema;
 
   formatWorkoutModelIntoRequiredFinishWorkoutDto: (
+    activeWorkoutModel: ActiveWorkoutFinishSchema
+  ) => CreateWorkoutWithExercisesDto;
+
+  formatWorkoutModelIntoRequiredFinishWorkoutDtoWithSetCheckboxes: (
     activeWorkoutModel: ActiveWorkoutFinishSchema
   ) => CreateWorkoutWithExercisesDto;
 };
@@ -75,6 +80,33 @@ export const useWorkoutStore = create<State>((set) => ({
     return dto;
   },
 
+  formatWorkoutModelIntoRequiredFinishWorkoutDtoWithSetCheckboxes: (
+    activeWorkoutModel
+  ) => {
+    const dto: CreateWorkoutWithExercisesDto = {
+      workoutName: activeWorkoutModel.workout.name,
+      exercises: activeWorkoutModel.exercises.map((exercise) => {
+        const filteredSets = exercise.sets.filter((set) => set.isFinished);
+
+        return {
+          id: exercise.id,
+          notes: exercise.notes,
+          orderIndex: exercise.orderIndex,
+          sets: filteredSets.map((set) => ({
+            exerciseSetNumber: set.exerciseSetNumber,
+            reps: set.reps,
+            weight: set.weight,
+            tempo: set.tempo ?? "0",
+            isStaticSet: set.isStaticSet ?? false,
+            holdSecs: set.holdSecs ?? "0",
+          })),
+        };
+      }),
+    };
+
+    return dto;
+  },
+
   setActiveWorkoutModel: (activeWorkoutModel) => {
     set({ activeWorkoutModel: activeWorkoutModel });
   },
@@ -98,6 +130,31 @@ export const useWorkoutStore = create<State>((set) => ({
             };
           }
           return exercise;
+        }),
+      },
+    }));
+  },
+  toggleSetIsFinished: (exerciseId: number, setId: string) => {
+    set((prevState) => ({
+      activeWorkoutModel: {
+        ...prevState.activeWorkoutModel,
+        exercises: prevState.activeWorkoutModel.exercises.map((exercise) => {
+          if (exercise.id !== exerciseId) return exercise;
+
+          const updatedSets = exercise.sets.map((set) => {
+            if (set.exerciseSetNumber === setId) {
+              return {
+                ...set,
+                isFinished: !set.isFinished,
+              };
+            }
+            return set;
+          });
+
+          return {
+            ...exercise,
+            sets: updatedSets,
+          };
         }),
       },
     }));

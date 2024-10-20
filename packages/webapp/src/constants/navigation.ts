@@ -15,7 +15,8 @@ export enum RoutePath {
   Github = "https://github.com/radekm2000/gymex",
   WorkoutsHistory = "/workouts/history",
   ExerciseStatistics = "/exercises/:exerciseId/statistics",
-  Leaderboard = '/leaderboard'
+  Leaderboard = "/leaderboard",
+  Settings = "/settings",
 }
 
 export const SET_LOCATION_STATES = {

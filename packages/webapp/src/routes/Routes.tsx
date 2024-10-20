@@ -82,6 +82,12 @@ const LeaderboardRoute = lazy(() =>
   }))
 );
 
+const SettingsRoute = lazy(() =>
+  import("../components/pages/Settings").then((module) => ({
+    default: module.Settings,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -148,6 +154,11 @@ export const Routes = () => {
       <Route path={RoutePath.Leaderboard}>
         <Suspense fallback={<LoadingProgress />}>
           <LeaderboardRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.Settings}>
+        <Suspense fallback={<LoadingProgress />}>
+          <SettingsRoute />
         </Suspense>
       </Route>
       <Route>

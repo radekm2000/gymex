@@ -181,6 +181,7 @@ export type ExerciseSet = {
   tempo?: string;
   isStaticSet?: boolean;
   holdSecs?: string;
+  isFinished?: boolean;
 };
 
 export type MuscleName =
@@ -253,5 +254,3 @@ export type UserMetricsUpdateDto = {
   height: string;
   weight: string;
 };
-
-

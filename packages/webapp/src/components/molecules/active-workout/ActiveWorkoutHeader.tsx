@@ -5,6 +5,7 @@ import { AddExerciseToWorkout } from "@gymex/commons/src";
 import { StopwatchCountdown } from "../../../hooks/utils/StopwatchCountdown";
 import { useWorkoutFinishMutation } from "../../../api/mutations/workouts";
 import { useWorkoutStore } from "../../../hooks/utils/useWorkoutStore";
+import { useSettingsStore } from "../../../hooks/utils/useSettingsStore";
 
 type Props = {
   activeExercise: AddExerciseToWorkout;
@@ -13,15 +14,24 @@ type Props = {
 export const ActiveWorkoutHeader = ({ activeExercise }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { formattedTime } = useTimer();
-  const { activeWorkoutModel, formatWorkoutModelIntoRequiredFinishWorkoutDto } =
-    useWorkoutStore();
+  const {
+    activeWorkoutModel,
+    formatWorkoutModelIntoRequiredFinishWorkoutDto,
+    formatWorkoutModelIntoRequiredFinishWorkoutDtoWithSetCheckboxes,
+  } = useWorkoutStore();
+
+  const { showCheckboxesInSets } = useSettingsStore();
 
   const finishWorkoutMutation = useWorkoutFinishMutation();
 
   const onFinish = () => {
     finishWorkoutMutation.mutate({
       workoutId: activeWorkoutModel.workout.id,
-      dto: formatWorkoutModelIntoRequiredFinishWorkoutDto(activeWorkoutModel),
+      dto: showCheckboxesInSets
+        ? formatWorkoutModelIntoRequiredFinishWorkoutDtoWithSetCheckboxes(
+            activeWorkoutModel
+          )
+        : formatWorkoutModelIntoRequiredFinishWorkoutDto(activeWorkoutModel),
     });
   };
 

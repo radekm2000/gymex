@@ -7,6 +7,7 @@ import {
   CalendarDays,
   DumbbellIcon,
   NotepadText,
+  Settings,
   UserRound,
 } from "lucide-react";
 import leaderboard from "../../assets/leaderboard.png";
@@ -49,6 +50,12 @@ export const SidebarLinks = () => {
         name="History"
         path={RoutePath.WorkoutsHistory}
         icon={<CalendarDays size={22} />}
+      />
+
+      <SidebarLinkButton
+        name="Settings"
+        path={RoutePath.Settings}
+        icon={<Settings size={22} />}
       />
 
       <div className="pb-1 mt-auto">
