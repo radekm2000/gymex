@@ -33,7 +33,6 @@ describe('ExercisesService', () => {
 
   it('should return the exercise by ID', async () => {
     const result = await exerciseService.findExerciseById(exerciseId);
-    console.log(result);
     expect(result).toEqual(exerciseMock);
   });
 

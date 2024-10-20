@@ -26,10 +26,12 @@ export const SidebarLinkButton = ({
   const [location, setLocation] = useLocation();
 
   const { activeWorkoutModel } = useWorkoutStore();
-  console.log(activeWorkoutModel);
 
   const isDynamicPathActive = (() => {
-    return dynamicPath && path && location.includes("active-workout");
+    return (
+      (dynamicPath && path && location.includes("active-workout")) ||
+      (path && location.includes(path))
+    );
   })();
 
   const isActive = (() => {
