@@ -41,21 +41,19 @@ export const ExerciseLinkButton = ({ icon, name, path }: Props) => {
     }
   };
   return (
-    <div className="flex flex-col items-center w-auto">
-      <Button
-        variant={"default"}
-        className="w-full rounded-lg size-36 lg:size-60 border-primary-light bg-secondary-light"
-        onClick={handleOnClick}
-      >
-        <div className="flex flex-col">
-          {icon}
-          <div className="justify-center w-full rounded-none rounded-b-sm ">
-            <span className="text-xl text-center text-white font-display">
-              {name}
-            </span>
-          </div>
+    <Button
+      variant={"default"}
+      className="w-full rounded-lg size-auto border-primary-light bg-secondary-light"
+      onClick={handleOnClick}
+    >
+      <div className="flex flex-col">
+        {icon}
+        <div className="justify-center w-full rounded-none rounded-b-sm ">
+          <span className="text-xl text-center text-white font-display">
+            {name}
+          </span>
         </div>
-      </Button>
-    </div>
+      </div>
+    </Button>
   );
 };
