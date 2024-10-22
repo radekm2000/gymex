@@ -121,7 +121,7 @@ export const TrainingExerciseCard = ({
 
   return (
     exercise && (
-      <Card className="flex flex-col gap-2 p-3 sm:p-4 bg-textInput-light">
+      <Card className="flex flex-col gap-2 p-3 sm:p-4 bg-exerciseCard-background">
         <CreateTrainingExerciseHeader
           exerciseId={exerciseId}
           exerciseName={exercise.exerciseName}

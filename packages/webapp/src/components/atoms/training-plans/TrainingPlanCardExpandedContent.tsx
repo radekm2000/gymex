@@ -19,14 +19,14 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
   const isLastElement = trainingPlan.exercises.length - 1;
 
   return (
-    <Card className="flex flex-col gap-5 p-0 bg-opacity-100 border-t-0 rounded-t-none opacity-100 bg-textInput-exercisebg ">
+    <Card className="flex flex-col gap-5 p-0 bg-opacity-100 border-t-0 rounded-t-none opacity-100 bg-textInput-expandedContent ">
       {trainingPlan.exercises.map((e, index) => (
         <div key={index} className="first:pt-2">
           <div key={index} className="flex items-center justify-between gap-4 ">
             <div className="pl-2">
               <CustomIcon icon={dumbell} />
             </div>
-            <span className=" text-textInput-darker md:text-2xl">
+            <span className=" text-expandedContent-primaryText md:text-2xl">
               {e.exerciseName}
             </span>
             <div className="flex ml-auto mr-1">
@@ -34,7 +34,7 @@ export const TrainingPlanCardExpandedContent = ({ trainingPlan }: Props) => {
                 <div key={setIndex}>
                   <span
                     key={setIndex}
-                    className="text-sm font-display text-textInput-darker"
+                    className="text-sm font-display text-expandedContent-secondaryText"
                   >
                     {s.reps}
                   </span>

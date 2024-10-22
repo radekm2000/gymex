@@ -34,7 +34,7 @@ export const WorkoutSessionItem = ({ workout }: Props) => {
   return (
     <div
       onClick={onClick}
-      className="flex items-center px-2 cursor-pointer text-textInput-darker "
+      className="flex items-center px-2 cursor-pointer text-expandedContent-primaryText "
     >
       <div className="pl-2">
         <CustomIcon icon={dumbell} />
@@ -45,12 +45,12 @@ export const WorkoutSessionItem = ({ workout }: Props) => {
         </span>
         <div className={`${isDesktop ? "flex" : "flex flex-col"}`}>
           <span
-            className={`${isDesktop ? "text-md" : "text-sm"} text-textInput-default`}
+            className={`${isDesktop ? "text-md" : "text-sm"} text-expandedContent-secondaryText`}
           >
             {formattedDate} &nbsp;
           </span>
           <span
-            className={`${isDesktop ? "text-md" : "text-sm"} text-textInput-default`}
+            className={`${isDesktop ? "text-md" : "text-sm"} text-expandedContent-secondaryText`}
           >
             {timeDuration}
           </span>

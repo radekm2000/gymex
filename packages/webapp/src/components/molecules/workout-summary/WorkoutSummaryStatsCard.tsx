@@ -20,17 +20,17 @@ export const WorkoutSummaryStatsCard = ({ summary, trainingPlan }: Props) => {
 
   const formattedTimestamps = formatSessionTimeStamps(trainingPlan);
   return (
-    <Card className="flex flex-col bg-opacity-100 bg-textInput-exercisebg">
+    <Card className="flex flex-col bg-opacity-100 bg-exerciseCard-background">
       <CardHeader className="flex flex-col p-0 text-neutral-950 font-display ">
         <span className="lg:text-3xl text-neutral-950 font-display">
           {trainingPlan.workout.name}
         </span>
-        <div className="flex">
-          <span className="text-textInput-default">
+        <div className="flex ">
+          <span className="text-expandedContent-secondaryText">
             {formattedTimestamps.formattedDate}
           </span>
           &nbsp; &nbsp;
-          <span className="text-textInput-default">
+          <span className="text-expandedContent-secondaryText">
             {formattedTimestamps.timeDuration}
           </span>
         </div>

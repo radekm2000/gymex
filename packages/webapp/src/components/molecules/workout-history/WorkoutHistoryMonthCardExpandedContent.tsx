@@ -16,7 +16,7 @@ export const WorkoutHistoryMonthCardExpandedContent = ({ workouts }: Props) => {
   });
 
   return (
-    <Card className="flex flex-col gap-2 p-0 bg-opacity-100 border-t-0 rounded-t-none bg-neutral-100 ">
+    <Card className="flex flex-col gap-2 p-0 bg-opacity-100 border-t-0 rounded-t-none bg-textInput-expandedContent ">
       {sortedWorkouts.map((workout, index) => (
         <div key={index}>
           <WorkoutSessionItem workout={workout} />

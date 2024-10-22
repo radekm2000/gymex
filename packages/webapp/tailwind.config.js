@@ -64,7 +64,17 @@ export const theme = {
         light: "#d1d1d1",
         default: "#888888",
         exercisebg: "#ededed",
+        expandedContent: "#dcdcdc",
         darker: "#4f4f4f",
+      },
+      expandedContent: {
+        primaryText: "#292929",
+        secondaryText: "#3d3d3d",
+      },
+      exerciseCard: {
+        background: "#dfdfdf",
+        primaryText: "#363636",
+        secondaryText: "#545454",
       },
       border: {
         default: "rgb(40,40,40)",
