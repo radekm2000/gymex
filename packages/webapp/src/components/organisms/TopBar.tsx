@@ -1,7 +1,6 @@
 import { useAuth } from "../../hooks/use-auth";
 import { formatUrlToUi } from "../../hooks/utils/formatUrlToUi";
 import { HamburgerMenu } from "../atoms/HamburgerMenu";
-import { UserAvatar } from "../atoms/icons/UserAvatar";
 import { DiscordSignInButton } from "../molecules/discord/DiscordSignInButton";
 import { DropdownUserAvatar } from "../molecules/profile/DropdownUserAvatar";
 
