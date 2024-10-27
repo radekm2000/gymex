@@ -3,6 +3,7 @@ import { formatUrlToUi } from "../../hooks/utils/formatUrlToUi";
 import { HamburgerMenu } from "../atoms/HamburgerMenu";
 import { UserAvatar } from "../atoms/icons/UserAvatar";
 import { DiscordSignInButton } from "../molecules/discord/DiscordSignInButton";
+import { DropdownUserAvatar } from "../molecules/profile/DropdownUserAvatar";
 
 type Props = {
   currentUrlLocation: string;
@@ -26,7 +27,10 @@ export const TopBar = ({ currentUrlLocation, toggleSheet }: Props) => {
       </div>
       <div className="mr-4">
         {avatar && discordId ? (
-          <UserAvatar discordAvatarId={avatar} discordUserId={discordId} />
+          <DropdownUserAvatar
+            discordAvatarId={avatar}
+            discordUserId={discordId}
+          />
         ) : (
           <DiscordSignInButton />
         )}

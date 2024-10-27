@@ -1,6 +1,7 @@
 import { UserMetricsUpdateDto } from "@gymex/commons/src";
 import { UserDetails } from "../../models/user.model";
 import { apiClient } from "../http-client";
+import { ACCESS_TOKEN_KEY } from "../../constants/local-storage";
 
 export const UserQueryKeys = {
   all: ["user-details"] as const,
@@ -27,4 +28,15 @@ export const updateUserMetrics = async (
     dto
   );
   return response.data;
+};
+
+export const logout = async () => {
+  await apiClient.post("/auth/logout");
+
+  const hasAccessToken = !!localStorage.getItem(ACCESS_TOKEN_KEY);
+
+  if (hasAccessToken) {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    window.location.reload();
+  }
 };

@@ -1,9 +1,21 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { DiscordAuthGuard } from './utils/DiscordGuard';
 import { Request, Response } from 'express';
 import { UserModel } from 'src/users/user.types';
 import { AuthService } from './auth.service';
 import 'dotenv/config';
+import { AccessTokenGuard } from './utils/AccessTokenGuard';
+
+export const REFRESH_TOKEN_KEY = 'refreshToken';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -20,7 +32,7 @@ export class AuthController {
       user.id,
     );
 
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie(REFRESH_TOKEN_KEY, refreshToken, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
       secure: true,
@@ -37,5 +49,11 @@ export class AuthController {
   @Get('refresh')
   async refresh(@Req() req: Request) {
     return await this.authService.handleRefreshToken(req);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('logout')
+  async logout(@Res() res: Response) {
+    return res.clearCookie(REFRESH_TOKEN_KEY).sendStatus(HttpStatus.CREATED);
   }
 }
