@@ -19,7 +19,7 @@ const Layout = () => {
       </div>
       <div className={`flex flex-col flex-grow `}>
         <TopBar currentUrlLocation={location} toggleSheet={toggleSidebar} />
-        <div className="overflow-x-hidden flex-grow px-3 pr-2  pt-6 pb-6 overflow-y-scroll 2xl:px-64 lg:px-36 [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
+        <div className="overflow-x-hidden  flex-grow px-3 pr-2  pt-6 pb-6 overflow-y-scroll 2xl:px-64 lg:px-36 [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
           <Routes />
         </div>
       </div>
