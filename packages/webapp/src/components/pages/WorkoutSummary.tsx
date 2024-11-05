@@ -10,13 +10,17 @@ import {
 } from "@gymex/commons/src";
 import html2canvas from "html2canvas";
 import { WorkoutSummaryDownloadable } from "../molecules/workout-summary/WorkoutSummaryDownloadable";
+import { useEffect, useState } from "react";
 
 export const WorkoutSummary = () => {
   const state = useHistoryState();
   const summary: TWorkoutSummary = state?.summary;
   const trainingPlan: DetailedWorkoutModel = state?.trainingPlan;
 
-  const handleSummaryDownload = async () => {
+  const [isPrintable, setIsPrintable] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(false);
+
+  const download = async () => {
     const element = document.getElementById("print");
     if (!element) {
       return;
@@ -37,11 +41,26 @@ export const WorkoutSummary = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  const handleSummaryDownload = async () => {
+    setIsPrintable(true);
+    download();
+    setIsDownloaded(true);
+  };
+
+  useEffect(() => {
+    if (isDownloaded && isPrintable) {
+      download();
+      setIsDownloaded(false);
+      setIsPrintable(false);
+    }
+  }, [isDownloaded, isPrintable]);
+
   return (
     summary &&
     trainingPlan && (
       <>
-        <Card id="no-print" className="flex flex-col gap-4 p-0 pb-4">
+        <Card id="" className="flex flex-col gap-4 p-0 pb-4 print-hidden">
           <WorkoutSummaryHeader handleSummaryDownload={handleSummaryDownload} />
           <Separator className="w-full" />
           <div className="px-2 lg:px-4">
@@ -59,6 +78,14 @@ export const WorkoutSummary = () => {
             <WorkoutSummaryChartPie muscleStats={summary.muscleStats} />
           </div>
         </Card>
+        {isPrintable && (
+          <div id="print" className="pb-0 print-visible">
+            <WorkoutSummaryDownloadable
+              summary={summary}
+              trainingPlan={trainingPlan}
+            />
+          </div>
+        )}
       </>
     )
   );

@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  @media print {
+    .print-hidden {
+      display: none !important;
+    }
+    .print-visible {
+      display: block !important;
+    }
+  }
+}
