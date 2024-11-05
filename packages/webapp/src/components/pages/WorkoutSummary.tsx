@@ -18,7 +18,6 @@ export const WorkoutSummary = () => {
   const trainingPlan: DetailedWorkoutModel = state?.trainingPlan;
 
   const [isPrintable, setIsPrintable] = useState(false);
-  const [isDownloaded, setIsDownloaded] = useState(false);
 
   const download = async () => {
     const element = document.getElementById("print");
@@ -45,16 +44,14 @@ export const WorkoutSummary = () => {
   const handleSummaryDownload = async () => {
     setIsPrintable(true);
     download();
-    setIsDownloaded(true);
   };
 
   useEffect(() => {
-    if (isDownloaded && isPrintable) {
+    if (isPrintable) {
       download();
-      setIsDownloaded(false);
       setIsPrintable(false);
     }
-  }, [isDownloaded, isPrintable]);
+  }, [isPrintable]);
 
   return (
     summary &&
