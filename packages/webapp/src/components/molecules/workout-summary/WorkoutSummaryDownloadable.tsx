@@ -1,5 +1,5 @@
 import { DetailedWorkoutModel, WorkoutSummary } from "@gymex/commons/src";
-import { Card, CardContent, CardHeader } from "../../ui/card";
+import { Card, CardContent } from "../../ui/card";
 import { Logo } from "../../atoms/icons/Logo";
 import { WorkoutSummaryStatsCard } from "./WorkoutSummaryStatsCard";
 import { WorkoutSummaryStatsDescription } from "./WorkoutSummaryStatsDescription";

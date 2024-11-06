@@ -29,8 +29,8 @@ export const WorkoutSummaryStatsDescription = ({ trainingPlan }: Props) => {
     <Card className="flex flex-col gap-2 bg-exerciseCard-background">
       {trainingPlan.exercises.map((e, index) => (
         <>
-          <div key={index} className="flex items-center gap-4">
-            <div className="pl-2">
+          <div key={index} className="flex items-center gap-4 break-all">
+            <div className="pl-2 shrink-0">
               <CustomIcon icon={dumbell} />
             </div>
             <div className="flex flex-col">

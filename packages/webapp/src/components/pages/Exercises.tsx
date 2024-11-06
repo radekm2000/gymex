@@ -11,7 +11,6 @@ import myexercise from "../../assets/kettlebell.png";
 export const Exercises = () => {
   const { isAuthed } = useAuth();
   const largeSize = useMediaQuery("(min-width: 1500px)");
-  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (!isAuthed) {
     return <NotAuthed />;
