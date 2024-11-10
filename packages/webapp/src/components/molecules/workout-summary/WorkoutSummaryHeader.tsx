@@ -1,8 +1,8 @@
-import { ArrowLeft, FileDown, Share } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
 import { RoutePath } from "../../../constants/navigation";
-import { PrimaryButton } from "../../atoms/inputs/PrimaryButton";
 import { RefObject } from "react";
+import { WorkoutSummaryDropdownMenu } from "./WorkoutSummaryDropdownMenu";
 
 type Props = {
   handleSummaryDownload: () => Promise<void>;
@@ -32,22 +32,12 @@ export const WorkoutSummaryHeader = ({
             onClick={() => setLocation(RoutePath.TrainingPlans)}
           />
           <span className="text-xl lg:text-3xl">Training raport</span>
-          <PrimaryButton
-            onClick={handleShare}
-            buttonIcon={<Share />}
-            buttonMessage=""
-            tooltipMessage="Share"
-            className="flex gap-2 ml-auto cursor-pointer opacity-90 hover:opacity-100"
-          />
-
-          <PrimaryButton
-            onClick={handleSummaryDownload}
-            className="flexcursor-pointer opacity-90 hover:opacity-100"
-            buttonIcon={<FileDown />}
-            tooltipMessage="Download the summary"
-            buttonMessage=""
-            tooltipPlacement="top"
-          />
+          <div className="flex ml-auto">
+            <WorkoutSummaryDropdownMenu
+              handleShare={handleShare}
+              handleSummaryDownload={handleSummaryDownload}
+            />
+          </div>
         </div>
       </div>
     </div>

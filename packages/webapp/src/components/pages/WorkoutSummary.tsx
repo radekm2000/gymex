@@ -42,7 +42,6 @@ export const WorkoutSummary = () => {
     link.click();
     document.body.removeChild(link);
   };
-
   const handleSummaryDownload = async () => {
     setIsPrintable(true);
     download();
@@ -65,7 +64,6 @@ export const WorkoutSummary = () => {
       setIsShareable(false);
     }
   }, [isShareable]);
-
   const shareCanvas = async (shareTarget: RefObject<HTMLDivElement>) => {
     if (!shareTarget.current) return;
     const canvas = await html2canvas(shareTarget.current);
@@ -110,15 +108,15 @@ export const WorkoutSummary = () => {
             <WorkoutSummaryChartPie muscleStats={summary.muscleStats} />
           </div>
         </Card>
-        {isPrintable ||
-          (isShareable && (
-            <div id="print" ref={shareTarget} className="pb-0 print-visible ">
-              <WorkoutSummaryDownloadable
-                summary={summary}
-                trainingPlan={trainingPlan}
-              />
-            </div>
-          ))}
+
+        {(isShareable || isPrintable) && (
+          <div id="print" ref={shareTarget} className="pb-0 print-visible ">
+            <WorkoutSummaryDownloadable
+              summary={summary}
+              trainingPlan={trainingPlan}
+            />
+          </div>
+        )}
       </>
     )
   );
