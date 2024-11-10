@@ -79,29 +79,53 @@ export const useWorkoutStore = create<State>((set) => ({
 
     return dto;
   },
-
   formatWorkoutModelIntoRequiredFinishWorkoutDtoWithSetCheckboxes: (
     activeWorkoutModel
   ) => {
-    const dto: CreateWorkoutWithExercisesDto = {
-      workoutName: activeWorkoutModel.workout.name,
-      exercises: activeWorkoutModel.exercises.map((exercise) => {
+    let exercisesWithFinishedSets = activeWorkoutModel.exercises
+      .map((exercise) => {
         const filteredSets = exercise.sets.filter((set) => set.isFinished);
 
-        return {
-          id: exercise.id,
-          notes: exercise.notes,
-          orderIndex: exercise.orderIndex,
-          sets: filteredSets.map((set) => ({
+        return filteredSets.length > 0
+          ? {
+              id: exercise.id,
+              notes: exercise.notes,
+              orderIndex: exercise.orderIndex,
+              sets: filteredSets.map((set) => ({
+                exerciseSetNumber: set.exerciseSetNumber,
+                reps: set.reps,
+                weight: set.weight,
+                tempo: set.tempo ?? "0",
+                isStaticSet: set.isStaticSet ?? false,
+                holdSecs: set.holdSecs ?? "0",
+              })),
+            }
+          : null;
+      })
+      .filter((exercise) => exercise !== null);
+
+    if (exercisesWithFinishedSets.length === 0) {
+      const firstExercise = activeWorkoutModel.exercises[0];
+      exercisesWithFinishedSets = [
+        {
+          id: firstExercise.id,
+          notes: firstExercise.notes,
+          orderIndex: firstExercise.orderIndex,
+          sets: firstExercise.sets.map((set) => ({
             exerciseSetNumber: set.exerciseSetNumber,
-            reps: set.reps,
-            weight: set.weight,
+            reps: set.reps ?? "10",
+            weight: set.weight ?? "0",
             tempo: set.tempo ?? "0",
             isStaticSet: set.isStaticSet ?? false,
             holdSecs: set.holdSecs ?? "0",
           })),
-        };
-      }),
+        },
+      ];
+    }
+
+    const dto: CreateWorkoutWithExercisesDto = {
+      workoutName: activeWorkoutModel.workout.name,
+      exercises: exercisesWithFinishedSets,
     };
 
     return dto;
