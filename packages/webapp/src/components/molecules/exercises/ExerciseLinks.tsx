@@ -75,7 +75,13 @@ export const ExerciseLinks = ({ exercises }: Props) => {
       mode === SET_LOCATION_STATES.ADD_EXERCISE_TO_ACTIVE_WORKOUT &&
       activeWorkout
     ) {
-      addExercise(exercise);
+      const exerciseExistsInWorkout = activeWorkout.exercises.some(
+        (e) => e.id === exercise.id
+      );
+      if (!exerciseExistsInWorkout) {
+        addExercise(exercise);
+      }
+
       setLocation(`/active-workout/${activeWorkout.workout.id}`, {
         state: {
           setWorkoutModelUpdatedToTrue: true,
