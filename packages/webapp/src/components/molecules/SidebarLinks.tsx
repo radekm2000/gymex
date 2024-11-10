@@ -8,6 +8,7 @@ import {
   DumbbellIcon,
   NotepadText,
   Settings,
+  Timer,
   UserRound,
 } from "lucide-react";
 import leaderboard from "../../assets/leaderboard.png";
@@ -52,6 +53,12 @@ export const SidebarLinks = () => {
         icon={<CalendarDays size={22} />}
       />
 
+      <SidebarLinkButton
+        name="Timer"
+        path={RoutePath.Timer}
+        icon={<Timer size={22} />}
+      />
+      
       <SidebarLinkButton
         name="Settings"
         path={RoutePath.Settings}

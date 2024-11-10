@@ -17,6 +17,7 @@ export enum RoutePath {
   ExerciseStatistics = "/exercises/:exerciseId/statistics",
   Leaderboard = "/leaderboard",
   Settings = "/settings",
+  Timer = "/timer",
 }
 
 export const SET_LOCATION_STATES = {

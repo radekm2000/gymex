@@ -88,6 +88,12 @@ const SettingsRoute = lazy(() =>
   }))
 );
 
+const TimerRoute = lazy(() =>
+  import("../components/pages/Timer").then((module) => ({
+    default: module.Timer,
+  }))
+);
+
 export const Routes = () => {
   return (
     <Switch>
@@ -159,6 +165,11 @@ export const Routes = () => {
       <Route path={RoutePath.Settings}>
         <Suspense fallback={<LoadingProgress />}>
           <SettingsRoute />
+        </Suspense>
+      </Route>
+      <Route path={RoutePath.Timer}>
+        <Suspense fallback={<LoadingProgress />}>
+          <TimerRoute />
         </Suspense>
       </Route>
       <Route>
