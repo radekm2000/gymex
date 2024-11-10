@@ -40,37 +40,53 @@ export const ExerciseLinks = ({ exercises }: Props) => {
 
   const handleAddExercise = (exercise: ExerciseModel) => {
     if (mode === "addExerciseToTrainingPlan" && workout) {
-      const updatedWorkout = {
-        ...workout,
-        exercises: [
-          ...workout.exercises,
-          {
-            id: exercise.id,
-            exerciseName: exercise.exerciseName,
-            notes: "",
-            restTime: exercise.restTime,
-            sets: [
-              {
-                exerciseSetNumber: "1",
-                reps: "10",
-                weight: "0",
-                rir: "",
-                tempo: "",
-                isStaticSet: false,
-                holdSecs: "",
-              },
-            ],
-            orderIndex: workout.exercises.length,
-          },
-        ],
-      };
+      const exerciseExistsInWorkout = workout.exercises.some(
+        (e) => e.id === exercise.id
+      );
+      if (!exerciseExistsInWorkout) {
+        const updatedWorkout = {
+          ...workout,
+          exercises: [
+            ...workout.exercises,
+            {
+              id: exercise.id,
+              exerciseName: exercise.exerciseName,
+              notes: "",
+              restTime: exercise.restTime,
+              sets: [
+                {
+                  exerciseSetNumber: "1",
+                  reps: "10",
+                  weight: "0",
+                  rir: "",
+                  tempo: "",
+                  isStaticSet: false,
+                  holdSecs: "",
+                },
+              ],
+              orderIndex: workout.exercises.length,
+            },
+          ],
+        };
 
-      setLocation(RoutePath.AddTrainingPlan, {
-        state: {
-          updatedWorkout,
-          mode: "addExerciseToTrainingPlan",
-        },
-      });
+        setLocation(RoutePath.AddTrainingPlan, {
+          state: {
+            updatedWorkout,
+            mode: "addExerciseToTrainingPlan",
+          },
+        });
+      } else {
+        const updatedWorkout = {
+          ...workout,
+          exercises: [...workout.exercises],
+        };
+        setLocation(RoutePath.AddTrainingPlan, {
+          state: {
+            updatedWorkout,
+            mode: "addExerciseToTrainingPlan",
+          },
+        });
+      }
     } else if (
       mode === SET_LOCATION_STATES.ADD_EXERCISE_TO_ACTIVE_WORKOUT &&
       activeWorkout

@@ -23,6 +23,8 @@ export const AddTrainingPlan = () => {
     (state?.updatedWorkout as WorkoutCreateSchema) || initialWorkout
   );
 
+  console.log(workout);
+
   const workoutExercises = workout.exercises;
   useEffect(() => {
     if (state?.mode === "addExerciseToTrainingPlan") {
