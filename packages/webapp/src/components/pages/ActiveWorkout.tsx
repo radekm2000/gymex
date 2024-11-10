@@ -75,7 +75,10 @@ export const ActiveWorkout = () => {
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
-        <Carousel className="w-full max-w-4xl mx-auto rounded-sm h-3/4" setApi={setApi}>
+        <Carousel
+          className="w-[960px] h-3/4 mx-auto max-w-[400px] md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
+          setApi={setApi}
+        >
           <CarouselContent className="">
             {activeWorkoutModel.exercises.map((e, index) => (
               <CarouselItem
