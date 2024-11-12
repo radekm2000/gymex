@@ -33,7 +33,7 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
         </span>
         <div className="flex items-center">
           <InsertWorkoutStatsInput
-            className={`${Number(set.weight) < 100 ? "w-6" : "w-8"} !p-0 text-center border-0 focus-visible:ring-[none]  [&::-webkit-inner-spin-button]:appearance-none bg-transparent `}
+            className={`${Number(set.weight) < 100 ? "w-6" : "w-8"} !p-0 text-center border-0 focus-visible:ring-[none]  [&::-webkit-inner-spin-button]:appearance-none bg-transparent text-xl  `}
             value={set.weight}
             onChange={(e) => {
               updateWeight(
@@ -48,7 +48,7 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
         <div className="flex items-center">
           <InsertWorkoutStatsInput
             value={set.reps}
-            className="ml-auto w-12 !p-0 text-center border-0  focus-visible:ring-[none]  [&::-webkit-inner-spin-button]:appearance-none bg-transparent"
+            className="ml-auto w-12 text-xl !p-0 text-center border-0  focus-visible:ring-[none]  [&::-webkit-inner-spin-button]:appearance-none bg-transparent"
             onChange={(e) => {
               updateReps(
                 activeExercise.id,

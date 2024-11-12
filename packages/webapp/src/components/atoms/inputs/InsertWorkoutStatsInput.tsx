@@ -24,6 +24,12 @@ export const InsertWorkoutStatsInput = ({ value, ...props }: Props) => {
   };
 
   return (
-    <Input type="number" value={value} {...props} onKeyDown={handleKeyDown} />
+    <Input
+      pattern="[0-9]*"
+      type="number"
+      value={value}
+      {...props}
+      onKeyDown={handleKeyDown}
+    />
   );
 };

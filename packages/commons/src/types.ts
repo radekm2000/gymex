@@ -72,7 +72,6 @@ export const UserAchievementType = {
   TOTAL_SESSIONS_50: "TOTAL_SESSIONS_50",
   TOTAL_SESSIONS_100: "TOTAL_SESSIONS_100",
   TOTAL_TRAINING_TIME_1D: "TOTAL_TRAINING_TIME_1D",
-  TOTAL_SETS_10: "TOTAL_SETS_10",
   MAX_WEIGHT_50KG: "MAX_WEIGHT_50KG",
   MAX_WEIGHT_100KG: "MAX_WEIGHT_100KG",
 } as const;
@@ -101,11 +100,7 @@ export const ACHIEVEMENTS: Record<UserAchievementType, UserAchievement> = {
     description: "100 Total Sessions",
     requiredProgress: 100,
   },
-  TOTAL_SETS_10: {
-    name: "Set beginner",
-    description: "10 Total sets",
-    requiredProgress: 10,
-  },
+
   TOTAL_WEIGHT_LIFT_100T: {
     name: "Weightlifting Pro",
     description: "Lifted a total of 100,000 kg",

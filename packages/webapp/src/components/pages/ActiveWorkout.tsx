@@ -70,7 +70,7 @@ export const ActiveWorkout = () => {
   return (
     isWorkoutModelUpdated &&
     activeExercise && (
-      <Card className="relative flex flex-col h-full max-h-[600px] gap-4">
+      <Card className=" relative flex flex-col h-full max-h-[600px] gap-4">
         <div className="flex flex-col gap-2">
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
