@@ -70,19 +70,19 @@ export const ActiveWorkout = () => {
   return (
     isWorkoutModelUpdated &&
     activeExercise && (
-      <Card className=" relative flex flex-col h-full max-h-[600px] gap-4">
+      <Card className="  relative flex flex-col h-full max-h-[600px] gap-4">
         <div className="flex flex-col gap-2">
           <ActiveWorkoutHeader activeExercise={activeExercise} />
           <Separator />
         </div>
         <Carousel
-          className="w-[960px] h-3/4 mx-auto max-w-[400px] md:max-w-[36rem] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
+          className="w-full h-3/4 mx-auto md:max-w-[36rem] sm:max-w-[36rem]  max-w-[290px] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
           setApi={setApi}
         >
           <CarouselContent className="">
             {activeWorkoutModel.exercises.map((e, index) => (
               <CarouselItem
-                className="overflow-y-scroll overflow-x-hidden  max-h-[55vh] [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light"
+                className="overflow-y-scroll overflow-x-hidden  max-h-[50vh] [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light"
                 key={index}
               >
                 <ActiveWorkoutContent key={e.id} activeExercise={e} />

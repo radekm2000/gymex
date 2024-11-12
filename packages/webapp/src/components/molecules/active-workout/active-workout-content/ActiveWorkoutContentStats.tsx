@@ -31,7 +31,7 @@ export const ActiveWorkoutContentStats = ({ activeExercise }: Props) => {
         <span className="text-lg text-center text-white cursor-default font-display ">
           {set.exerciseSetNumber}
         </span>
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <InsertWorkoutStatsInput
             className={`${Number(set.weight) < 100 ? "w-6" : "w-8"} !p-0 text-center border-0 focus-visible:ring-[none]  [&::-webkit-inner-spin-button]:appearance-none bg-transparent text-xl  `}
             value={set.weight}
