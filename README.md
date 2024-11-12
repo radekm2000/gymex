@@ -2,6 +2,9 @@
 
 [Check the app live](https://gymexx.netlify.app/)
 
+ [Watch the video here](https://go.screenpal.com/watch/cZXl65nVnVf)
+
+
 **Gymex** is a fitness app designed to help users create workout plans, follow their routine, track their progress and more.
 
 ## Features
