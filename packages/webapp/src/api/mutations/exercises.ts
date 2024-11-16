@@ -28,12 +28,11 @@ export const useExerciseDeleteMutation = () => {
     },
     onSuccess: (_, { exerciseId }) => {
       toast.success("Exercise has been deleted");
-      queryClient.removeQueries({
-        queryKey: ExercisesQueryKeys.detail(exerciseId),
-      });
+
       queryClient.setQueryData<ExerciseModel[]>(
-        ExercisesQueryKeys.details(),
+        ExercisesQueryKeys.me(),
         (prev) => {
+
           if (prev !== undefined) {
             return prev.filter((e) => e.id !== exerciseId);
           }
@@ -64,11 +63,12 @@ export const useExerciseCreateMutation = () => {
       toast.error(err.message);
     },
     onSuccess: (createdExercise: ExerciseModel) => {
-    setLocation(RoutePath.MyExercises);
+      setLocation(RoutePath.MyExercises);
       toast.success("Exercise has been created");
       queryClient.setQueryData<ExerciseModel[]>(
-        ExercisesQueryKeys.details(),
+        ExercisesQueryKeys.me(),
         (prev) => {
+
           if (prev !== undefined) {
             return [...prev, createdExercise];
           }
