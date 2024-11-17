@@ -2,7 +2,19 @@ import { useMediaQuery } from "usehooks-ts";
 import { Card } from "../../ui/card";
 import { BadgeIcon } from "./BadgeIcon";
 import { useAuth } from "../../../hooks/use-auth";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
 import { getBadgeIcon } from "../../../badges/badges";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../ui/dialog";
+import { BadgeModal } from "../modals/BadgeModal";
+import { PrimaryButton } from "../../atoms/inputs/PrimaryButton";
 
 export const BadgesCard = () => {
   const over1200 = useMediaQuery("(min-width: 1024px)");
@@ -13,9 +25,25 @@ export const BadgesCard = () => {
       <span className="mr-auto text-xl font-display">Badges</span>
       <div className="flex flex-wrap gap-1">
         {userIcons.map((iconObject, index) => {
-          const [badgeName, icon] = Object.entries(iconObject)[0];
-
-          return <BadgeIcon key={index} badgeName={badgeName} icon={icon} />;
+          return (
+            <Dialog>
+              <DialogTrigger>
+                <BadgeIcon
+                  key={index}
+                  badgeName={iconObject.badge}
+                  icon={iconObject.icon}
+                />
+              </DialogTrigger>
+              <DialogHeader>
+                <VisuallyHidden.Root>
+                  <DialogTitle></DialogTitle>
+                </VisuallyHidden.Root>
+                <DialogContent>
+                  <BadgeModal badgeData={iconObject} />
+                </DialogContent>
+              </DialogHeader>
+            </Dialog>
+          );
         })}
       </div>
     </Card>
