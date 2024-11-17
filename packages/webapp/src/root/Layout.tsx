@@ -13,7 +13,7 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex h-dvh bg-primary-dark">
+    <div className="flex bg-primary-dark">
       <div className="hidden md:block ">
         <Sidebar open={isSidebarOpen} onOpenChange={toggleSidebar} />
       </div>

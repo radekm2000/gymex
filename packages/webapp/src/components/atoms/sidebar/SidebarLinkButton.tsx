@@ -41,7 +41,7 @@ export const SidebarLinkButton = ({
     return (
       <Button
         size={"logo"}
-        className={`opacity-100`}
+        className={`flex-shrink-0 opacity-100`}
         variant={isActive ? "active" : "none"}
         disabled={disabled}
         {...props}
@@ -65,7 +65,7 @@ export const SidebarLinkButton = ({
       <FadingTooltip tooltipPlacement="right" tooltipText={name}>
         <Button
           size={"icon"}
-          className={` hover:bg-primary-light text-secondary-veryLight ${isDynamicPathActive ? "opacity-100" : "opacity-60"}`}
+          className={`flex-shrink-0 hover:bg-primary-light text-secondary-veryLight ${isDynamicPathActive ? "opacity-100" : "opacity-60"}`}
           variant={isDynamicPathActive ? "active" : "none"}
           disabled={disabled}
           {...props}
@@ -96,7 +96,7 @@ export const SidebarLinkButton = ({
     <FadingTooltip tooltipPlacement="right" tooltipText={name}>
       <Button
         size={"icon"}
-        className={` hover:bg-primary-light text-secondary-veryLight ${isActive ? "opacity-100" : "opacity-60"}`}
+        className={` flex-shrink-0 hover:bg-primary-light text-secondary-veryLight ${isActive ? "opacity-100" : "opacity-60"}`}
         variant={isActive ? "active" : "none"}
         disabled={disabled}
         {...props}

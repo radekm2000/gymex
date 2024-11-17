@@ -15,7 +15,7 @@ import leaderboard from "../../assets/leaderboard.png";
 
 export const SidebarLinks = () => {
   return (
-    <div className="flex flex-col h-full gap-4 mx-2 place-items-center">
+    <div className="flex flex-col flex-shrink-0 h-full gap-4 mx-2 place-items-center">
       <SidebarLinkButton
         isLogo={true}
         name="logo"
@@ -34,6 +34,7 @@ export const SidebarLinks = () => {
         path={RoutePath.Exercises}
         icon={<DumbbellIcon size={22} />}
       />
+
       <SidebarLinkButton
         name="Training plans"
         path={RoutePath.TrainingPlans}
@@ -58,7 +59,7 @@ export const SidebarLinks = () => {
         path={RoutePath.Timer}
         icon={<Timer size={22} />}
       />
-      
+
       <SidebarLinkButton
         name="Settings"
         path={RoutePath.Settings}
