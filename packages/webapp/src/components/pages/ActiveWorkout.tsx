@@ -76,7 +76,7 @@ export const ActiveWorkout = () => {
           <Separator />
         </div>
         <Carousel
-          className="w-full h-3/4 mx-auto md:max-w-[36rem] sm:max-w-[36rem]  max-w-[290px] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
+          className="flex w-full h-3/4 mx-auto md:max-w-[36rem] sm:max-w-[36rem]  max-w-[290px] lg:max-w-[40rem]  xl:max-w-[64rem] rounded-sm"
           setApi={setApi}
         >
           <CarouselContent className="">

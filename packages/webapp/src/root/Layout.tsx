@@ -17,7 +17,7 @@ const Layout = () => {
       <div className="hidden md:block ">
         <Sidebar open={isSidebarOpen} onOpenChange={toggleSidebar} />
       </div>
-      <div className={`flex flex-col flex-grow `}>
+      <div className={`flex flex-col flex-grow  `}>
         <TopBar currentUrlLocation={location} toggleSheet={toggleSidebar} />
         <div className="overflow-x-hidden  flex-grow px-3 pr-2  pt-6 pb-6 overflow-y-scroll 2xl:px-60 lg:px-32 xl:px-24  [&::-webkit-scrollbar]:w-[7px] [&::-webkit-scrollbar-thumb]:bg-primary-light ">
           <Routes />
